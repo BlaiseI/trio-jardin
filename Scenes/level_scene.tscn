@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfvus1bseqnk1"]
+
+[ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
+
+[node name="levelScene" type="Node2D"]
+
+[node name="TopBannerBackground" type="TextureRect" parent="."]
+offset_right = 576.0
+offset_bottom = 192.0
+texture = ExtResource("1_7r6xw")
