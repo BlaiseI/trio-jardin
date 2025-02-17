@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct2c1camd55i4"]
+
+[ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_6ao1g"]
+[ext_resource type="Texture2D" uid="uid://dcdpduqm5qplt" path="res://art/Finished/chenille.png" id="2_vp8nl"]
+
+[node name="blockChenille" instance=ExtResource("1_6ao1g")]
+blockType = "Chenille"
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_vp8nl")
