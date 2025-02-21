@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkjyt4y2tsgwu"]
 
 [ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_8uwmu"]
-[ext_resource type="Texture2D" uid="uid://dtjsrcwfsn4r2" path="res://art/Finished/chardon.png" id="2_8vm83"]
+[ext_resource type="Texture2D" uid="uid://jdda1bbg03yu" path="res://art/Finished/chardon60.png" id="2_q2aqj"]
 
 [node name="blockChardon" instance=ExtResource("1_8uwmu")]
 blockType = "Chardon"
 
 [node name="Sprite2D" parent="." index="0"]
-texture = ExtResource("2_8vm83")
+texture = ExtResource("2_q2aqj")
