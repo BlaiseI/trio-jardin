@@ -5,7 +5,8 @@ var partOfMatch: bool = false
 
 func move(coords: Vector2) -> void:
 	var tween = create_tween()
-	tween.tween_property(self, "position", coords, .5)
+	tween.tween_property(self, "position", coords, .3)
+	await tween.finished
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
