@@ -102,21 +102,28 @@ func swapBlocks(firstPosition: Position, secondPosition: Position) -> void:
 	
 	var tmp: Node2D = grid[firstRow][firstCol]
 	grid[firstRow][firstCol] = grid[secondRow][secondCol]
-	grid[firstRow][firstCol].position = getTileCoordsFromPosition(Position.new(firstRow, firstCol))
+	grid[firstRow][firstCol].move(getTileCoordsFromPosition(Position.new(firstRow, firstCol)))
 	grid[secondRow][secondCol] = tmp
-	grid[secondRow][secondCol].position = getTileCoordsFromPosition(Position.new(secondRow, secondCol))
+	grid[secondRow][secondCol].move(getTileCoordsFromPosition(Position.new(secondRow, secondCol)))
 	
 	print("new block position : ", grid[firstRow][firstCol].blockType, ", ", grid[secondRow][secondCol].blockType)
 	
-func getMatchOnGrid() -> Position:
+func getMatchesOnGrid() -> bool:
+	var thereIsAMatch: bool = false
 	for row in height:
 		for column in width:
 			var blockType: String = grid[row][column].blockType
 			if(row >= 2 && grid[row-1][column].blockType == blockType and grid[row-2][column].blockType == blockType):
-				return Position.new(row, column)
+				grid[row-2][column].partOfMatch = true
+				grid[row-1][column].partOfMatch = true
+				grid[row][column].partOfMatch = true
+				thereIsAMatch = true
 			if(column >= 2 && grid[row][column-1].blockType == blockType and grid[row][column-2].blockType == blockType):
-				return Position.new(row, column)
-	return Position.getNull()
+				grid[row][column-2].partOfMatch = true
+				grid[row][column-1].partOfMatch = true
+				grid[row][column].partOfMatch = true
+				thereIsAMatch = true
+	return thereIsAMatch
 	
 func replaceBlock(blockPosition: Position) -> int:
 	var row:int = blockPosition.row
@@ -129,42 +136,18 @@ func replaceBlock(blockPosition: Position) -> int:
 	add_child(grid[row][column])
 	return 1
 	
-func resolve(matchPosition: Position) -> void:
-	print("solving match in : ", matchPosition.row, ", ", matchPosition.column)
-	var row:int = matchPosition.row
-	var column:int = matchPosition.column
-	var blockType: String = grid[row][column].blockType
-	var replaced: int
-	replaceBlock(Position.new(row, column))
-	
-	if row >= 1 && grid[row-1][column].blockType == blockType:
-		replaceBlock(Position.new(row-1, column))
-		if row >= 2 && grid[row-2][column].blockType == blockType:
-			replaceBlock(Position.new(row-2, column))
-			
-	if row < height-1 && grid[row+1][column].blockType == blockType:
-		replaceBlock(Position.new(row+1, column))
-		if row < height-2 && grid[row+2][column].blockType == blockType:
-			replaceBlock(Position.new(row+2, column))
-			
-	if column >= 1 && grid[row][column-1].blockType == blockType:
-		replaceBlock(Position.new(row, column-1))
-		if column >= 2 && grid[row][column-2].blockType == blockType:
-			replaceBlock(Position.new(row, column-2))
-			
-	if column < width-1 && grid[row][column+1].blockType == blockType:
-		replaceBlock(Position.new(row, column+1))
-		if column < width-2 && grid[row][column+2].blockType == blockType:
-			replaceBlock(Position.new(row, column+2))
-	return
+func resolve() -> void:
+	for i in height:
+		for j in width:
+			if grid[i][j].partOfMatch:
+				replaceBlock(Position.new(i, j))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var matchPosition: Position = getMatchOnGrid()
-	if matchPosition.equals(Position.getNull()):
+	if not getMatchesOnGrid():
 		getSlideCoords()
 	else:
-		resolve(matchPosition)
+		resolve()
 	if(slideEndCoords != Vector2(-1, -1)):
 		var slideDirection: Vector2 = getSlideDirection()
 		var firstBlockPosition: Position = getPositionFromTileCoords(slideBeginCoords)
@@ -172,6 +155,6 @@ func _process(delta: float) -> void:
 		var secondBlockPosition: Position = Position.new(firstBlockPosition.row + slideDirection.y, firstBlockPosition.column + slideDirection.x)
 		if not firstBlockPosition.equals(secondBlockPosition):
 			swapBlocks(firstBlockPosition, secondBlockPosition)
-			if getMatchOnGrid().equals(Position.getNull()):
+			if not getMatchesOnGrid():
 				swapBlocks(firstBlockPosition, secondBlockPosition)
 		slideEndCoords = Vector2(-1, -1)
