@@ -18,6 +18,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 var slideBeginCoords: Vector2
 var slideEndCoords: Vector2 = Vector2(-1, -1)
+var slideOngoing: bool = false
 
 var waiting: bool = false
 
@@ -69,8 +70,13 @@ func getPositionFromTileCoords(coords: Vector2) -> Position:
 func getSlideCoords() -> void:
 	if Input.is_action_just_pressed("ui_touch"):
 		slideBeginCoords = get_global_mouse_position()
+		if(slideBeginCoords.x >= xStart and slideBeginCoords.y >= yStart and slideBeginCoords.x < xStart + (width*offset) and slideBeginCoords.y < yStart + (height*offset)):
+			slideOngoing = true
 	if Input.is_action_just_released("ui_touch"):
 		slideEndCoords = get_global_mouse_position()
+		if not (slideOngoing and slideEndCoords.x >= xStart and slideEndCoords.y >= yStart and slideEndCoords.x < xStart + (width*offset) and slideEndCoords.y < yStart + (height*offset)):
+			slideOngoing = false
+			slideEndCoords = Vector2(-1, -1)
 
 func getSlideDirection() -> Vector2:
 	var xDif : float = slideEndCoords.x - slideBeginCoords.x
