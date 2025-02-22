@@ -6,5 +6,4 @@
 [node name="block" instance=ExtResource("1_g84go")]
 
 [node name="Sprite2D" parent="." index="0"]
-position = Vector2(33, 33)
 texture = ExtResource("2_hp2rh")
