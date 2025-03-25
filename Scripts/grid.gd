@@ -1,7 +1,7 @@
 class_name Grid
 extends Node2D
 
-enum{wait, checkMove, treatMove, resolveMatches}
+enum {wait, checkMove, treatMove, resolveMatches, carrot}
 var state
 
 @onready var utils = $"../utilsCodeContainer"
@@ -12,6 +12,9 @@ var state
 @export var yStart: int
 @export var offset: int
 @export var emptyTiles : PackedVector2Array
+
+var nbCarrots: int = 2
+var buttonReleasedAfterCarrot = false
 
 var grid = []
 
@@ -24,6 +27,7 @@ var slideOngoing: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$"../HUD/NumberOfCarrots".text = str(nbCarrots)
 	state = checkMove
 	initGrid()
 
@@ -40,7 +44,7 @@ func createEmptyGrid() -> void:
 				var cadre: Block = cadrePreload.instantiate()
 				add_child(cadre)
 				cadre.position = utils.getTileCoordsFromPosition(Position.new(i,j), self)
-				cadre.get_node("CenterContainer/Control/Sprite2D").modulate.a = 0.2
+				#cadre.get_node("CenterContainer/Control/Sprite2D").modulate.a = 0.2
 
 func fillGrid() -> void:
 	for i in height:
@@ -84,8 +88,11 @@ func _process(delta: float) -> void:
 		treatMovement()
 	elif state == resolveMatches:
 		resolve()
+	elif state == carrot:
+		applyCarrot()
 		
 func checkMovement() -> void:
+	state = wait
 	if Input.is_action_just_pressed("ui_touch"):
 		slideBeginCoords = get_global_mouse_position()
 		slideBeginPosition = utils.getPositionFromTileCoords(slideBeginCoords, self)
@@ -102,6 +109,8 @@ func checkMovement() -> void:
 		else:
 			state = checkMove
 		slideOngoing = false
+	if state == wait:
+		state = checkMove 
 		
 func treatMovement() -> void:
 	state = wait
@@ -201,7 +210,7 @@ func getBlocksDown() -> void:
 					k -= 1
 	if lastSignal:
 		await lastSignal
-	
+
 func fillEmptyBlocks() -> void:
 	var lastSignal
 	for i in height:
@@ -213,3 +222,28 @@ func fillEmptyBlocks() -> void:
 				lastSignal = block.spawn()
 				grid[i][j] = block
 	await lastSignal
+
+func applyCarrot() -> void:
+	if !buttonReleasedAfterCarrot :
+		if Input.is_action_just_released("ui_touch"):
+			buttonReleasedAfterCarrot = true
+		return
+	if Input.is_action_just_pressed("ui_touch"):
+		state = wait
+		var tapCoords = get_global_mouse_position()
+		var tapPosition = utils.getPositionFromTileCoords(tapCoords, self)
+		var row: int = tapPosition.row
+		var column: int = tapPosition.column
+		if(!emptyTile(row, column) and row >= 0 and column >= 0 and row < 8 and column < 8):
+			await grid[row][column].shrink()
+			remove_child(grid[row][column])
+			grid[row][column] = null
+			await getBlocksDown()
+			await fillEmptyBlocks()
+			$"../HUD".carrotReleased()
+			state = resolveMatches
+		else:
+			$"../HUD".carrotReleased()
+			state = checkMove
+		buttonReleasedAfterCarrot = false
+		return

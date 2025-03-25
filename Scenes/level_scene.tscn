@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cfvus1bseqnk1"]
+[gd_scene load_steps=10 format=3 uid="uid://cfvus1bseqnk1"]
 
 [ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
 [ext_resource type="Texture2D" uid="uid://8c2aiawr05ru" path="res://art/Finished/gridContainer.png" id="2_1v6qg"]
+[ext_resource type="Texture2D" uid="uid://ccvupff87vx6w" path="res://art/Finished/carrot2.png" id="2_nnl6e"]
+[ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/numberBackground.png" id="3_qur5x"]
 [ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
+[ext_resource type="Script" path="res://Scripts/hud.gd" id="6_tc5i1"]
+[ext_resource type="FontFile" uid="uid://xt34up70b8nw" path="res://art/CarrotFont.ttf" id="7_vpddm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p8t70"]
 
 [node name="levelScene" type="Node2D"]
 
@@ -12,7 +18,15 @@ offset_right = 576.0
 offset_bottom = 192.0
 texture = ExtResource("1_7r6xw")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="numberBackground" type="TextureRect" parent="TopBannerBackground"]
+layout_mode = 0
+offset_left = 406.0
+offset_top = 72.0
+offset_right = 446.0
+offset_bottom = 112.0
+texture = ExtResource("3_qur5x")
+
+[node name="GridBackground" type="TextureRect" parent="."]
 offset_top = 192.0
 offset_right = 576.0
 offset_bottom = 832.0
@@ -25,9 +39,42 @@ height = 8
 xStart = 20
 yStart = 264
 offset = 67
-emptyTiles = PackedVector2Array(3, 3, 4, 4, 0, 0)
+emptyTiles = PackedVector2Array(3, 3, 4, 4, 3, 4, 4, 3, 0, 0, 7, 7, 7, 0, 0, 7)
 
 [node name="utilsCodeContainer" type="Container" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("4_rjc1o")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("6_tc5i1")
+
+[node name="NumberOfCarrots" type="Label" parent="HUD"]
+offset_left = 418.0
+offset_top = 78.0
+offset_right = 430.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(0.745098, 0.376471, 0.152941, 1)
+theme_override_fonts/font = ExtResource("7_vpddm")
+theme_override_font_sizes/font_size = 32
+
+[node name="CarrotButton" type="Button" parent="HUD"]
+offset_left = 376.0
+offset_top = 34.0
+offset_right = 434.0
+offset_bottom = 92.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_p8t70")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p8t70")
+action_mode = 0
+icon = ExtResource("2_nnl6e")
+
+[connection signal="pressed" from="HUD/CarrotButton" to="HUD" method="_on_carrot_button_pressed"]

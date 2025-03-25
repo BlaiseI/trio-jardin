@@ -30,5 +30,6 @@ func spawn() -> Signal:
 	return tween.finished
 	
 static func createRandomBlock() -> Block:
-	return load(blocks[rng.randi_range(0, blocks.size()-1)]).instantiate()
+	var block: Block = load(blocks[rng.randi_range(0, blocks.size()-1)]).instantiate()
+	return block
 	
