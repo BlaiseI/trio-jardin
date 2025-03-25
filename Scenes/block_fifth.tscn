@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bp3dnet5amtc"]
+
+[ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_6bted"]
+[ext_resource type="Texture2D" uid="uid://ek3xqvaon65s" path="res://art/Finished/fifth.png" id="2_6geyl"]
+
+[node name="block" instance=ExtResource("1_6bted")]
+blockType = "fifth"
+
+[node name="Sprite2D" parent="CenterContainer/Control" index="0"]
+texture = ExtResource("2_6geyl")

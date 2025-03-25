@@ -1,5 +1,8 @@
 extends Node2D
 
+enum{wait, checkMove, treatMove, resolveMatches}
+var state
+
 @export var width: int
 @export var height: int
 @export var xStart: int
@@ -11,7 +14,8 @@ var blocks = [
 	preload("res://Scenes/block_chardon.tscn"),
 	preload("res://Scenes/block_chenille.tscn"),
 	preload("res://Scenes/block_ortie.tscn"),
-	#preload("res://Scenes/block_egopode.tscn")
+	preload("res://Scenes/block_egopode.tscn")
+	#preload("res://Scenes/block_fifth.tscn")
 ]
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -20,11 +24,16 @@ var slideBeginCoords: Vector2
 var slideEndCoords: Vector2 = Vector2(-1, -1)
 var slideOngoing: bool = false
 
-var waitingForAnimEnd: bool = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	state = checkMove
 	initGrid()
+	
+func printGrid() -> void:
+	for i in height:
+		for j in width:
+			if not grid[i][j]:
+				print("!! NULL!!",i,j)
 
 func initGrid() -> void:
 	for i in height:
@@ -37,7 +46,7 @@ func initGrid() -> void:
 	for i in height:
 		for j in width:
 			var isMatch: bool = true
-			var block
+			var block: Node
 			while(isMatch):
 				var blockIndex: int = rng.randi_range(0, blocks.size()-1)
 				block = blocks[blockIndex].instantiate()
@@ -58,8 +67,8 @@ func givesMatch(row: int, column: int, block) -> bool:
 	return false
 
 func getTileCoordsFromPosition(position: Position) -> Vector2:
-	var xCoord: int = xStart + (position.column*offset)
-	var yCoord: int = yStart + (position.row*offset)
+	var xCoord: int = xStart+30 + (position.column*offset)
+	var yCoord: int = yStart+30 + (position.row*offset)
 	return Vector2(xCoord,yCoord)
 	
 func getPositionFromTileCoords(coords: Vector2) -> Position:
@@ -104,7 +113,6 @@ func swapBlocks(firstPosition: Position, secondPosition: Position) -> void:
 	grid[firstRow][firstCol] = grid[secondRow][secondCol]
 	grid[firstRow][firstCol].move(getTileCoordsFromPosition(Position.new(firstRow, firstCol)))
 	grid[secondRow][secondCol] = tmp
-	waitingForAnimEnd = true
 	await grid[secondRow][secondCol].move(getTileCoordsFromPosition(Position.new(secondRow, secondCol)))
 	
 	print("new block position : ", grid[firstRow][firstCol].blockType, ", ", grid[secondRow][secondCol].blockType)
@@ -126,41 +134,94 @@ func getMatchesOnGrid() -> bool:
 				thereIsAMatch = true
 	return thereIsAMatch
 	
-func replaceBlock(blockPosition: Position) -> int:
-	var row:int = blockPosition.row
-	var column: int = blockPosition.column
-	var blockIndex: int = rng.randi_range(0, blocks.size()-1)
-	print("replacing ", grid[row][column].blockType, " by ", blocks[blockIndex].instantiate().blockType, " in ", row, ", ", column)
-	remove_child(grid[row][column])
-	grid[row][column] = blocks[blockIndex].instantiate()
-	grid[row][column].position = getTileCoordsFromPosition(Position.new(row,column))
-	add_child(grid[row][column])
-	return 1
+func takeAboveMatches(row:int, column:int) -> int:
+	var nbMatchesVertical:int = 0
+	while row >= 0 and grid[row][column].partOfMatch:
+		nbMatchesVertical += 1
+		grid[row][column].partOfMatch = false
+		row -= 1
+	return nbMatchesVertical
 	
 func resolve() -> void:
-	waitingForAnimEnd = true
-	for i in height:
-		for j in width:
-			if grid[i][j].partOfMatch:
-				replaceBlock(Position.new(i, j))
-				await get_tree().create_timer(0.1).timeout
+	while(getMatchesOnGrid()):
+		var toShrink = []
+		for i in height:
+			for j in width:
+				if grid[i][j] and grid[i][j].partOfMatch:
+					toShrink.append(Position.new(i,j))
+		var lastSignal : Signal
+		for position in toShrink:
+			lastSignal = grid[position.row][position.column].shrink()
+		await lastSignal
+		
+		for position in toShrink:
+			var i = position.row
+			var j = position.column	
+			remove_child(grid[i][j])
+			grid[i][j].queue_free()
+			grid[i][j] = null
+		
+		var lastSignalMove
+		for i in height:
+			for j in width:
+				if !grid[i][j]:
+					for k in range(i-1,-1,-1):
+						if grid[k][j]:
+							lastSignalMove = grid[k][j].move(getTileCoordsFromPosition(Position.new(k+1, j)))
+							grid[k+1][j] = grid[k][j]
+							grid[k][j] = null
+		if lastSignalMove:
+			await lastSignalMove
+						
+		var lastSignalCreate
+		for i in height:
+			for j in width:
+				if grid[i][j] == null:
+					var block:Node
+					var blockIndex: int = rng.randi_range(0, blocks.size()-1)
+					block = blocks[blockIndex].instantiate()
+					block.position = getTileCoordsFromPosition(Position.new(i,j))
+					add_child(block)
+					lastSignalCreate = block.spawn()
+					grid[i][j] = block
+		await lastSignalCreate
+	return
+				#replaceBlock(Position.new(i, j))
+				#await get_tree().create_timer(0.1).timeout
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta: float) -> void:
+#	if treatingLastMovement:
+#		return
+#	if not getMatchesOnGrid():
+#		getSlideCoords()
+#	else:
+#		treatingLastMovement = true
+#		await resolve()
+#		treatingLastMovement = false
+#	if(slideEndCoords != Vector2(-1, -1)):
+#		treatingLastMovement = true
+#		
+#		treatingLastMovement = false
+		
 func _process(delta: float) -> void:
-	if not waitingForAnimEnd:
-		if not getMatchesOnGrid():
-			getSlideCoords()
-		else:
-			await resolve()
-			waitingForAnimEnd = false
+	if state == checkMove:
+		getSlideCoords()
 		if(slideEndCoords != Vector2(-1, -1)):
-			var slideDirection: Vector2 = getSlideDirection()
-			var firstBlockPosition: Position = getPositionFromTileCoords(slideBeginCoords)
-			print("movement detected : ", firstBlockPosition.row, ", ", firstBlockPosition.column, ", ", slideDirection)
-			var secondBlockPosition: Position = Position.new(firstBlockPosition.row + slideDirection.y, firstBlockPosition.column + slideDirection.x)
-			if not firstBlockPosition.equals(secondBlockPosition):
-				await swapBlocks(firstBlockPosition, secondBlockPosition)
-				if not getMatchesOnGrid():
-					swapBlocks(firstBlockPosition, secondBlockPosition)
-			slideEndCoords = Vector2(-1, -1)
-			waitingForAnimEnd = false
+			state = treatMove
+	elif state == treatMove:
+		state = wait
+		var slideDirection: Vector2 = getSlideDirection()
+		var firstBlockPosition: Position = getPositionFromTileCoords(slideBeginCoords)
+		print("movement detected : ", firstBlockPosition.row, ", ", firstBlockPosition.column, ", ", slideDirection)
+		var secondBlockPosition: Position = Position.new(firstBlockPosition.row + slideDirection.y, firstBlockPosition.column + slideDirection.x)
+		if not firstBlockPosition.equals(secondBlockPosition):
+			await swapBlocks(firstBlockPosition, secondBlockPosition)
+			if not getMatchesOnGrid():
+				swapBlocks(firstBlockPosition, secondBlockPosition)
+		slideEndCoords = Vector2(-1, -1)
+		state = resolveMatches
+	elif state == resolveMatches:
+		state = wait
+		await resolve()
+		state = checkMove
