@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfvus1bseqnk1"]
+[gd_scene load_steps=5 format=3 uid="uid://cfvus1bseqnk1"]
 
 [ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
 [ext_resource type="Texture2D" uid="uid://8c2aiawr05ru" path="res://art/Finished/gridContainer.png" id="2_1v6qg"]
+[ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
 
 [node name="levelScene" type="Node2D"]
 
@@ -24,3 +25,8 @@ height = 8
 xStart = 20
 yStart = 264
 offset = 67
+
+[node name="utilsCodeContainer" type="Container" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_rjc1o")

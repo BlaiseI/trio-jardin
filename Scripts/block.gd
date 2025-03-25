@@ -1,4 +1,14 @@
+class_name Block
 extends Node2D
+
+static var blocks = [
+	"res://Scenes/block_chardon.tscn",
+	"res://Scenes/block_chenille.tscn",
+	"res://Scenes/block_ortie.tscn",
+	"res://Scenes/block_egopode.tscn"
+]
+
+static var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 @export var blockType: String
 var partOfMatch: bool = false
@@ -19,11 +29,6 @@ func spawn() -> Signal:
 	tween.tween_property(self, "scale", Vector2(1,1), .2)
 	return tween.finished
 	
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+static func createRandomBlock() -> Block:
+	return load(blocks[rng.randi_range(0, blocks.size()-1)]).instantiate()
+	
