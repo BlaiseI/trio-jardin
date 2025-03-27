@@ -1,7 +1,13 @@
 class_name Level
 extends Container
 
+enum{waitInput, treatMove, treatPowerUp}
+var state
+
 @onready var grid:Grid = $"../grid"
+var slideOngoing: bool = false
+var slideBeginPos: Vector2
+var slideBeginCoords: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -11,9 +17,47 @@ func _ready() -> void:
 	grid.emptyTiles.append(Vector2(3,4))
 	grid.emptyTiles.append(Vector2(4,3))
 	grid.nbCarrots = 2
-	pass # Replace with function body.
-
+	state = waitInput
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if state == waitInput:
+		treatInputs()
+
+func treatInputs() -> void:
+	if Input.is_action_just_pressed("ui_touch"):
+		var touchCoords: Vector2 = get_global_mouse_position()
+		if grid.isInGrid(touchCoords):
+			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
+			if !grid.isTileEmpty(tileTouched):
+				slideOngoing = true
+				slideBeginCoords = touchCoords
+				slideBeginPos =  tileTouched
+	if Input.is_action_just_released("ui_touch"):
+		if slideOngoing:
+			var touchCoords: Vector2 = get_global_mouse_position()
+			if grid.isInGrid(touchCoords):
+				var slideDirection: Vector2 = Utils.getSlideDirection(slideBeginCoords, touchCoords)
+				var tileTouched: Vector2 = Vector2(slideBeginPos.x + slideDirection.x, slideBeginPos.y + slideDirection.y)
+				if !grid.isTileEmpty(tileTouched):
+					state = treatMove
+					await treatSlide(tileTouched)
+					state = waitInput
+		slideOngoing = false
+
+func treatSlide(slideEndPos: Vector2) -> void:
+	if slideBeginPos == slideEndPos:
+		return
+	
+	await grid.swapBlocks(slideBeginPos, slideEndPos)
+	if grid.getMatchesOnGrid():
+		await treatMatches()
+	else:
+		await grid.swapBlocks(slideBeginPos, slideEndPos)
+
+func treatMatches() -> void:
+	while grid.getMatchesOnGrid():
+		await grid.deleteMatches()
+		await grid.getBlocksDown()
+		await grid.fillEmptyBlocks()
+	return

@@ -80,4 +80,10 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_p8t70")
 action_mode = 0
 icon = ExtResource("2_nnl6e")
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [connection signal="pressed" from="HUD/CarrotButton" to="HUD" method="_on_carrot_button_pressed"]

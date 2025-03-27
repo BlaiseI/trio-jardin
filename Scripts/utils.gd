@@ -1,19 +1,20 @@
+class_name Utils
 extends Container
 
-func getSlideDirection(slideBeginCoords: Vector2, slideEndCoords: Vector2) -> Vector2:
+static func getSlideDirection(slideBeginCoords: Vector2, slideEndCoords: Vector2) -> Vector2:
 	var xDif : float = slideEndCoords.x - slideBeginCoords.x
 	var yDif : float = slideEndCoords.y - slideBeginCoords.y
 	var ratio = abs(xDif/yDif)
 	if (ratio > 2):
 		if(xDif > 0):
-			return Vector2(1, 0)
-		else:
-			return Vector2(-1, 0)
-	if(ratio < 0.5):
-		if(yDif>0):
 			return Vector2(0, 1)
 		else:
 			return Vector2(0, -1)
+	if(ratio < 0.5):
+		if(yDif>0):
+			return Vector2(1, 0)
+		else:
+			return Vector2(-1, 0)
 	return Vector2(0, 0)
 	
 func getTileCoordsFromPosition(position: Position, grid: Grid) -> Vector2:

@@ -83,13 +83,7 @@ func emptyTile(row: int, column:int) -> bool:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.		
 func _process(delta: float) -> void:
-	if state == checkMove:
-		checkMovement()
-	elif state == treatMove:
-		treatMovement()
-	elif state == resolveMatches:
-		resolve()
-	elif state == carrot:
+	if state == carrot:
 		applyCarrot()
 		
 func checkMovement() -> void:
@@ -111,23 +105,13 @@ func checkMovement() -> void:
 			state = checkMove
 		slideOngoing = false
 	if state == wait:
-		state = checkMove 
-		
-func treatMovement() -> void:
-	state = wait
+		state = checkMove
 
-	if not slideBeginPosition.equals(slideEndPosition):
-		await swapBlocks(slideBeginPosition, slideEndPosition)
-		if not getMatchesOnGrid():
-			await swapBlocks(slideBeginPosition, slideEndPosition)
-
-	state = resolveMatches
-
-func swapBlocks(firstPosition: Position, secondPosition: Position) -> void:
-	var firstRow: int = firstPosition.row
-	var firstCol: int = firstPosition.column
-	var secondRow: int = secondPosition.row
-	var secondCol: int = secondPosition.column
+func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
+	var firstRow: int = firstPosition.x
+	var firstCol: int = firstPosition.y
+	var secondRow: int = secondPosition.x
+	var secondCol: int = secondPosition.y
 	
 	grid[firstRow][firstCol].move(utils.getTileCoordsFromPosition(Position.new(secondRow, secondCol), self))
 	await grid[secondRow][secondCol].move(utils.getTileCoordsFromPosition(Position.new(firstRow, firstCol), self))
@@ -253,3 +237,18 @@ func applyCarrot() -> void:
 			state = checkMove
 		buttonReleasedAfterCarrot = false
 		return
+
+func getTilePositionFromCoords(coords: Vector2) -> Vector2:
+	return Vector2(floor((coords.y - yStart)/offset), floor((coords.x - xStart)/offset))
+	
+func isInGrid(coords: Vector2) -> bool:
+	if(coords.x < xStart or coords.x > xStart + (width*offset) 
+		or coords.y < yStart or coords.y > yStart + (height*offset)):
+			return false
+	return true
+	
+func isTileEmpty(tilePosition: Vector2) -> bool:
+	for emptyTilePos: Vector2 in emptyTiles:
+		if emptyTilePos == tilePosition:
+			return true
+	return false
