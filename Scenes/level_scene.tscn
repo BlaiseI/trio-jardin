@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfvus1bseqnk1"]
+[gd_scene load_steps=11 format=3 uid="uid://cfvus1bseqnk1"]
 
 [ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
@@ -8,10 +8,28 @@
 [ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="6_tc5i1"]
 [ext_resource type="FontFile" uid="uid://xt34up70b8nw" path="res://art/CarrotFont.ttf" id="7_vpddm"]
+[ext_resource type="Script" path="res://Scripts/level.gd" id="9_f3jec"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p8t70"]
 
 [node name="levelScene" type="Node2D"]
+
+[node name="GridBackground" type="TextureRect" parent="."]
+offset_top = 192.0
+offset_right = 576.0
+offset_bottom = 832.0
+texture = ExtResource("2_1v6qg")
+
+[node name="LevelCodeContainer" type="Container" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_f3jec")
+
+[node name="grid" type="Node2D" parent="."]
+script = ExtResource("1_luu4e")
+xStart = 20
+yStart = 264
+offset = 67
 
 [node name="TopBannerBackground" type="TextureRect" parent="."]
 offset_right = 576.0
@@ -25,21 +43,6 @@ offset_top = 72.0
 offset_right = 446.0
 offset_bottom = 112.0
 texture = ExtResource("3_qur5x")
-
-[node name="GridBackground" type="TextureRect" parent="."]
-offset_top = 192.0
-offset_right = 576.0
-offset_bottom = 832.0
-texture = ExtResource("2_1v6qg")
-
-[node name="grid" type="Node2D" parent="."]
-script = ExtResource("1_luu4e")
-width = 8
-height = 8
-xStart = 20
-yStart = 264
-offset = 67
-emptyTiles = PackedVector2Array(3, 3, 4, 4, 3, 4, 4, 3, 0, 0, 7, 7, 7, 0, 0, 7)
 
 [node name="utilsCodeContainer" type="Container" parent="."]
 offset_right = 40.0

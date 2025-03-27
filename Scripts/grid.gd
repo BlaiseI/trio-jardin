@@ -6,20 +6,21 @@ var state
 
 @onready var utils = $"../utilsCodeContainer"
 
-@export var width: int
-@export var height: int
 @export var xStart: int
 @export var yStart: int
 @export var offset: int
-@export var emptyTiles : PackedVector2Array
 
-var nbCarrots: int = 2
-var buttonReleasedAfterCarrot = false
+var width: int
+var height: int
+var emptyTiles : PackedVector2Array
+var nbCarrots: int
+
 
 var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 
+var buttonReleasedAfterCarrot = false
 var slideBeginCoords: Vector2
 var slideBeginPosition: Position
 var slideEndPosition: Position
@@ -100,7 +101,7 @@ func checkMovement() -> void:
 		var column: int = slideBeginPosition.column
 		if(!emptyTile(row, column) and row >= 0 and column >= 0 and row < 8 and column < 8):
 			slideOngoing = true
-	if Input.is_action_just_released("ui_touch"):
+	if Input.is_action_just_released("ui_touch") and slideOngoing:
 		var slideEndCoords = get_global_mouse_position()
 		var slideDirection: Vector2 = utils.getSlideDirection(slideBeginCoords, slideEndCoords)
 		slideEndPosition = Position.new(slideBeginPosition.row + slideDirection.y, slideBeginPosition.column + slideDirection.x)
@@ -224,6 +225,10 @@ func fillEmptyBlocks() -> void:
 	await lastSignal
 
 func applyCarrot() -> void:
+	if nbCarrots == 0:
+		$"../HUD".carrotReleased(nbCarrots)
+		state = checkMove
+		buttonReleasedAfterCarrot = false
 	if !buttonReleasedAfterCarrot :
 		if Input.is_action_just_released("ui_touch"):
 			buttonReleasedAfterCarrot = true
@@ -240,10 +245,11 @@ func applyCarrot() -> void:
 			grid[row][column] = null
 			await getBlocksDown()
 			await fillEmptyBlocks()
-			$"../HUD".carrotReleased()
+			nbCarrots -= 1
+			$"../HUD".carrotReleased(nbCarrots)
 			state = resolveMatches
 		else:
-			$"../HUD".carrotReleased()
+			$"../HUD".carrotReleased(nbCarrots)
 			state = checkMove
 		buttonReleasedAfterCarrot = false
 		return

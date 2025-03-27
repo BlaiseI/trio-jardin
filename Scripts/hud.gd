@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-
-
 func _on_carrot_button_pressed() -> void:
 	print("button pressed")
 	var grid: Grid = $"../grid"
@@ -14,7 +12,7 @@ func _on_carrot_button_pressed() -> void:
 		$"../GridBackground".modulate.b = 0.5
 		grid.state = grid.carrot
 	
-func carrotReleased() -> void:
+func carrotReleased(nbCarrots: int) -> void:
 	print("carrotReleased")
 	$"../TopBannerBackground".modulate.r = 1
 	$"../TopBannerBackground".modulate.g = 1
@@ -22,3 +20,5 @@ func carrotReleased() -> void:
 	$"../GridBackground".modulate.r = 1
 	$"../GridBackground".modulate.g = 1
 	$"../GridBackground".modulate.b = 1
+	$"NumberOfCarrots".text = str(nbCarrots)
+	#$"NumberOfCarrots".text = numberOfCarrots
