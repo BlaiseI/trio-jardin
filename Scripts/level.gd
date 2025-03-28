@@ -15,6 +15,8 @@ var slideBeginCoords: Vector2
 
 var nbCarrots: int = 2
 var carrotButtonReleased: bool = false
+var blockTypeCondition1: String = "Chardon"
+var numberForCondition1: int = 50
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,6 +26,7 @@ func _ready() -> void:
 	grid.emptyTiles.append(Vector2(3,4))
 	grid.emptyTiles.append(Vector2(4,3))
 	hud.updateNbCarrots(nbCarrots)
+	hud.updateNbCondition1(numberForCondition1)
 	grid.initGrid()
 	state = waitInput
 
@@ -67,10 +70,19 @@ func treatSlide(slideEndPos: Vector2) -> void:
 
 func treatMatches() -> void:
 	while grid.getMatchesOnGrid():
-		await grid.deleteMatches()
+		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
 	return
+
+func deleteMatches() -> void:
+	var conditionDictionary: Dictionary = {blockTypeCondition1: 0}
+	conditionDictionary = await grid.deleteMatches(conditionDictionary)
+	numberForCondition1 -= conditionDictionary[blockTypeCondition1]
+	if numberForCondition1 <= 0:
+		print("Victory !")
+		numberForCondition1 = 0
+	hud.updateNbCondition1(numberForCondition1)
 
 func getPowerUpInput() -> void:
 	if carrotButtonReleased and Input.is_action_just_pressed("ui_touch"):

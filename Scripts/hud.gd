@@ -25,3 +25,6 @@ func unBlackenBackground() -> void:
 func updateNbCarrots(nbCarrots: int) -> void:
 	$"NumberOfCarrots".text = str(nbCarrots)
 	
+func updateNbCondition1(nbCondition1: int) -> void:
+	$"NumberForCondition1".text = str(nbCondition1)
+	

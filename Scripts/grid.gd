@@ -106,12 +106,14 @@ func getMatchesOnGrid() -> bool:
 					thereIsAMatch = true
 	return thereIsAMatch
 
-func deleteMatches() -> void:
+func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 	var toShrink = []
 	for i in height:
 		for j in width:
 			if grid[i][j] and grid[i][j].partOfMatch:
 				toShrink.append(Position.new(i,j))
+				if conditionDictionary.has(grid[i][j].blockType):
+					conditionDictionary[grid[i][j].blockType] += 1
 				
 	var lastSignal : Signal
 	for position in toShrink:
@@ -124,6 +126,7 @@ func deleteMatches() -> void:
 		remove_child(grid[i][j])
 		grid[i][j].queue_free()
 		grid[i][j] = null
+	return conditionDictionary
 
 func getBlocksDown2() -> void:
 	var lastSignal
