@@ -20,16 +20,21 @@ offset_right = 576.0
 offset_bottom = 832.0
 texture = ExtResource("2_1v6qg")
 
-[node name="LevelCodeContainer" type="Container" parent="."]
+[node name="utilsCodeContainer" type="Container" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("9_f3jec")
+script = ExtResource("4_rjc1o")
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("1_luu4e")
 xStart = 20
 yStart = 264
 offset = 67
+
+[node name="LevelCodeContainer" type="Container" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_f3jec")
 
 [node name="TopBannerBackground" type="TextureRect" parent="."]
 offset_right = 576.0
@@ -43,11 +48,6 @@ offset_top = 72.0
 offset_right = 446.0
 offset_bottom = 112.0
 texture = ExtResource("3_qur5x")
-
-[node name="utilsCodeContainer" type="Container" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("4_rjc1o")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("6_tc5i1")

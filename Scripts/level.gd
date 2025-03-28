@@ -1,13 +1,20 @@
 class_name Level
 extends Container
 
-enum{waitInput, treatMove, treatPowerUp}
+enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp}
 var state
+enum{carrot}
+var currentPowerUp
 
 @onready var grid:Grid = $"../grid"
+@onready var hud:HUD = $"../HUD"
+
 var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
+
+var nbCarrots: int = 2
+var carrotButtonReleased: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,15 +23,18 @@ func _ready() -> void:
 	grid.emptyTiles = []
 	grid.emptyTiles.append(Vector2(3,4))
 	grid.emptyTiles.append(Vector2(4,3))
-	grid.nbCarrots = 2
+	hud.updateNbCarrots(nbCarrots)
+	grid.initGrid()
 	state = waitInput
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if state == waitInput:
-		treatInputs()
+		getSlideInput()
+	elif state == waitPowerUpInput:
+		getPowerUpInput()
 
-func treatInputs() -> void:
+func getSlideInput() -> void:
 	if Input.is_action_just_pressed("ui_touch"):
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
@@ -61,3 +71,33 @@ func treatMatches() -> void:
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
 	return
+
+func getPowerUpInput() -> void:
+	if carrotButtonReleased and Input.is_action_just_pressed("ui_touch"):
+		var touchCoords: Vector2 = get_global_mouse_position()
+		if grid.isInGrid(touchCoords):
+			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
+			if !grid.isTileEmpty(tileTouched):
+				state = treatPowerUp
+				await grid.deleteTile(tileTouched)
+				nbCarrots -= 1
+				hud.unBlackenBackground()
+				hud.updateNbCarrots(nbCarrots)
+				await grid.getBlocksDown()
+				await grid.fillEmptyBlocks()
+				await treatMatches()
+				state = waitInput
+		hud.unBlackenBackground()
+		state = waitInput
+		carrotButtonReleased = false
+	elif Input.is_action_just_released("ui_touch"):
+		carrotButtonReleased = true
+
+func carrotPressed() -> void:
+	if state != waitInput:
+		return
+	if nbCarrots > 0:
+		state = waitPowerUpInput
+		currentPowerUp = carrot
+		hud.blackenBackground()
+	
