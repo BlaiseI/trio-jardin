@@ -17,6 +17,7 @@ var nbCarrots: int = 2
 var carrotButtonReleased: bool = false
 var blockTypeCondition1: String = "Chardon"
 var numberForCondition1: int = 50
+var numberMovesLeft: int = 20
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,6 +28,7 @@ func _ready() -> void:
 	grid.emptyTiles.append(Vector2(4,3))
 	hud.updateNbCarrots(nbCarrots)
 	hud.updateNbCondition1(numberForCondition1)
+	hud.updateNbMovesLeft(numberMovesLeft)
 	grid.initGrid()
 	state = waitInput
 
@@ -64,6 +66,8 @@ func treatSlide(slideEndPos: Vector2) -> void:
 	
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
 	if grid.getMatchesOnGrid():
+		numberMovesLeft -= 1
+		hud.updateNbMovesLeft(numberMovesLeft)
 		await treatMatches()
 	else:
 		await grid.swapBlocks(slideBeginPos, slideEndPos)
@@ -73,6 +77,8 @@ func treatMatches() -> void:
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
+	if numberMovesLeft <= 0:
+		print("Defeat !")
 	return
 
 func deleteMatches() -> void:

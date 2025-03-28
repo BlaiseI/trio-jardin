@@ -28,3 +28,5 @@ func updateNbCarrots(nbCarrots: int) -> void:
 func updateNbCondition1(nbCondition1: int) -> void:
 	$"NumberForCondition1".text = str(nbCondition1)
 	
+func updateNbMovesLeft(nbMovesLeft: int) -> void:
+	$"NumberMovesLeft".text = str(nbMovesLeft)
