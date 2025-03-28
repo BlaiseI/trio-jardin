@@ -61,6 +61,15 @@ texture = ExtResource("3_qur5x")
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("6_tc5i1")
 
+[node name="GameOverMsg" type="Label" parent="HUD"]
+offset_left = 126.0
+offset_top = 488.0
+offset_right = 512.0
+offset_bottom = 568.0
+theme_override_colors/font_color = Color(0.745098, 0.376471, 0.152941, 1)
+theme_override_fonts/font = ExtResource("7_vpddm")
+theme_override_font_sizes/font_size = 80
+
 [node name="NumberMovesLeft" type="Label" parent="HUD"]
 offset_left = 270.0
 offset_top = 117.0

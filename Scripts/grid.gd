@@ -168,10 +168,12 @@ func fillEmptyBlocks() -> void:
 				grid[i][j] = block
 	await lastSignal
 
-func deleteTile(position: Vector2):
+func deleteTile(position: Vector2) -> String:
+	var blockType: String = grid[position.x][position.y].blockType
 	await grid[position.x][position.y].shrink()
 	remove_child(grid[position.x][position.y])
 	grid[position.x][position.y] = null
+	return blockType
 
 func getTilePositionFromCoords(coords: Vector2) -> Vector2:
 	return Vector2(floor((coords.y - yStart)/offset), floor((coords.x - xStart)/offset))

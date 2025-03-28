@@ -1,7 +1,7 @@
 class_name Level
 extends Container
 
-enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp}
+enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver}
 var state
 enum{carrot}
 var currentPowerUp
@@ -16,11 +16,12 @@ var slideBeginCoords: Vector2
 var nbCarrots: int = 2
 var carrotButtonReleased: bool = false
 var blockTypeCondition1: String = "Chardon"
-var numberForCondition1: int = 50
-var numberMovesLeft: int = 20
+var numberForCondition1: int = 10
+var numberMovesLeft: int = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	grid.height = 8
 	grid.width = 8
 	grid.emptyTiles = []
@@ -34,10 +35,13 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	print(state)
 	if state == waitInput:
 		getSlideInput()
 	elif state == waitPowerUpInput:
 		getPowerUpInput()
+	else :
+		return
 
 func getSlideInput() -> void:
 	if Input.is_action_just_pressed("ui_touch"):
@@ -77,18 +81,30 @@ func treatMatches() -> void:
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
-	if numberMovesLeft <= 0:
+	if numberMovesLeft <= 0 and state != gameOver:
 		print("Defeat !")
+		state = gameOver
+		hud.updateGameOverMessage("Defeat !")
+		get_tree().paused = true
 	return
 
 func deleteMatches() -> void:
 	var conditionDictionary: Dictionary = {blockTypeCondition1: 0}
 	conditionDictionary = await grid.deleteMatches(conditionDictionary)
-	numberForCondition1 -= conditionDictionary[blockTypeCondition1]
+	updateNumberCondition1(conditionDictionary[blockTypeCondition1])
+	
+
+func updateNumberCondition1(numberDeleted: int) -> void:
+	numberForCondition1 -=  numberDeleted
 	if numberForCondition1 <= 0:
 		print("Victory !")
 		numberForCondition1 = 0
-	hud.updateNbCondition1(numberForCondition1)
+		hud.updateNbCondition1(numberForCondition1)
+		state = gameOver
+		hud.updateGameOverMessage("Victory !")
+		get_tree().paused = true
+	else:
+		hud.updateNbCondition1(numberForCondition1)
 
 func getPowerUpInput() -> void:
 	if carrotButtonReleased and Input.is_action_just_pressed("ui_touch"):
@@ -97,7 +113,9 @@ func getPowerUpInput() -> void:
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
 			if !grid.isTileEmpty(tileTouched):
 				state = treatPowerUp
-				await grid.deleteTile(tileTouched)
+				var blockTypeDeleted: String = await grid.deleteTile(tileTouched)
+				if blockTypeDeleted == blockTypeCondition1:
+					updateNumberCondition1(1)
 				nbCarrots -= 1
 				hud.unBlackenBackground()
 				hud.updateNbCarrots(nbCarrots)

@@ -30,3 +30,6 @@ func updateNbCondition1(nbCondition1: int) -> void:
 	
 func updateNbMovesLeft(nbMovesLeft: int) -> void:
 	$"NumberMovesLeft".text = str(nbMovesLeft)
+	
+func updateGameOverMessage(message: String) -> void:
+	$"GameOverMsg".text = message
