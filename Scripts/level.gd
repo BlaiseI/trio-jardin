@@ -17,7 +17,7 @@ var nbCarrots: int = 10
 var carrotButtonReleased: bool = false
 var blockTypeCondition1: String = "Chardon"
 var numberForCondition1: int = 10
-var numberMovesLeft: int = 10
+var numberMovesLeft: int = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -80,7 +80,10 @@ func treatMatches() -> void:
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
-	if numberMovesLeft <= 0 and state != gameOver:
+	if state == gameOver:
+		hud.updateGameOverMessage("Victory !")
+		get_tree().paused = true
+	elif numberMovesLeft <= 0:
 		print("Defeat !")
 		state = gameOver
 		hud.updateGameOverMessage("Defeat !")
@@ -100,8 +103,6 @@ func updateNumberCondition1(numberDeleted: int) -> void:
 		numberForCondition1 = 0
 		hud.updateNbCondition1(numberForCondition1)
 		state = gameOver
-		hud.updateGameOverMessage("Victory !")
-		get_tree().paused = true
 	else:
 		hud.updateNbCondition1(numberForCondition1)
 
