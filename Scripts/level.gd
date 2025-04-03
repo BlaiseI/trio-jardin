@@ -94,7 +94,6 @@ func deleteMatches() -> void:
 	var conditionDictionary: Dictionary = {blockTypeCondition1: 0}
 	conditionDictionary = await grid.deleteMatches(conditionDictionary)
 	updateNumberCondition1(conditionDictionary[blockTypeCondition1])
-	
 
 func updateNumberCondition1(numberDeleted: int) -> void:
 	numberForCondition1 -=  numberDeleted
@@ -136,4 +135,11 @@ func carrotPressed() -> void:
 		state = waitPowerUpInput
 		currentPowerUp = carrot
 		hud.blackenBackground()
+
+static func saveParameters(parametersDictionary: Dictionary, levelName:String) -> void:
+	DirAccess.make_dir_recursive_absolute("res://levels")
+	var filePath: String = "res://levels/level" + levelName + ".json"
+	var saveFile = FileAccess.open(filePath, FileAccess.WRITE_READ)
+	var parametersJSONString:String = JSON.stringify(parametersDictionary)
+	saveFile.store_line(parametersJSONString)
 	
