@@ -9,29 +9,44 @@ var currentPowerUp
 @onready var grid:Grid = $"../grid"
 @onready var hud:HUD = $"../HUD"
 
+@export var levelName = "1"
+
 var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
 
-var nbCarrots: int = 10
+var nbCarrots: int
 var carrotButtonReleased: bool = false
-var blockTypeCondition1: String = "Chardon"
-var numberForCondition1: int = 10
-var numberMovesLeft: int = 1
+var blockTypeCondition1: String
+var numberForCondition1: int
+var numberMovesLeft: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
-	grid.height = 8
-	grid.width = 8
-	grid.emptyTiles = []
-	grid.emptyTiles.append(Vector2(3,4))
-	grid.emptyTiles.append(Vector2(4,3))
+	loadParameters("res://levels/level" + levelName + ".json")
 	hud.updateNbCarrots(nbCarrots)
 	hud.updateNbCondition1(numberForCondition1)
 	hud.updateNbMovesLeft(numberMovesLeft)
 	grid.initGrid()
 	state = waitInput
+	
+func loadParameters(filePath: String) -> void:
+	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
+	var paramsJSONString = saveFile.get_line()
+	var paramsJSON = JSON.new()
+	paramsJSON.parse(paramsJSONString)
+	var parametersDictionary: Dictionary = paramsJSON.data
+	grid.height = parametersDictionary["gridHeight"]
+	grid.width = parametersDictionary["gridWidth"]
+	grid.emptyTiles = []
+	for positionString: String in parametersDictionary["gridEmptyTiles"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		grid.emptyTiles.append(positionVector)
+	nbCarrots = parametersDictionary["nbCarrots"]
+	blockTypeCondition1 = parametersDictionary["blockTypeForCondition1"]
+	numberForCondition1 = parametersDictionary["numberForCondition1"]
+	numberMovesLeft = parametersDictionary["numberMovesLeft"]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
