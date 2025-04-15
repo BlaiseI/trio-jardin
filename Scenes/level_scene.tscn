@@ -52,11 +52,22 @@ offset_bottom = 40.0
 position = Vector2(400, 64)
 texture = ExtResource("6_nr2ek")
 
-[node name="numberBackground" type="TextureRect" parent="TopBannerBackground"]
+[node name="Condition2" type="Sprite2D" parent="TopBannerBackground/WinningConditions"]
+position = Vector2(513, 64)
+texture = ExtResource("6_nr2ek")
+
+[node name="numberBackground1" type="TextureRect" parent="TopBannerBackground"]
 layout_mode = 0
 offset_left = 420.0
 offset_top = 70.0
 offset_right = 460.0
+offset_bottom = 110.0
+texture = ExtResource("3_qur5x")
+
+[node name="numberBackground2" type="TextureRect" parent="TopBannerBackground"]
+offset_left = 533.0
+offset_top = 70.0
+offset_right = 573.0
 offset_bottom = 110.0
 texture = ExtResource("3_qur5x")
 
@@ -107,6 +118,22 @@ anchor_right = 0.5
 offset_left = 152.0
 offset_top = 75.0
 offset_right = 153.0
+offset_bottom = 107.0
+grow_horizontal = 2
+size_flags_horizontal = 5
+theme_override_colors/font_color = Color(0.745098, 0.376471, 0.152941, 1)
+theme_override_fonts/font = ExtResource("7_vpddm")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NumberForCondition2" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 267.0
+offset_top = 75.0
+offset_right = 268.0
 offset_bottom = 107.0
 grow_horizontal = 2
 size_flags_horizontal = 5

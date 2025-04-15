@@ -17,20 +17,28 @@ var slideBeginCoords: Vector2
 
 var nbCarrots: int
 var carrotButtonReleased: bool = false
-var blockTypeCondition1: String
+var ConditionType1: String
 var numberForCondition1: int
+var ConditionType2: String
+var numberForCondition2: int
 var numberMovesLeft: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	loadParameters("res://levels/level" + levelName + ".json")
-	hud.updateNbCarrots(nbCarrots)
-	hud.updateNbCondition1(numberForCondition1)
-	hud.updateNbMovesLeft(numberMovesLeft)
+	updateParametersInHUD()
 	grid.initGrid()
 	state = waitInput
-	
+
+func updateParametersInHUD() -> void:
+	hud.updateNbCarrots(nbCarrots)
+	hud.updateNbCondition1(numberForCondition1)
+	hud.updateNbCondition2(numberForCondition2)
+	hud.updateNbMovesLeft(numberMovesLeft)
+	hud.setCondition1(ConditionType1)
+	hud.setCondition2(ConditionType2)
+
 func loadParameters(filePath: String) -> void:
 	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
 	var paramsJSONString = saveFile.get_line()
@@ -44,8 +52,10 @@ func loadParameters(filePath: String) -> void:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		grid.emptyTiles.append(positionVector)
 	nbCarrots = parametersDictionary["nbCarrots"]
-	blockTypeCondition1 = parametersDictionary["blockTypeForCondition1"]
+	ConditionType1 = parametersDictionary["ConditionType1"]
+	ConditionType2 = parametersDictionary["ConditionType2"]
 	numberForCondition1 = parametersDictionary["numberForCondition1"]
+	numberForCondition2 = parametersDictionary["numberForCondition2"]
 	numberMovesLeft = parametersDictionary["numberMovesLeft"]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -81,7 +91,7 @@ func getSlideInput() -> void:
 func treatSlide(slideEndPos: Vector2) -> void:
 	if slideBeginPos == slideEndPos:
 		return
-	
+
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
 	if grid.getMatchesOnGrid():
 		numberMovesLeft -= 1
@@ -99,26 +109,27 @@ func treatMatches() -> void:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true
 	elif numberMovesLeft <= 0:
-		print("Defeat !")
 		state = gameOver
 		hud.updateGameOverMessage("Defeat !")
 		get_tree().paused = true
 	return
 
 func deleteMatches() -> void:
-	var conditionDictionary: Dictionary = {blockTypeCondition1: 0}
+	var conditionDictionary: Dictionary = {ConditionType1: 0, ConditionType2: 0}
 	conditionDictionary = await grid.deleteMatches(conditionDictionary)
-	updateNumberCondition1(conditionDictionary[blockTypeCondition1])
+	updateNumberConditions(conditionDictionary[ConditionType1], conditionDictionary[ConditionType2])
 
-func updateNumberCondition1(numberDeleted: int) -> void:
-	numberForCondition1 -=  numberDeleted
+func updateNumberConditions(numberDeletedCondition1: int, numberDeletedCondition2: int) -> void:
+	numberForCondition1 -=  numberDeletedCondition1
+	numberForCondition2 -=  numberDeletedCondition2
 	if numberForCondition1 <= 0:
-		print("Victory !")
 		numberForCondition1 = 0
-		hud.updateNbCondition1(numberForCondition1)
+	hud.updateNbCondition1(numberForCondition1)
+	if numberForCondition2 <= 0:
+		numberForCondition2 = 0
+	hud.updateNbCondition2(numberForCondition2)
+	if numberForCondition1 <= 0 and numberForCondition2 <= 0:
 		state = gameOver
-	else:
-		hud.updateNbCondition1(numberForCondition1)
 
 func getPowerUpInput() -> void:
 	if carrotButtonReleased and Input.is_action_just_pressed("ui_touch"):
@@ -128,8 +139,10 @@ func getPowerUpInput() -> void:
 			if !grid.isTileEmpty(tileTouched):
 				state = treatPowerUp
 				var blockTypeDeleted: String = await grid.deleteTile(tileTouched)
-				if blockTypeDeleted == blockTypeCondition1:
-					updateNumberCondition1(1)
+				if blockTypeDeleted == ConditionType1:
+					updateNumberConditions(1,0)
+				if blockTypeDeleted == ConditionType2:
+					updateNumberConditions(0,1)
 				nbCarrots -= 1
 				hud.unBlackenBackground()
 				hud.updateNbCarrots(nbCarrots)
@@ -157,4 +170,3 @@ static func saveParameters(parametersDictionary: Dictionary, levelName:String) -
 	var saveFile = FileAccess.open(filePath, FileAccess.WRITE_READ)
 	var parametersJSONString:String = JSON.stringify(parametersDictionary)
 	saveFile.store_line(parametersJSONString)
-	

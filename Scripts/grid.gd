@@ -29,7 +29,7 @@ var slideOngoing: bool = false
 func initGrid() -> void:
 	createEmptyGrid()
 	fillGrid()
-	
+
 func createEmptyGrid() -> void:
 	for i in height:
 		grid.append([])
@@ -80,10 +80,10 @@ func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	var firstCol: int = firstPosition.y
 	var secondRow: int = secondPosition.x
 	var secondCol: int = secondPosition.y
-	
+
 	grid[firstRow][firstCol].move(utils.getTileCoordsFromPosition(Position.new(secondRow, secondCol), self))
 	await grid[secondRow][secondCol].move(utils.getTileCoordsFromPosition(Position.new(firstRow, firstCol), self))
-	
+
 	var tmp: Node2D = grid[firstRow][firstCol]
 	grid[firstRow][firstCol] = grid[secondRow][secondCol]
 	grid[secondRow][secondCol] = tmp
@@ -114,15 +114,15 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 				toShrink.append(Position.new(i,j))
 				if conditionDictionary.has(grid[i][j].blockType):
 					conditionDictionary[grid[i][j].blockType] += 1
-				
+
 	var lastSignal : Signal
 	for position in toShrink:
 		lastSignal = grid[position.row][position.column].shrink()
 	await lastSignal
-	
+
 	for position in toShrink:
 		var i = position.row
-		var j = position.column	
+		var j = position.column
 		remove_child(grid[i][j])
 		grid[i][j].queue_free()
 		grid[i][j] = null
@@ -141,7 +141,7 @@ func getBlocksDown2() -> void:
 						break
 	if lastSignal:
 		await lastSignal
-		
+
 func getBlocksDown() -> void:
 	var lastSignal
 	for i in height:
@@ -177,13 +177,13 @@ func deleteTile(position: Vector2) -> String:
 
 func getTilePositionFromCoords(coords: Vector2) -> Vector2:
 	return Vector2(floor((coords.y - yStart)/offset), floor((coords.x - xStart)/offset))
-	
+
 func isInGrid(coords: Vector2) -> bool:
-	if(coords.x < xStart or coords.x > xStart + (width*offset) 
+	if(coords.x < xStart or coords.x > xStart + (width*offset)
 		or coords.y < yStart or coords.y > yStart + (height*offset)):
 			return false
 	return true
-	
+
 func isTileEmpty(tilePosition: Vector2) -> bool:
 	for emptyTilePos: Vector2 in emptyTiles:
 		if emptyTilePos == tilePosition:

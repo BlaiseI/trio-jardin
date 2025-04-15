@@ -8,6 +8,8 @@ func createLevel() -> void:
 		"nbCarrots":1,
 		"blockTypeForCondition1":"Chardon",
 		"numberForCondition1":11,
+		"blockTypeForCondition2":"null",
+		"numberForCondition2":0,
 		"numberMovesLeft":3
 	}
 	parametersDictionary["gridEmptyTiles"].append(Vector2(3,4))
