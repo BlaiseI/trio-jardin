@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://83g8dw1yhebc"]
+
+[ext_resource type="Script" path="res://Scripts/levelSelector.gd" id="1_kaqcf"]
+[ext_resource type="Texture2D" uid="uid://cb7agoo6ay5hd" path="res://art/Finished/level selection/level selector.png" id="2_t4xp5"]
+[ext_resource type="Texture2D" uid="uid://caoc47c34sch7" path="res://art/Finished/level selection/Maman.png" id="3_1hn20"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_kaqcf")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 576.0
+offset_bottom = 800.0
+texture = ExtResource("2_t4xp5")
+
+[node name="Maman" type="Sprite2D" parent="."]
+position = Vector2(239, 117)
+scale = Vector2(2, 2)
+texture = ExtResource("3_1hn20")
