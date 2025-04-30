@@ -2,15 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
-[ext_resource type="Texture2D" uid="uid://8c2aiawr05ru" path="res://art/Finished/gridContainer.png" id="2_1v6qg"]
-[ext_resource type="Texture2D" uid="uid://ccvupff87vx6w" path="res://art/Finished/carrot2.png" id="2_nnl6e"]
-[ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/numberBackground.png" id="3_qur5x"]
+[ext_resource type="Texture2D" uid="uid://8c2aiawr05ru" path="res://art/Finished/level background/gridContainer.png" id="2_1v6qg"]
+[ext_resource type="Texture2D" uid="uid://ccvupff87vx6w" path="res://art/Finished/weeds/carrot2.png" id="2_nnl6e"]
+[ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="3_qur5x"]
 [ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
-[ext_resource type="Texture2D" uid="uid://jdda1bbg03yu" path="res://art/Finished/chardon60.png" id="6_nr2ek"]
+[ext_resource type="Texture2D" uid="uid://jdda1bbg03yu" path="res://art/Finished/weeds/chardon60.png" id="6_nr2ek"]
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="6_tc5i1"]
 [ext_resource type="FontFile" uid="uid://xt34up70b8nw" path="res://art/CarrotFont.ttf" id="7_vpddm"]
 [ext_resource type="Script" path="res://Scripts/level.gd" id="9_f3jec"]
-[ext_resource type="Texture2D" uid="uid://cxdew1nju2yft" path="res://art/Finished/botBanner.png" id="10_acrw4"]
+[ext_resource type="Texture2D" uid="uid://cxdew1nju2yft" path="res://art/Finished/level background/botBanner.png" id="10_acrw4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p8t70"]
 
@@ -65,6 +65,7 @@ offset_bottom = 110.0
 texture = ExtResource("3_qur5x")
 
 [node name="numberBackground2" type="TextureRect" parent="TopBannerBackground"]
+layout_mode = 0
 offset_left = 533.0
 offset_top = 70.0
 offset_right = 573.0

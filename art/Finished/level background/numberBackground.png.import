@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfqmfjp32iwl2"
-path="res://.godot/imported/ortie60.png-a1cc43b2446be227537e5ed28587c819.ctex"
+uid="uid://b8kvf42g7n3wk"
+path="res://.godot/imported/numberBackground.png-43077f1d11916184a3a7bd594df3b916.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/ortie60.png"
-dest_files=["res://.godot/imported/ortie60.png-a1cc43b2446be227537e5ed28587c819.ctex"]
+source_file="res://art/Finished/level background/numberBackground.png"
+dest_files=["res://.godot/imported/numberBackground.png-43077f1d11916184a3a7bd594df3b916.ctex"]
 
 [params]
 

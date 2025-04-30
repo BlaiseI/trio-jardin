@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpdckp3d136mg"
-path="res://.godot/imported/chenille60.png-b680f17eaf4b0753488060b9b01dc1a6.ctex"
+uid="uid://jdda1bbg03yu"
+path="res://.godot/imported/chardon60.png-c962db63a72e7bd05eb5d4389f995f27.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/chenille60.png"
-dest_files=["res://.godot/imported/chenille60.png-b680f17eaf4b0753488060b9b01dc1a6.ctex"]
+source_file="res://art/Finished/weeds/chardon60.png"
+dest_files=["res://.godot/imported/chardon60.png-c962db63a72e7bd05eb5d4389f995f27.ctex"]
 
 [params]
 

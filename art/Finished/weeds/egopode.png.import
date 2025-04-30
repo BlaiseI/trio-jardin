@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dcdpduqm5qplt"
-path="res://.godot/imported/chenille.png-6aab3bafe04256d6b62b01f0223ab903.ctex"
+uid="uid://c4k7kb7kmmbtb"
+path="res://.godot/imported/egopode.png-c0493b27fe7cf188dd654b9907328b74.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/chenille.png"
-dest_files=["res://.godot/imported/chenille.png-6aab3bafe04256d6b62b01f0223ab903.ctex"]
+source_file="res://art/Finished/weeds/egopode.png"
+dest_files=["res://.godot/imported/egopode.png-c0493b27fe7cf188dd654b9907328b74.ctex"]
 
 [params]
 

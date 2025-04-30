@@ -41,12 +41,12 @@ func setCondition1(conditionType1: String) -> void:
 	if conditionType1 == "null":
 		$"../TopBannerBackground/WinningConditions/Condition1".texture = null
 	else:
-		var texturePath : String = "res://art/Finished/" + conditionType1.to_lower() + "60.png"
+		var texturePath : String = "res://art/Finished/weeds/" + conditionType1.to_lower() + "60.png"
 		$"../TopBannerBackground/WinningConditions/Condition1".texture = load(texturePath)
 
 func setCondition2(conditionType2: String) -> void:
 	if conditionType2 == "null":
 		$"../TopBannerBackground/WinningConditions/Condition2".texture = null
 	else:
-		var texturePath : String = "res://art/Finished/" + conditionType2.to_lower() + "60.png"
+		var texturePath : String = "res://art/Finished/weeds/" + conditionType2.to_lower() + "60.png"
 		$"../TopBannerBackground/WinningConditions/Condition2".texture = load(texturePath)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jdda1bbg03yu"
-path="res://.godot/imported/chardon60.png-92f5d665403a30a080905d43a1c6b5e2.ctex"
+uid="uid://h8thd4qcotpb"
+path="res://.godot/imported/ortie.png-5681434da9c73ae762ec5da6a1a02089.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/chardon60.png"
-dest_files=["res://.godot/imported/chardon60.png-92f5d665403a30a080905d43a1c6b5e2.ctex"]
+source_file="res://art/Finished/weeds/ortie.png"
+dest_files=["res://.godot/imported/ortie.png-5681434da9c73ae762ec5da6a1a02089.ctex"]
 
 [params]
 

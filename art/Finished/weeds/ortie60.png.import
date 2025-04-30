@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjtd78mt3oymn"
-path="res://.godot/imported/egopode60.png-38d654e8719dbd16c2624cab02ba857c.ctex"
+uid="uid://dfqmfjp32iwl2"
+path="res://.godot/imported/ortie60.png-2730889cb4de0ace86f7efe52e9d154a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/egopode60.png"
-dest_files=["res://.godot/imported/egopode60.png-38d654e8719dbd16c2624cab02ba857c.ctex"]
+source_file="res://art/Finished/weeds/ortie60.png"
+dest_files=["res://.godot/imported/ortie60.png-2730889cb4de0ace86f7efe52e9d154a.ctex"]
 
 [params]
 

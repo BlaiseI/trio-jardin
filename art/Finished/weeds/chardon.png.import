@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://caoc47c34sch7"
-path="res://.godot/imported/Maman.png-8118d6833ff01f2aca05d900f1d1f8ca.ctex"
+uid="uid://dtjsrcwfsn4r2"
+path="res://.godot/imported/chardon.png-2f29d651415744e0338c884faae79333.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/Maman.png"
-dest_files=["res://.godot/imported/Maman.png-8118d6833ff01f2aca05d900f1d1f8ca.ctex"]
+source_file="res://art/Finished/weeds/chardon.png"
+dest_files=["res://.godot/imported/chardon.png-2f29d651415744e0338c884faae79333.ctex"]
 
 [params]
 

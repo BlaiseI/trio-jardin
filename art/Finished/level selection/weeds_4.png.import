@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ceouopl26blgq"
-path="res://.godot/imported/cadre.png-2ee57bd4e99b2fbf66fd840d8e67e819.ctex"
+uid="uid://bxgo4trap3bse"
+path="res://.godot/imported/weeds_4.png-7b4b0a8625fefb7f8be1ae71301a7001.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/cadre.png"
-dest_files=["res://.godot/imported/cadre.png-2ee57bd4e99b2fbf66fd840d8e67e819.ctex"]
+source_file="res://art/Finished/level selection/weeds_4.png"
+dest_files=["res://.godot/imported/weeds_4.png-7b4b0a8625fefb7f8be1ae71301a7001.ctex"]
 
 [params]
 

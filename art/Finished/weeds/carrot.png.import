@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtjsrcwfsn4r2"
-path="res://.godot/imported/chardon.png-94087d73fe5f98217a31ee51ab40fe64.ctex"
+uid="uid://dsidvh4tqegvj"
+path="res://.godot/imported/carrot.png-dc6460d016d2620d54bc02e0dca11795.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/chardon.png"
-dest_files=["res://.godot/imported/chardon.png-94087d73fe5f98217a31ee51ab40fe64.ctex"]
+source_file="res://art/Finished/weeds/carrot.png"
+dest_files=["res://.godot/imported/carrot.png-dc6460d016d2620d54bc02e0dca11795.ctex"]
 
 [params]
 

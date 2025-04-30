@@ -45,7 +45,6 @@ func fillGrid() -> void:
 	for i in height:
 		for j in width:
 			if !emptyTile(i,j):
-				var isMatch: bool = true
 				var block: Node = createNonMatchingBlock(i,j)
 				add_child(block)
 				block.position = utils.getTileCoordsFromPosition(Position.new(i,j), self)

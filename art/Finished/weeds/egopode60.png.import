@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccvupff87vx6w"
-path="res://.godot/imported/carrot2.png-e8b26ce7d937e0ed69323ea2320c5d63.ctex"
+uid="uid://bjtd78mt3oymn"
+path="res://.godot/imported/egopode60.png-0190e841a74ed1b50e22a1786c056d9d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/carrot2.png"
-dest_files=["res://.godot/imported/carrot2.png-e8b26ce7d937e0ed69323ea2320c5d63.ctex"]
+source_file="res://art/Finished/weeds/egopode60.png"
+dest_files=["res://.godot/imported/egopode60.png-0190e841a74ed1b50e22a1786c056d9d.ctex"]
 
 [params]
 

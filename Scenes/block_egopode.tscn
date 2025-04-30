@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c2xrvtvwfks7r"]
 
 [ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_ts18e"]
-[ext_resource type="Texture2D" uid="uid://bjtd78mt3oymn" path="res://art/Finished/egopode60.png" id="2_w4qep"]
+[ext_resource type="Texture2D" uid="uid://bjtd78mt3oymn" path="res://art/Finished/weeds/egopode60.png" id="2_w4qep"]
 
 [node name="blockEgopode" instance=ExtResource("1_ts18e")]
 blockType = "Egopode"

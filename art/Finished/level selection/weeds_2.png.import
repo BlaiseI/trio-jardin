@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h8thd4qcotpb"
-path="res://.godot/imported/ortie.png-834aaf62ba8998c67dde4c024615bb01.ctex"
+uid="uid://bxjh82yjj5ru7"
+path="res://.godot/imported/weeds_2.png-ff1aebbdb3a4686480f98f02b77fe2ff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/ortie.png"
-dest_files=["res://.godot/imported/ortie.png-834aaf62ba8998c67dde4c024615bb01.ctex"]
+source_file="res://art/Finished/level selection/weeds_2.png"
+dest_files=["res://.godot/imported/weeds_2.png-ff1aebbdb3a4686480f98f02b77fe2ff.ctex"]
 
 [params]
 

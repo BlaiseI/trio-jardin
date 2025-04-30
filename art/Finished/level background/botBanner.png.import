@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqnv7xxnuaiq"
-path="res://.godot/imported/topBanner.png-020d22cd43ffc02d15dfacdb4423e661.ctex"
+uid="uid://cxdew1nju2yft"
+path="res://.godot/imported/botBanner.png-7ac832a6a432dc071c49f1095cbaa3b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/topBanner.png"
-dest_files=["res://.godot/imported/topBanner.png-020d22cd43ffc02d15dfacdb4423e661.ctex"]
+source_file="res://art/Finished/level background/botBanner.png"
+dest_files=["res://.godot/imported/botBanner.png-7ac832a6a432dc071c49f1095cbaa3b5.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://yqaebca2xcpo"]
 
 [ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_g84go"]
-[ext_resource type="Texture2D" uid="uid://ceouopl26blgq" path="res://art/Finished/cadre.png" id="2_hp2rh"]
+[ext_resource type="Texture2D" uid="uid://ceouopl26blgq" path="res://art/Finished/level background/cadre.png" id="2_hp2rh"]
 
 [node name="block" instance=ExtResource("1_g84go")]
 

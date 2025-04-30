@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8c2aiawr05ru"
-path="res://.godot/imported/gridContainer.png-8202599304f3efdd71d7dd80ed700094.ctex"
+uid="uid://bdbb2invun1pt"
+path="res://.godot/imported/weeds_3.png-6c3b977d1b53d9bbb9a7499bbd6f4684.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Finished/gridContainer.png"
-dest_files=["res://.godot/imported/gridContainer.png-8202599304f3efdd71d7dd80ed700094.ctex"]
+source_file="res://art/Finished/level selection/weeds_3.png"
+dest_files=["res://.godot/imported/weeds_3.png-6c3b977d1b53d9bbb9a7499bbd6f4684.ctex"]
 
 [params]
 
