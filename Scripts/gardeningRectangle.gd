@@ -2,6 +2,7 @@ class_name GardeningRectangle
 extends Node2D
 
 const gardeningRectangleTemplate:PackedScene = preload("res://Scenes/gardeningRectangle.tscn")
+const levelTemplate:PackedScene = preload("res://Scenes/level_scene.tscn")
 
 var id: int
 var active: bool
@@ -44,4 +45,6 @@ static func fromDict(parametersDictionary: Dictionary) -> GardeningRectangle:
 	return gardeningRectangle
 
 func _onButtonPressed() -> void:
+	var actualLevel: int = get_parent().actualLevel
+	get_parent().get_parent().launchLevel(actualLevel)
 	print("Button pressed")

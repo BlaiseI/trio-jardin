@@ -15,6 +15,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p8t70"]
 
 [node name="levelScene" type="Node2D"]
+script = ExtResource("9_f3jec")
 
 [node name="GridBackground" type="TextureRect" parent="."]
 offset_top = 192.0
@@ -36,7 +37,6 @@ offset = 67
 [node name="LevelCodeContainer" type="Container" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("9_f3jec")
 
 [node name="TopBannerBackground" type="TextureRect" parent="."]
 offset_right = 576.0

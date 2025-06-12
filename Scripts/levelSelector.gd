@@ -1,9 +1,9 @@
+class_name LevelSelector
 extends Node2D
 
 var actualLevel: int
 var nbGardeningRectangles: int
 var gardeningRectangles: Array = []
-
 
 func saveParameters() -> void:
 	var parametersDictionary: Dictionary = {

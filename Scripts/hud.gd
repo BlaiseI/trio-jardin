@@ -1,7 +1,7 @@
 class_name HUD
 extends CanvasLayer
 
-@onready var level:Level = $"../LevelCodeContainer"
+@onready var level:Level = $".."
 
 func _on_carrot_button_pressed() -> void:
 	level.carrotPressed()

@@ -1,13 +1,13 @@
 class_name Level
-extends Container
+extends Node2D
 
 enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver}
 var state
 enum{carrot}
 var currentPowerUp
 
-@onready var grid:Grid = $"../grid"
-@onready var hud:HUD = $"../HUD"
+@onready var grid:Grid = $"grid"
+@onready var hud:HUD = $"HUD"
 
 @export var levelName = "1"
 
@@ -22,6 +22,9 @@ var numberForCondition1: int
 var ConditionType2: String
 var numberForCondition2: int
 var numberMovesLeft: int
+
+func setLevelName(levelName: String) -> void:
+	self.levelName = levelName
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
