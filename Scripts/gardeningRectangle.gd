@@ -12,19 +12,29 @@ var node: Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print(str(id) + ", " + str(get_parent().actualLevel) + ", " + str(firstLevel))
+	active = true
 	$"Button".modulate.a = 0
-	if !active:
-		blacken()
+	if get_parent().actualLevel < firstLevel:
+		active = false
+		blacken(0.5)
 		$"Button".disabled = true
+
+func update(actualLevel: int) -> void:
+	print(str(id) + ", " + str(get_parent().actualLevel) + ", " + str(firstLevel))
+	if !active and actualLevel >= firstLevel:
+		active = true
+		blacken(1)
+		$"Button".disabled = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
-func blacken() -> void:
-	$"background".modulate.r = 0.5
-	$"background".modulate.g = 0.5
-	$"background".modulate.b = 0.5
+func blacken(intensity: float) -> void:
+	$"background".modulate.r = intensity
+	$"background".modulate.g = intensity
+	$"background".modulate.b = intensity
 
 func toDict() -> Dictionary:
 	return {
@@ -39,12 +49,13 @@ static func fromDict(parametersDictionary: Dictionary) -> GardeningRectangle:
 	var gardeningRectangle : GardeningRectangle = gardeningRectangleTemplate.instantiate()
 	gardeningRectangle.id = parametersDictionary["id"]
 	gardeningRectangle.position = str_to_var("Vector2" + parametersDictionary["position"])
-	gardeningRectangle.active = parametersDictionary["active"]
 	gardeningRectangle.firstLevel = parametersDictionary["firstLevel"]
 	gardeningRectangle.nbLevels = parametersDictionary["nbLevels"]
 	return gardeningRectangle
 
 func _onButtonPressed() -> void:
 	var actualLevel: int = get_parent().actualLevel
-	get_parent().get_parent().launchLevel(actualLevel)
-	print("Button pressed")
+	if actualLevel < firstLevel + nbLevels:
+		get_parent().get_parent().launchLevel(actualLevel)
+	else :
+		print("no more levels !")

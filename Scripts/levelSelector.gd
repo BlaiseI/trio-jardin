@@ -38,6 +38,10 @@ func _ready() -> void:
 	loadParameters("res://gameSave/save.json")
 	#saveParameters()
 
+func update() -> void:
+	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
+		gardeningRectangle.update(actualLevel)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

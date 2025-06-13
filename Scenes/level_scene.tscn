@@ -34,10 +34,6 @@ xStart = 20
 yStart = 264
 offset = 67
 
-[node name="LevelCodeContainer" type="Container" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
 [node name="TopBannerBackground" type="TextureRect" parent="."]
 offset_right = 576.0
 offset_bottom = 192.0

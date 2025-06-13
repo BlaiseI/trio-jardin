@@ -22,3 +22,12 @@ func launchLevel(levelNumber: int) -> void:
 	level.setLevelName(str(levelNumber))
 	add_child(level)
 	levelSelector.visible = false
+
+func levelFinished(levelNumber: int, succeeded: bool) -> void:
+	level.queue_free()
+	if succeeded and levelNumber == levelSelector.actualLevel:
+		print("here")
+		levelSelector.actualLevel += 1
+		levelSelector.update()
+	levelSelector.visible = true
+	get_tree().paused = false

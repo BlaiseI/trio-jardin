@@ -111,10 +111,14 @@ func treatMatches() -> void:
 	if state == gameOver:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true
+		await get_tree().create_timer(2).timeout
+		get_parent().levelFinished(int(levelName), true)
 	elif numberMovesLeft <= 0:
 		state = gameOver
 		hud.updateGameOverMessage("Defeat !")
 		get_tree().paused = true
+		await get_tree().create_timer(2).timeout
+		get_parent().levelFinished(int(levelName), false)
 	return
 
 func deleteMatches() -> void:
