@@ -12,20 +12,28 @@ var node: Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print(str(id) + ", " + str(get_parent().actualLevel) + ", " + str(firstLevel))
-	active = true
-	$"Button".modulate.a = 0
-	if get_parent().actualLevel < firstLevel:
+	update(get_parent().actualLevel)
+
+func update(actualLevel: int) -> void:
+	var ratioLevelsDone: float = (actualLevel - firstLevel)/float(nbLevels)
+	if ratioLevelsDone < 0:
 		active = false
 		blacken(0.5)
 		$"Button".disabled = true
-
-func update(actualLevel: int) -> void:
-	print(str(id) + ", " + str(get_parent().actualLevel) + ", " + str(firstLevel))
-	if !active and actualLevel >= firstLevel:
+	else:
 		active = true
 		blacken(1)
 		$"Button".disabled = false
+		if ratioLevelsDone < 0.25:
+			$background/weeds.texture = load('res://art/Finished/level selection/weeds_1.png')
+		elif ratioLevelsDone < 0.5:
+			$background/weeds.texture = load('res://art/Finished/level selection/weeds_2.png')
+		elif ratioLevelsDone < 0.75:
+			$background/weeds.texture = load('res://art/Finished/level selection/weeds_3.png')
+		elif ratioLevelsDone < 1:
+			$background/weeds.texture = load('res://art/Finished/level selection/weeds_4.png')
+		else:
+			$background/weeds.texture = null
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
