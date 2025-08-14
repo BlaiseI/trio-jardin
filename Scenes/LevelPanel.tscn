@@ -9,5 +9,5 @@ script = ExtResource("1_q1d8s")
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
-scale = Vector2(4, 4)
+scale = Vector2(6, 6)
 texture = ExtResource("1_aww8r")

@@ -69,6 +69,7 @@ func _onButtonPressed() -> void:
 		levelPanel.actualLevel = actualLevel
 		levelPanel.firstLevel = firstLevel
 		levelPanel.nbLevels = nbLevels
+		levelPanel.z_index = 1
 		add_child(levelPanel)
 	else :
 		print("no more levels !")

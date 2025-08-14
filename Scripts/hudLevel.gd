@@ -38,7 +38,7 @@ func setCondition2(conditionType2: String) -> void:
 func blackenBackground() -> void:
 	$"..".changeBrightness("../../level/TopBannerBackground", 0.5)
 	$"..".changeBrightness("../../level/GridBackground", 0.5)
-	
+
 func unBblackenBackground() -> void:
 	$"..".changeBrightness("../../level/TopBannerBackground", 1)
 	$"..".changeBrightness("../../level/GridBackgroud", 1)

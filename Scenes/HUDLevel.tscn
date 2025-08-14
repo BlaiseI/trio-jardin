@@ -6,12 +6,10 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1iqrt"]
 
-[node name="Node2D" type="Node2D"]
-
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUDLevel" type="CanvasLayer"]
 script = ExtResource("1_tgv8d")
 
-[node name="GameOverMsg" type="Label" parent="HUD"]
+[node name="GameOverMsg" type="Label" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -30,7 +28,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="NumberMovesLeft" type="Label" parent="HUD"]
+[node name="NumberMovesLeft" type="Label" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -50,7 +48,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="NumberForCondition1" type="Label" parent="HUD"]
+[node name="NumberForCondition1" type="Label" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -67,7 +65,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="NumberForCondition2" type="Label" parent="HUD"]
+[node name="NumberForCondition2" type="Label" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -84,7 +82,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="NumberOfCarrots" type="Label" parent="HUD"]
+[node name="NumberOfCarrots" type="Label" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -104,7 +102,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="CarrotButton" type="Button" parent="HUD"]
+[node name="CarrotButton" type="Button" parent="."]
 offset_left = 209.0
 offset_top = 913.0
 offset_right = 267.0
@@ -124,9 +122,9 @@ action_mode = 0
 icon = ExtResource("3_i5sm4")
 metadata/_edit_use_anchors_ = true
 
-[node name="CenterContainer" type="CenterContainer" parent="HUD"]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 80.0
 metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="HUD/CarrotButton" to="HUD" method="_on_carrot_button_pressed"]
+[connection signal="pressed" from="CarrotButton" to="." method="_on_carrot_button_pressed"]
