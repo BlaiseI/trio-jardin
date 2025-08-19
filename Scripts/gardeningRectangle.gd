@@ -3,6 +3,7 @@ extends Node2D
 
 const gardeningRectangleTemplate:PackedScene = preload("res://Scenes/gardeningRectangle.tscn")
 const levelTemplate:PackedScene = preload("res://Scenes/level_scene.tscn")
+const levelPanelTemplate:PackedScene = preload("res://Scenes/LevelPanel.tscn")
 
 var id: int
 var active: bool
@@ -62,8 +63,16 @@ static func fromDict(parametersDictionary: Dictionary) -> GardeningRectangle:
 	return gardeningRectangle
 
 func _onButtonPressed() -> void:
-	var actualLevel: int = get_parent().actualLevel
+	var actualLevel = $"..".actualLevel
 	if actualLevel < firstLevel + nbLevels:
-		get_parent().get_parent().launchLevel(actualLevel)
+		var levelPanel: LevelPanel = levelPanelTemplate.instantiate()
+		levelPanel.actualLevel = actualLevel
+		levelPanel.firstLevel = firstLevel
+		levelPanel.nbLevels = nbLevels
+		levelPanel.position = Vector2(-40,0)
+		print(levelPanel.position)
+		levelPanel.z_index = 1
+		levelPanel.name = "levelPanel"
+		add_child(levelPanel)
 	else :
 		print("no more levels !")

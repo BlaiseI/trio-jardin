@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdri2g36y8vpb"]
+
+[ext_resource type="Texture2D" uid="uid://feacv8cds1uk" path="res://art/Finished/level selection/LevelSelectBackground.png" id="1_aww8r"]
+[ext_resource type="Script" path="res://Scripts/levelPanel.gd" id="1_q1d8s"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_q1d8s")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(6, 6)
+texture = ExtResource("1_aww8r")

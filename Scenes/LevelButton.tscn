@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr6fclsv3lynk"]
+
+[ext_resource type="Script" path="res://Scripts/levelButton.gd" id="1_0obht"]
+[ext_resource type="Texture2D" uid="uid://bingn1ulobvtb" path="res://art/Finished/level selection/LevelNumberHolder.png" id="2_suwqr"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_0obht")
+
+[node name="Button" type="TextureButton" parent="."]
+offset_right = 23.0
+offset_bottom = 16.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("2_suwqr")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="."]
+offset_right = 46.0
+offset_bottom = 32.0
+scale = Vector2(2, 2)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

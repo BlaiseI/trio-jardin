@@ -7,7 +7,7 @@ enum{carrot}
 var currentPowerUp
 
 @onready var grid:Grid = $"grid"
-@onready var hud:HUD = $"HUD"
+@onready var hud:HUDLevel = $"../HUD/hudLevel"
 
 @export var levelName = "1"
 
