@@ -23,22 +23,22 @@ func updateGameOverMessage(message: String) -> void:
 
 func setCondition1(conditionType1: String) -> void:
 	if conditionType1 == "null":
-		$"../TopBannerBackground/WinningConditions/Condition1".texture = null
+		$"WinningConditions/Condition1".texture = null
 	else:
 		var texturePath : String = "res://art/Finished/weeds/" + conditionType1.to_lower() + "60.png"
-		$"../TopBannerBackground/WinningConditions/Condition1".texture = load(texturePath)
+		$"WinningConditions/Condition1".texture = load(texturePath)
 
 func setCondition2(conditionType2: String) -> void:
 	if conditionType2 == "null":
-		$"../TopBannerBackground/WinningConditions/Condition2".texture = null
+		$"WinningConditions/Condition2".texture = null
 	else:
 		var texturePath : String = "res://art/Finished/weeds/" + conditionType2.to_lower() + "60.png"
-		$"../TopBannerBackground/WinningConditions/Condition2".texture = load(texturePath)
+		$"WinningConditions/Condition2".texture = load(texturePath)
 
 func blackenBackground() -> void:
-	$"..".changeBrightness("../../level/TopBannerBackground", 0.5)
-	$"..".changeBrightness("../../level/GridBackground", 0.5)
+	$"..".changeBrightness("/root/Game/level/TopBannerBackground", 0.5)
+	$"..".changeBrightness("/root/Game/level/GridBackground", 0.5)
 
-func unBblackenBackground() -> void:
-	$"..".changeBrightness("../../level/TopBannerBackground", 1)
-	$"..".changeBrightness("../../level/GridBackgroud", 1)
+func unBlackenBackground() -> void:
+	$"..".changeBrightness("/root/Game/level/TopBannerBackground", 1)
+	$"..".changeBrightness("/root/Game/level/GridBackground", 1)

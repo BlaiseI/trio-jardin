@@ -11,6 +11,7 @@ var level: Level
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	levelSelector = levelSelectorTemplate.instantiate()
+	levelSelector.name = "levelSelector"
 	add_child(levelSelector)
 	pass # Replace with function body.
 
@@ -26,14 +27,13 @@ func launchLevel(levelNumber: int) -> void:
 	var hudLevel = hudLevelTemplate.instantiate()
 	hudLevel.set_script(load("res://Scripts/hudLevel.gd"))
 	hudLevel.level = level
-
 	hudLevel.name = "hudLevel"
 	$HUD.add_child(hudLevel)
 	var carrotButton = $"HUD/hudLevel/CarrotButton"
 	var carrotButtonFunc = $"HUD/hudLevel"._on_carrot_button_pressed
 	carrotButton.pressed.connect(carrotButtonFunc.bind(carrotButton))
 	add_child(level)
-	$levelPanel.queue_free()
+	find_child("levelPanel", true, false).queue_free()
 	levelSelector.visible = false
 
 func levelFinished(levelNumber: int, succeeded: bool) -> void:

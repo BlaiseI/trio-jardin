@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bi4f23fnd5r7"]
+[gd_scene load_steps=6 format=3 uid="uid://bi4f23fnd5r7"]
 
 [ext_resource type="Script" path="res://Scripts/hudLevel.gd" id="1_tgv8d"]
 [ext_resource type="FontFile" uid="uid://xt34up70b8nw" path="res://art/CarrotFont.ttf" id="2_csaw6"]
 [ext_resource type="Texture2D" uid="uid://ccvupff87vx6w" path="res://art/Finished/weeds/carrot2.png" id="3_i5sm4"]
+[ext_resource type="Texture2D" uid="uid://jdda1bbg03yu" path="res://art/Finished/weeds/chardon60.png" id="4_n0cqv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1iqrt"]
 
@@ -126,5 +127,17 @@ metadata/_edit_use_anchors_ = true
 offset_right = 40.0
 offset_bottom = 80.0
 metadata/_edit_use_anchors_ = true
+
+[node name="WinningConditions" type="Container" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Condition1" type="Sprite2D" parent="WinningConditions"]
+position = Vector2(400, 64)
+texture = ExtResource("4_n0cqv")
+
+[node name="Condition2" type="Sprite2D" parent="WinningConditions"]
+position = Vector2(513, 64)
+texture = ExtResource("4_n0cqv")
 
 [connection signal="pressed" from="CarrotButton" to="." method="_on_carrot_button_pressed"]

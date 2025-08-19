@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfvus1bseqnk1"]
+[gd_scene load_steps=8 format=3 uid="uid://cfvus1bseqnk1"]
 
 [ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
 [ext_resource type="Texture2D" uid="uid://8c2aiawr05ru" path="res://art/Finished/level background/gridContainer.png" id="2_1v6qg"]
 [ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="3_qur5x"]
 [ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
-[ext_resource type="Texture2D" uid="uid://jdda1bbg03yu" path="res://art/Finished/weeds/chardon60.png" id="6_nr2ek"]
 [ext_resource type="Script" path="res://Scripts/level.gd" id="9_f3jec"]
 [ext_resource type="Texture2D" uid="uid://cxdew1nju2yft" path="res://art/Finished/level background/botBanner.png" id="10_acrw4"]
 
@@ -33,19 +32,6 @@ offset = 67
 offset_right = 576.0
 offset_bottom = 192.0
 texture = ExtResource("1_7r6xw")
-
-[node name="WinningConditions" type="Container" parent="TopBannerBackground"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Condition1" type="Sprite2D" parent="TopBannerBackground/WinningConditions"]
-position = Vector2(400, 64)
-texture = ExtResource("6_nr2ek")
-
-[node name="Condition2" type="Sprite2D" parent="TopBannerBackground/WinningConditions"]
-position = Vector2(513, 64)
-texture = ExtResource("6_nr2ek")
 
 [node name="numberBackground1" type="TextureRect" parent="TopBannerBackground"]
 layout_mode = 0
