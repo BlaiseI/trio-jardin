@@ -74,5 +74,7 @@ func _onButtonPressed() -> void:
 		levelPanel.z_index = 1
 		levelPanel.name = "levelPanel"
 		add_child(levelPanel)
+		var spawned : Signal = levelPanel.spawn()
+		await spawned
 	else :
 		print("no more levels !")

@@ -3,7 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://feacv8cds1uk" path="res://art/Finished/level selection/LevelSelectBackground.png" id="1_aww8r"]
 [ext_resource type="Script" path="res://Scripts/levelPanel.gd" id="1_q1d8s"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+pivot_offset = Vector2(126, 180)
 script = ExtResource("1_q1d8s")
 
 [node name="TextureRect" type="TextureRect" parent="."]
