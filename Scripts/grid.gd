@@ -35,10 +35,11 @@ func createEmptyGrid() -> void:
 		grid.append([])
 		for j in width:
 			grid[i].append(null)
-			var cadre: Block = cadrePreload.instantiate()
-			add_child(cadre)
-			cadre.position = utils.getTileCoordsFromPosition(Position.new(i,j), self)
-			#cadre.get_node("CenterContainer/Control/Sprite2D").modulate.a = 0.2
+			if !emptyTile(i,j):
+				var cadre: Block = cadrePreload.instantiate()
+				add_child(cadre)
+				cadre.position = utils.getTileCoordsFromPosition(Position.new(i,j), self)
+				#cadre.get_node("CenterContainer/Control/Sprite2D").modulate.a = 0.2
 
 func fillGrid() -> void:
 	for i in height:

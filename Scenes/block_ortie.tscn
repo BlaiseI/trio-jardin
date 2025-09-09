@@ -1,11 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://cskhncjohvvqq"]
 
 [ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_5pbka"]
-[ext_resource type="Texture2D" uid="uid://r24aj7ceyx16" path="res://art/Finished/weeds/ortie60.png" id="2_3dyrr"]
+[ext_resource type="Texture2D" uid="uid://b5jrnxmfrsjtv" path="res://art/Finished/weeds/ortie60Test.png" id="2_ehsdx"]
 
 [node name="blockOrtie" instance=ExtResource("1_5pbka")]
 blockType = "Ortie"
 
 [node name="Sprite2D" parent="CenterContainer/Control" index="0"]
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_3dyrr")
+texture = ExtResource("2_ehsdx")
