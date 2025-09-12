@@ -9,11 +9,9 @@ var nbLevels: int
 var offset: Vector2 = Vector2(15, 20)
 
 func _ready() -> void:
-	print(self.z_index)
 	for i in range(nbLevels):
 		var levelButton = levelButtonTemplate.instantiate()
 		levelButton.position = offset + Vector2((i%2)*120, (i/2)*70)
-		print(i, Vector2((i%2)*40, (i%2)*60))
 		levelButton.actualLevel = actualLevel
 		levelButton.correspondingLevel = firstLevel + i
 		levelButton.pressedSignal.connect($"../../..".launchLevel)

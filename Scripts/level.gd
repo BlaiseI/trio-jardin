@@ -75,7 +75,7 @@ func getSlideInput() -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
-			if !grid.isTileEmpty(tileTouched):
+			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				slideOngoing = true
 				slideBeginCoords = touchCoords
 				slideBeginPos =  tileTouched
@@ -85,7 +85,7 @@ func getSlideInput() -> void:
 			if grid.isInGrid(touchCoords):
 				var slideDirection: Vector2 = Utils.getSlideDirection(slideBeginCoords, touchCoords)
 				var tileTouched: Vector2 = Vector2(slideBeginPos.x + slideDirection.x, slideBeginPos.y + slideDirection.y)
-				if !grid.isTileEmpty(tileTouched):
+				if !grid.emptyTile(tileTouched.x, tileTouched.y):
 					state = treatMove
 					await treatSlide(tileTouched)
 					state = waitInput
@@ -94,7 +94,12 @@ func getSlideInput() -> void:
 func treatSlide(slideEndPos: Vector2) -> void:
 	if slideBeginPos == slideEndPos:
 		return
-
+	if slideBeginPos in grid.webs:
+		await grid.shakeBlock(slideBeginPos)
+		return
+	if slideEndPos in grid.webs:
+		await grid.shakeBlock(slideEndPos)
+		return
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
 	if grid.getMatchesOnGrid():
 		numberMovesLeft -= 1
@@ -143,7 +148,7 @@ func getPowerUpInput() -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
-			if !grid.isTileEmpty(tileTouched):
+			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				state = treatPowerUp
 				var blockTypeDeleted: String = await grid.deleteTile(tileTouched)
 				if blockTypeDeleted == ConditionType1:

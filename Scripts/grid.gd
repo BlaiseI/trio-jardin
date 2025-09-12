@@ -13,12 +13,14 @@ var state
 var width: int
 var height: int
 var emptyTiles : PackedVector2Array
+var webs : PackedVector2Array = PackedVector2Array([Vector2(1, 2), Vector2(3, 1)])
 var nbCarrots: int
 
 
 var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")
+var webPreload = preload("res://Scenes/web.tscn")
 
 var buttonReleasedAfterCarrot = false
 var slideBeginCoords: Vector2
@@ -48,6 +50,11 @@ func fillGrid() -> void:
 				add_child(block)
 				block.position = utils.getTileCoordsFromPosition(Position.new(i,j), self)
 				grid[i][j] = block
+			if Vector2(i,j) in webs:
+				var web: Node = webPreload.instantiate()
+				web.position = utils.getTileCoordsFromPosition(Position.new(i,j), self)
+				web.name = "web" + str(i) + str(j)
+				add_child(web)
 
 func createNonMatchingBlock(row: int, column: int) -> Block:
 	var block: Block
@@ -68,10 +75,7 @@ func givesMatch(row: int, column: int, block) -> bool:
 	return false
 
 func emptyTile(row: int, column:int) -> bool:
-	for coords: Vector2 in emptyTiles:
-		if coords == Vector2(row, column):
-			return true
-	return false
+	return Vector2(row, column) in emptyTiles
 
 func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	var firstRow: int = firstPosition.x
@@ -85,6 +89,14 @@ func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	var tmp: Node2D = grid[firstRow][firstCol]
 	grid[firstRow][firstCol] = grid[secondRow][secondCol]
 	grid[secondRow][secondCol] = tmp
+
+func shakeBlock(blockPos: Vector2) -> void:
+	var tween = create_tween()
+	var block:Block = grid[blockPos.x][blockPos.y]
+	tween.tween_property(block, "position", block.position + Vector2(5,0), .10)
+	tween.tween_property(block, "position", block.position + Vector2(-5,0), .20)
+	tween.tween_property(block, "position", block.position + Vector2(0,0), .10)
+	await tween.finished
 
 func getMatchesOnGrid() -> bool:
 	var thereIsAMatch: bool = false
@@ -109,21 +121,30 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 	for i in height:
 		for j in width:
 			if grid[i][j] and grid[i][j].partOfMatch:
-				toShrink.append(Position.new(i,j))
+				toShrink.append(Vector2(i,j))
 				if conditionDictionary.has(grid[i][j].blockType):
 					conditionDictionary[grid[i][j].blockType] += 1
 
 	var lastSignal : Signal
 	for position in toShrink:
-		lastSignal = grid[position.row][position.column].shrink()
+		if position in webs:
+			lastSignal = get_node("web" + str(position.x) + str(position.y)).shrink()
+		else:
+			lastSignal = grid[position.x][position.y].shrink()
 	await lastSignal
 
 	for position in toShrink:
-		var i = position.row
-		var j = position.column
-		remove_child(grid[i][j])
-		grid[i][j].queue_free()
-		grid[i][j] = null
+		var i = position.x
+		var j = position.y
+		if position in webs:
+			var web: Web = get_node("web" + str(position.x) + str(position.y))
+			remove_child(web)
+			web.queue_free()
+			webs.remove_at(webs.find(position))
+		else:
+			remove_child(grid[i][j])
+			grid[i][j].queue_free()
+			grid[i][j] = null
 	return conditionDictionary
 
 func getBlocksDown2() -> void:
@@ -181,9 +202,3 @@ func isInGrid(coords: Vector2) -> bool:
 		or coords.y < yStart or coords.y > yStart + (height*offset)):
 			return false
 	return true
-
-func isTileEmpty(tilePosition: Vector2) -> bool:
-	for emptyTilePos: Vector2 in emptyTiles:
-		if emptyTilePos == tilePosition:
-			return true
-	return false

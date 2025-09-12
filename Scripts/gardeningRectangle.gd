@@ -70,7 +70,6 @@ func _onButtonPressed() -> void:
 		levelPanel.firstLevel = firstLevel
 		levelPanel.nbLevels = nbLevels
 		levelPanel.position = Vector2(-40,0)
-		print(levelPanel.position)
 		levelPanel.z_index = 1
 		levelPanel.name = "levelPanel"
 		add_child(levelPanel)

@@ -10,6 +10,7 @@ pivot_offset = Vector2(126, 180)
 script = ExtResource("1_q1d8s")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(6, 6)
