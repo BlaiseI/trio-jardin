@@ -5,15 +5,18 @@ func createLevel() -> void:
 		"gridHeight":8,
 		"gridWidth":8,
 		"gridEmptyTiles":[],
+		"gridWebs" : [],
 		"nbCarrots":1,
-		"blockTypeForCondition1":"Chardon",
+		"ConditionType1":"Chardon",
 		"numberForCondition1":11,
-		"blockTypeForCondition2":"null",
+		"ConditionType2":"null",
 		"numberForCondition2":0,
 		"numberMovesLeft":3
 	}
 	parametersDictionary["gridEmptyTiles"].append(Vector2(3,4))
 	parametersDictionary["gridEmptyTiles"].append(Vector2(4,3))
+	parametersDictionary["gridWebs"].append(Vector2(1,2))
+	parametersDictionary["gridWebs"].append(Vector2(3,1))
 	var levelName: String = "1"
 	Level.saveParameters(parametersDictionary, levelName)
 

@@ -13,7 +13,7 @@ var state
 var width: int
 var height: int
 var emptyTiles : PackedVector2Array
-var webs : PackedVector2Array = PackedVector2Array([Vector2(1, 2), Vector2(3, 1)])
+var webs : PackedVector2Array
 var nbCarrots: int
 
 
