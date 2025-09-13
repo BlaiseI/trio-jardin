@@ -90,13 +90,19 @@ func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	grid[firstRow][firstCol] = grid[secondRow][secondCol]
 	grid[secondRow][secondCol] = tmp
 
-func shakeBlock(blockPos: Vector2) -> void:
+func shakeBlocks(firstPos: Vector2, secondPos: Vector2) -> void:
 	var tween = create_tween()
-	var block:Block = grid[blockPos.x][blockPos.y]
+	var block:Block = grid[firstPos.x][firstPos.y]
 	tween.tween_property(block, "position", block.position + Vector2(5,0), .10)
 	tween.tween_property(block, "position", block.position + Vector2(-5,0), .20)
-	tween.tween_property(block, "position", block.position + Vector2(0,0), .10)
+	tween.tween_property(block, "position", block.position, .10)
+	var secondTween = create_tween()
+	block = grid[secondPos.x][secondPos.y]
+	secondTween.tween_property(block, "position", block.position + Vector2(-5,0), .10)
+	secondTween.tween_property(block, "position", block.position + Vector2(5,0), .20)
+	secondTween.tween_property(block, "position", block.position, .10)
 	await tween.finished
+	await secondTween.finished
 
 func getMatchesOnGrid() -> bool:
 	var thereIsAMatch: bool = false

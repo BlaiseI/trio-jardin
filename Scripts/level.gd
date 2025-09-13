@@ -98,11 +98,8 @@ func getSlideInput() -> void:
 func treatSlide(slideEndPos: Vector2) -> void:
 	if slideBeginPos == slideEndPos:
 		return
-	if slideBeginPos in grid.webs:
-		await grid.shakeBlock(slideBeginPos)
-		return
-	if slideEndPos in grid.webs:
-		await grid.shakeBlock(slideEndPos)
+	if slideBeginPos in grid.webs or slideEndPos in grid.webs:
+		await grid.shakeBlocks(slideBeginPos, slideEndPos)
 		return
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
 	if grid.getMatchesOnGrid():
