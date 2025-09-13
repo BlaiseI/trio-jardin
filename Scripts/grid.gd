@@ -167,11 +167,19 @@ func getBlocksDown() -> void:
 		for j in width:
 			if !grid[i][j] and !emptyTile(i,j):
 				var k: int = i-1
+				var nbWebs: int = 0
 				while(k >= 0 and grid[k][j]):
-					lastSignal = grid[k][j].move(utils.getTileCoordsFromPosition(Position.new(k+1, j), self))
-					grid[k+1][j] = grid[k][j]
-					grid[k][j] = null
-					k -= 1
+					if Vector2(k,j) in webs:
+						nbWebs +=1
+						k -= 1
+					else:
+						var newHeight: int = k+1+nbWebs
+						lastSignal = grid[k][j].move(utils.getTileCoordsFromPosition(Position.new(newHeight, j), self))
+						grid[newHeight][j] = grid[k][j]
+						grid[k][j] = null
+						k -= 1
+						if nbWebs > 0:
+							nbWebs = 0
 	if lastSignal:
 		await lastSignal
 

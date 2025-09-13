@@ -9,6 +9,7 @@ static var blocks = [
 ]
 
 static var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+static var blockId: int = 0
 
 @export var blockType: String
 var partOfMatch: bool = false
@@ -31,4 +32,6 @@ func spawn() -> Signal:
 
 static func createRandomBlock() -> Block:
 	var block: Block = load(blocks[rng.randi_range(0, blocks.size()-1)]).instantiate()
+	block.name = block.name + str(blockId)
+	blockId += 1
 	return block
