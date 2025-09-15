@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://r24aj7ceyx16" path="res://art/Finished/weeds/ortie60.png" id="2_3dyrr"]
 
 [node name="blockOrtie" instance=ExtResource("1_5pbka")]
-blockType = "Ortie"
+blockType = "ortie"
 
 [node name="Sprite2D" parent="CenterContainer/Control" index="0"]
 scale = Vector2(0.6, 0.6)
