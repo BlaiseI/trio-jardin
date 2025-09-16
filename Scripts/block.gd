@@ -20,6 +20,7 @@ static func createRandomBlock() -> Block:
 @export var blockType: String
 var partOfMatch: bool = false
 var hasTrigger = false
+var nextBlock: Block = null
 
 func move(coords: Vector2) -> Signal:
 	var tween = create_tween()

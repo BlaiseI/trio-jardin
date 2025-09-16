@@ -10,13 +10,13 @@ func _ready() -> void:
 func trigger(toTrigger: Array, alreadyTriggered: Array, toDelete:Array, gridPos: Vector2) -> void:
 	var grid: Grid = get_parent()
 	var neighbours = []
-	if(gridPos.x > 0):
+	if(gridPos.x > 0 and Vector2(gridPos.x -1, gridPos.y) not in grid.emptyTiles):
 		neighbours.append(Vector2(gridPos.x -1, gridPos.y))
-	if(gridPos.x < grid.height-1):
+	if(gridPos.x < grid.height-1 and Vector2(gridPos.x +1, gridPos.y) not in grid.emptyTiles):
 		neighbours.append(Vector2(gridPos.x +1, gridPos.y))
-	if(gridPos.y > 0):
+	if(gridPos.y > 0 and Vector2(gridPos.x, gridPos.y-1) not in grid.emptyTiles):
 		neighbours.append(Vector2(gridPos.x, gridPos.y-1))
-	if(gridPos.y < grid.width-1):
+	if(gridPos.y < grid.width-1 and Vector2(gridPos.x, gridPos.y+1) not in grid.emptyTiles):
 		neighbours.append(Vector2(gridPos.x, gridPos.y+1))
 	var randomNeighbour = neighbours[randi() % neighbours.size()]
 	grid.uniqueAdd(toDelete, gridPos)

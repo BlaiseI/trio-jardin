@@ -15,6 +15,7 @@ var height: int
 var emptyTiles : PackedVector2Array
 var webs : PackedVector2Array
 var toDelete = []
+var matches = []
 var nbCarrots: int
 
 
@@ -22,6 +23,7 @@ var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 var webPreload = preload("res://Scenes/web.tscn")
+var firecrakerPreload = preload("res://Scenes/firecracker.tscn")
 
 var buttonReleasedAfterCarrot = false
 var slideBeginCoords: Vector2
@@ -57,11 +59,6 @@ func fillGrid() -> void:
 				web.position = utils.getTileCoords(Vector2(i,j), self)
 				web.name = "web" + str(i) + str(j)
 				add_child(web)
-	grid[3][5].queue_free()
-	var firecracker = preload("res://Scenes/firecracker.tscn").instantiate()
-	firecracker.position = utils.getTileCoords(Vector2(3,5), self)
-	add_child(firecracker)
-	grid[3][5] = firecracker
 
 func createNonMatchingBlock(row: int, column: int) -> Block:
 	var block: Block
@@ -117,6 +114,23 @@ func uniqueAdd(array: Array, element):
 	if element not in array:
 		array.push_back(element)
 
+func addToMatches(positions: Array) -> void:
+	var found :int = -1
+	for matchIndex in range(matches.size()):
+		for pos in positions:
+			if pos in matches[matchIndex][1]:
+				found = matchIndex
+				break
+		if found != -1:
+			break
+	if found != -1:
+		for pos in positions:
+			if pos not in matches[found][1]:
+				matches[found][0] += 1
+				matches[found][1].append(pos)
+	else :
+		matches.append([positions.size(), positions])
+
 func getMatchesOnGrid() -> bool:
 	var thereIsAMatch: bool = !toDelete.is_empty()
 	for row in height:
@@ -127,27 +141,36 @@ func getMatchesOnGrid() -> bool:
 					uniqueAdd(toDelete, Vector2(row-2, column))
 					uniqueAdd(toDelete, Vector2(row-1, column))
 					uniqueAdd(toDelete, Vector2(row, column))
-					#grid[row-2][column].partOfMatch = true
-					#grid[row-1][column].partOfMatch = true
-					#grid[row][column].partOfMatch = true
+					var positions = [Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column)]
+					addToMatches(positions)
 					thereIsAMatch = true
 				if(column >= 2 && !emptyTile(row,column-1) && grid[row][column-1].blockType == blockType and !emptyTile(row,column-2) && grid[row][column-2].blockType == blockType):
 					uniqueAdd(toDelete, Vector2(row, column-2))
 					uniqueAdd(toDelete, Vector2(row, column-1))
 					uniqueAdd(toDelete, Vector2(row, column))
-					#grid[row][column-2].partOfMatch = true
-					#grid[row][column-1].partOfMatch = true
-					#grid[row][column].partOfMatch = true
+					var positions = [Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column)]
+					addToMatches(positions)
 					thereIsAMatch = true
 	return thereIsAMatch
+
+func treatBigMatches() -> void:
+	for _match in matches:
+		if _match[0] > 3:
+			for pos in _match[1]:
+				if pos in webs or pos in emptyTiles:
+					_match[1].erase(pos)
+			var explodingBlock: Block = firecrakerPreload.instantiate()
+			var explodingTile = _match[1][randi() % _match[1].size()]
+			var i:int = explodingTile.x
+			var j:int = explodingTile.y
+			explodingBlock.position = grid[i][j].position
+			grid[i][j].nextBlock = explodingBlock
+	matches = []
 
 func triggerNeighbours() -> void:
 	var toTrigger = toDelete.duplicate()
 	var alreadyTriggered = []
 	while !toTrigger.is_empty():
-		if(!debug):
-			print("toTrigger : " + str(toTrigger))
-			print("alreadyTriggered : " + str(alreadyTriggered))
 		var position: Vector2 = toTrigger.pop_front()
 		var row: int = position.x
 		var col: int = position.y
@@ -159,26 +182,8 @@ func triggerNeighbours() -> void:
 				if(block and block.hasTrigger and neighbour not in alreadyTriggered):
 					block.trigger(toTrigger, alreadyTriggered, toDelete, neighbour)
 					uniqueAdd(alreadyTriggered, neighbour)
-	debug = true
 
 func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
-	#var toShrink = []
-	#for i in height:
-	#	for j in width:
-	#		if grid[i][j] and grid[i][j].partOfMatch:
-	#			toShrink.append(Vector2(i,j))
-	#			if conditionDictionary.has(grid[i][j].blockType):
-	#				conditionDictionary[grid[i][j].blockType] += 1
-
-	#var lastSignal : Signal
-	#for position in toShrink:
-	#	if position in webs:
-	#		lastSignal = get_node("web" + str(position.x) + str(position.y)).shrink()
-	#	else:
-	#		lastSignal = grid[position.x][position.y].shrink()
-	#		print(lastSignal)
-	#await lastSignal
-
 	var lastSignal: Signal
 	for position in toDelete:
 		if position in webs:
@@ -198,7 +203,11 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 		else:
 			remove_child(grid[i][j])
 			grid[i][j].queue_free()
-			grid[i][j] = null
+			if grid[i][j].nextBlock:
+				add_child(grid[i][j].nextBlock)
+				grid[i][j] = grid[i][j].nextBlock
+			else:
+				grid[i][j] = null
 	toDelete = []
 	return conditionDictionary
 

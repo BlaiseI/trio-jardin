@@ -111,6 +111,7 @@ func treatSlide(slideEndPos: Vector2) -> void:
 
 func treatMatches() -> void:
 	while grid.getMatchesOnGrid():
+		await grid.treatBigMatches()
 		await grid.triggerNeighbours()
 		await deleteMatches()
 		await grid.getBlocksDown()
