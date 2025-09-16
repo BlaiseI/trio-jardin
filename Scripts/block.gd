@@ -5,7 +5,7 @@ static var blocks = [
 	"res://Scenes/block_chardon.tscn",
 	"res://Scenes/block_chenille.tscn",
 	"res://Scenes/block_ortie.tscn",
-	#"res://Scenes/block_egopode.tscn"
+	"res://Scenes/block_egopode.tscn"
 ]
 
 static var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -19,7 +19,9 @@ static func createRandomBlock() -> Block:
 
 @export var blockType: String
 var partOfMatch: bool = false
+var doesMatch = true
 var hasTrigger = false
+var moveable = true
 var nextBlock: Block = null
 
 func move(coords: Vector2) -> Signal:

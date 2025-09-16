@@ -4,8 +4,8 @@ extends Block
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	blockType = "firecracker"
 	hasTrigger = true
+	doesMatch = false
 
 func trigger(toTrigger: Array, alreadyTriggered: Array, toDelete:Array, gridPos: Vector2) -> void:
 	var grid: Grid = get_parent()

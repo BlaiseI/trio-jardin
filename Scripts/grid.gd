@@ -59,6 +59,8 @@ func fillGrid() -> void:
 				web.position = utils.getTileCoords(Vector2(i,j), self)
 				web.name = "web" + str(i) + str(j)
 				add_child(web)
+	replaceBlock(Vector2(0,0), preload("res://Scenes/block_ronce.tscn").instantiate())
+	Ronce.roncesPositions.append(Vector2(0,0))
 
 func createNonMatchingBlock(row: int, column: int) -> Block:
 	var block: Block
@@ -135,7 +137,7 @@ func getMatchesOnGrid() -> bool:
 	var thereIsAMatch: bool = !toDelete.is_empty()
 	for row in height:
 		for column in width:
-			if !emptyTile(row,column):
+			if (!emptyTile(row,column) and grid[row][column].doesMatch):
 				var blockType: String = grid[row][column].blockType
 				if(row >= 2 && !emptyTile(row-1,column) && grid[row-1][column].blockType == blockType and !emptyTile(row-2,column) && grid[row-2][column].blockType == blockType):
 					uniqueAdd(toDelete, Vector2(row-2, column))
@@ -239,7 +241,7 @@ func getBlocksDown() -> void:
 				var k: int = i-1
 				var nbWebs: int = 0
 				while(k >= 0 and grid[k][j]):
-					if Vector2(k,j) in webs:
+					if Vector2(k,j) in webs or !grid[k][j].moveable:
 						nbWebs +=1
 						k -= 1
 					else:
@@ -271,6 +273,19 @@ func deleteTile(position: Vector2) -> String:
 	remove_child(grid[position.x][position.y])
 	grid[position.x][position.y] = null
 	return blockType
+
+func replaceBlock(pos: Vector2, block: Block) -> void:
+	print("replace block called")
+	block.position = grid[pos.x][pos.y].position
+	remove_child(grid[pos.x][pos.y])
+	grid[pos.x][pos.y].queue_free()
+	if(pos in webs):
+		var web: Web = get_node("web" + str(pos.x) + str(pos.y))
+		remove_child(web)
+		web.queue_free()
+		webs.remove_at(webs.find(pos))
+	add_child(block)
+	grid[pos.x][pos.y] = block
 
 func getTilePositionFromCoords(coords: Vector2) -> Vector2:
 	return Vector2(floor((coords.y - yStart)/offset), floor((coords.x - xStart)/offset))
