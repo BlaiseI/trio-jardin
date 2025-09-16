@@ -2,6 +2,13 @@ class_name HUDLevel
 extends CanvasLayer
 
 var level:Level
+var conditionTexturePaths: Dictionary = {"chardon": "res://art/Finished/weeds/chardon60.png",
+ 	"chenille": "res://art/Finished/weeds/chenille60.png",
+	"egopode": "res://art/Finished/weeds/egopode60.png",
+	"ortie": "res://art/Finished/weeds/ortie60.png",
+	"web": "res://art/Finished/obstacles/Web.png",
+	"firecracker": "res://art/Finished/power-ups/firecracker1.png"
+}
 
 func _on_carrot_button_pressed() -> void:
 	level.carrotPressed()
@@ -25,15 +32,13 @@ func setCondition1(conditionType1: String) -> void:
 	if conditionType1 == "null":
 		$"WinningConditions/Condition1".texture = null
 	else:
-		var texturePath : String = "res://art/Finished/weeds/" + conditionType1.to_lower() + "60.png"
-		$"WinningConditions/Condition1".texture = load(texturePath)
+		$"WinningConditions/Condition1".texture = load(conditionTexturePaths[conditionType1])
 
 func setCondition2(conditionType2: String) -> void:
 	if conditionType2 == "null":
 		$"WinningConditions/Condition2".texture = null
 	else:
-		var texturePath : String = "res://art/Finished/weeds/" + conditionType2.to_lower() + "60.png"
-		$"WinningConditions/Condition2".texture = load(texturePath)
+		$"WinningConditions/Condition2".texture = load(conditionTexturePaths[conditionType2])
 
 func blackenBackground() -> void:
 	$"..".changeBrightness("/root/Game/level/TopBannerBackground", 0.5)

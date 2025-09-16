@@ -186,9 +186,15 @@ func triggerNeighbours() -> void:
 func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 	var lastSignal: Signal
 	for position in toDelete:
+		var i = position.x
+		var j = position.y
 		if position in webs:
-			lastSignal = get_node("web" + str(position.x) + str(position.y)).shrink()
+			if(conditionDictionary.has("web")):
+				conditionDictionary["web"] +=1
+			lastSignal = get_node("web" + str(i) + str(j)).shrink()
 		else:
+			if(conditionDictionary.has(grid[i][j].blockType)):
+				conditionDictionary[grid[i][j].blockType] +=1
 			lastSignal = grid[position.x][position.y].shrink()
 	await lastSignal
 
