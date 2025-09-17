@@ -116,7 +116,7 @@ func treatMatches() -> void:
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
-	await Ronce.endOfTurn(grid)
+	await Ronce.endOfTurn(self)
 	if state == gameOver:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true

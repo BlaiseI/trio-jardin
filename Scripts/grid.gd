@@ -18,7 +18,6 @@ var toDelete = []
 var matches = []
 var nbCarrots: int
 
-
 var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")

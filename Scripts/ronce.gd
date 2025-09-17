@@ -16,8 +16,8 @@ func trigger(toTrigger: Array, alreadyTriggered: Array, toDelete:Array, gridPos:
 	get_parent().uniqueAdd(toDelete, gridPos)
 	roncesPositions.erase(gridPos)
 
-static func endOfTurn(grid: Grid) -> void:
-	print("called")
+static func endOfTurn(level: Level) -> void:
+	var grid:Grid = level.grid
 	if (!triggered and roncesPositions.size() > 0):
 		print(roncesPositions)
 		var freeSpot = Vector2(-1,-1)
@@ -36,6 +36,11 @@ static func endOfTurn(grid: Grid) -> void:
 				freeSpot = neighbours[randi() % neighbours.size()]
 		grid.replaceBlock(freeSpot, roncePreload.instantiate())
 		roncesPositions.append(freeSpot)
+	if(level.ConditionType1 == "ronce"):
+		level.numberForCondition1 = roncesPositions.size()
+	if(level.ConditionType2 == "ronce"):
+		level.numberForCondition2 = roncesPositions.size()
+	level.updateNumberConditions(0,0)
 	triggered = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

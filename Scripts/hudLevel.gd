@@ -7,7 +7,8 @@ var conditionTexturePaths: Dictionary = {"chardon": "res://art/Finished/weeds/ch
 	"egopode": "res://art/Finished/weeds/egopode60.png",
 	"ortie": "res://art/Finished/weeds/ortie60.png",
 	"web": "res://art/Finished/obstacles/Web.png",
-	"firecracker": "res://art/Finished/power-ups/firecracker1.png"
+	"firecracker": "res://art/Finished/power-ups/firecracker1.png",
+	"ronce": "res://art/Finished/obstacles/ronceMoche.png"
 }
 
 func _on_carrot_button_pressed() -> void:
