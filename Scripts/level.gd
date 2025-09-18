@@ -58,6 +58,11 @@ func loadParameters(filePath: String) -> void:
 	for positionString: String in parametersDictionary["gridWebs"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		grid.webs.append(positionVector)
+	Ronce.roncesPositions = []
+	for positionString: String in parametersDictionary["gridRonce"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		Ronce.roncesPositions.append(positionVector)
+
 	nbCarrots = parametersDictionary["nbCarrots"]
 	ConditionType1 = parametersDictionary["ConditionType1"]
 	ConditionType2 = parametersDictionary["ConditionType2"]

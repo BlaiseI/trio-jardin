@@ -43,6 +43,11 @@ static func endOfTurn(level: Level) -> void:
 	level.updateNumberConditions(0,0)
 	triggered = false
 
+static func init(grid:Grid) -> void:
+	for roncePos in roncesPositions:
+		var ronce : Ronce = roncePreload.instantiate()
+		grid.replaceBlock(roncePos, ronce)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

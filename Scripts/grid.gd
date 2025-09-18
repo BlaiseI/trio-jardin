@@ -58,8 +58,7 @@ func fillGrid() -> void:
 				web.position = utils.getTileCoords(Vector2(i,j), self)
 				web.name = "web" + str(i) + str(j)
 				add_child(web)
-	replaceBlock(Vector2(0,0), preload("res://Scenes/block_ronce.tscn").instantiate())
-	Ronce.roncesPositions.append(Vector2(0,0))
+	Ronce.init(self)
 
 func createNonMatchingBlock(row: int, column: int) -> Block:
 	var block: Block

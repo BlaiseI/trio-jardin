@@ -6,6 +6,7 @@ func createLevel() -> void:
 		"gridWidth":8,
 		"gridEmptyTiles":[],
 		"gridWebs" : [],
+		"gridRonce" : [],
 		"nbCarrots":1,
 		"ConditionType1":"Chardon",
 		"numberForCondition1":11,
@@ -17,6 +18,7 @@ func createLevel() -> void:
 	parametersDictionary["gridEmptyTiles"].append(Vector2(4,3))
 	parametersDictionary["gridWebs"].append(Vector2(1,2))
 	parametersDictionary["gridWebs"].append(Vector2(3,1))
+	parametersDictionary["gridRonce"].append(Vector2(0,7))
 	var levelName: String = "1"
 	Level.saveParameters(parametersDictionary, levelName)
 
