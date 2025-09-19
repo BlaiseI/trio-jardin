@@ -17,12 +17,14 @@ var webs : PackedVector2Array
 var toDelete = []
 var matches = []
 var nbCarrots: int
+var powerUps: Array = ["firecracker", "mouton"]
 
 var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 var webPreload = preload("res://Scenes/web.tscn")
 var firecrakerPreload = preload("res://Scenes/firecracker.tscn")
+var moutonPreload = preload("res://Scenes/block_mouton.tscn")
 
 var buttonReleasedAfterCarrot = false
 var slideBeginCoords: Vector2
@@ -85,9 +87,15 @@ func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	var firstBlock : Block = grid[firstPosition.x][firstPosition.y]
 	var secondBlock : Block = grid[secondPosition.x][secondPosition.y]
 
-	if(firstBlock.blockType == "firecracker"):
+	print("testing")
+	print(powerUps)
+	print(firstBlock.blockType)
+	print(secondBlock.blockType)
+	if(firstBlock.blockType in powerUps):
+		print("testing2")
 		uniqueAdd(toDelete,secondPosition)
-	if(secondBlock.blockType == "firecracker"):
+	if(secondBlock.blockType in powerUps):
+		print("testing3")
 		uniqueAdd(toDelete,firstPosition)
 
 	firstBlock.move(utils.getTileCoords(secondPosition, self))
@@ -155,7 +163,7 @@ func getMatchesOnGrid() -> bool:
 
 func treatBigMatches() -> void:
 	for _match in matches:
-		if _match[0] > 3:
+		if _match[0] == 4:
 			for pos in _match[1]:
 				if pos in webs or pos in emptyTiles:
 					_match[1].erase(pos)
@@ -165,6 +173,16 @@ func treatBigMatches() -> void:
 			var j:int = explodingTile.y
 			explodingBlock.position = grid[i][j].position
 			grid[i][j].nextBlock = explodingBlock
+		elif _match[0] > 4:
+			for pos in _match[1]:
+				if pos in webs or pos in emptyTiles:
+					_match[1].erase(pos)
+			var moutonBlock: Block = moutonPreload.instantiate()
+			var moutonTile = _match[1][randi() % _match[1].size()]
+			var i:int = moutonTile.x
+			var j:int = moutonTile.y
+			moutonBlock.position = grid[i][j].position
+			grid[i][j].nextBlock = moutonBlock
 	matches = []
 
 func triggerNeighbours() -> void:
@@ -180,12 +198,14 @@ func triggerNeighbours() -> void:
 			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
 				var block = grid[neighbour.x][neighbour.y]
 				if(block and block.hasTrigger and neighbour not in alreadyTriggered):
-					block.trigger(toTrigger, alreadyTriggered, toDelete, neighbour)
+					await block.trigger(toTrigger, alreadyTriggered, toDelete, neighbour)
 					uniqueAdd(alreadyTriggered, neighbour)
 
 func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 	var lastSignal: Signal
 	for position in toDelete:
+		if position in emptyTiles:
+			continue
 		var i = position.x
 		var j = position.y
 		if position in webs:
@@ -199,6 +219,8 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 	await lastSignal
 
 	for position in toDelete:
+		if position in emptyTiles:
+			continue
 		var i = position.x
 		var j = position.y
 		if position in webs:
@@ -266,14 +288,24 @@ func fillEmptyBlocks() -> void:
 	await lastSignal
 
 func deleteTile(position: Vector2) -> String:
+	if position in emptyTiles:
+		return ""
+	if position in toDelete:
+		toDelete.erase(position)
 	var blockType: String = grid[position.x][position.y].blockType
-	await grid[position.x][position.y].shrink()
-	remove_child(grid[position.x][position.y])
-	grid[position.x][position.y] = null
+	if position in webs:
+		var web = get_node("web" + str(position.x) + str(position.y))
+		await web.shrink()
+		remove_child(web)
+		web.queue_free()
+		webs.remove_at(webs.find(position))
+	else :
+		await grid[position.x][position.y].shrink()
+		remove_child(grid[position.x][position.y])
+		grid[position.x][position.y] = null
 	return blockType
 
 func replaceBlock(pos: Vector2, block: Block) -> void:
-	print("replace block called")
 	block.position = grid[pos.x][pos.y].position
 	remove_child(grid[pos.x][pos.y])
 	grid[pos.x][pos.y].queue_free()
