@@ -5,21 +5,25 @@ static var triggered = false
 static var roncesPositions = []
 static var roncePreload = preload("res://Scenes/block_ronce.tscn")
 
-# Called when the node enters the scene tree for the first time.
+var blockTriggered = false
+
 func _ready() -> void:
 	hasTrigger = true
 	doesMatch = false
 	moveable = false
 
-func trigger(toTrigger: Array, alreadyTriggered: Array, toDelete:Array, gridPos: Vector2) -> void:
+func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> void:
+	print("ronce deleted in tile " + str(gridPos.x) + str(gridPos.y))
+	if blockTriggered:
+		return
+	blockTriggered = true
 	triggered = true
-	get_parent().uniqueAdd(toDelete, gridPos)
+	grid.deleteTile(gridPos, toDelete, false)
 	roncesPositions.erase(gridPos)
 
 static func endOfTurn(level: Level) -> void:
 	var grid:Grid = level.grid
 	if (!triggered and roncesPositions.size() > 0):
-		print(roncesPositions)
 		var freeSpot = Vector2(-1,-1)
 		while (freeSpot == Vector2(-1,-1)):
 			var gridPos: Vector2 = roncesPositions[randi() % roncesPositions.size()]
@@ -35,6 +39,7 @@ static func endOfTurn(level: Level) -> void:
 			if neighbours.size() > 1:
 				freeSpot = neighbours[randi() % neighbours.size()]
 		grid.replaceBlock(freeSpot, roncePreload.instantiate())
+		grid.grid[freeSpot.x][freeSpot.y].spawn()
 		roncesPositions.append(freeSpot)
 	if(level.ConditionType1 == "ronce"):
 		level.numberForCondition1 = roncesPositions.size()
@@ -48,6 +53,5 @@ static func init(grid:Grid) -> void:
 		var ronce : Ronce = roncePreload.instantiate()
 		grid.replaceBlock(roncePos, ronce)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

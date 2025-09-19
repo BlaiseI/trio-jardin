@@ -14,7 +14,7 @@ var width: int
 var height: int
 var emptyTiles : PackedVector2Array
 var webs : PackedVector2Array
-var toDelete = []
+var toTreat = []
 var matches = []
 var nbCarrots: int
 var powerUps: Array = ["firecracker", "mouton"]
@@ -45,7 +45,6 @@ func createEmptyGrid() -> void:
 			var cadre: Block = cadrePreload.instantiate()
 			add_child(cadre)
 			cadre.position = utils.getTileCoords(Vector2(i,j), self)
-			#cadre.get_node("CenterContainer/Control/Sprite2D").modulate.a = 0.2
 
 func fillGrid() -> void:
 	for i in height:
@@ -87,16 +86,10 @@ func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	var firstBlock : Block = grid[firstPosition.x][firstPosition.y]
 	var secondBlock : Block = grid[secondPosition.x][secondPosition.y]
 
-	print("testing")
-	print(powerUps)
-	print(firstBlock.blockType)
-	print(secondBlock.blockType)
 	if(firstBlock.blockType in powerUps):
-		print("testing2")
-		uniqueAdd(toDelete,secondPosition)
+		uniqueAdd(toTreat,secondPosition)
 	if(secondBlock.blockType in powerUps):
-		print("testing3")
-		uniqueAdd(toDelete,firstPosition)
+		uniqueAdd(toTreat,firstPosition)
 
 	firstBlock.move(utils.getTileCoords(secondPosition, self))
 	await secondBlock.move(utils.getTileCoords(firstPosition, self))
@@ -140,22 +133,22 @@ func addToMatches(positions: Array) -> void:
 		matches.append([positions.size(), positions])
 
 func getMatchesOnGrid() -> bool:
-	var thereIsAMatch: bool = !toDelete.is_empty()
+	var thereIsAMatch: bool = !toTreat.is_empty()
 	for row in height:
 		for column in width:
 			if (!emptyTile(row,column) and grid[row][column].doesMatch):
 				var blockType: String = grid[row][column].blockType
 				if(row >= 2 && !emptyTile(row-1,column) && grid[row-1][column].blockType == blockType and !emptyTile(row-2,column) && grid[row-2][column].blockType == blockType):
-					uniqueAdd(toDelete, Vector2(row-2, column))
-					uniqueAdd(toDelete, Vector2(row-1, column))
-					uniqueAdd(toDelete, Vector2(row, column))
+					uniqueAdd(toTreat, Vector2(row-2, column))
+					uniqueAdd(toTreat, Vector2(row-1, column))
+					uniqueAdd(toTreat, Vector2(row, column))
 					var positions = [Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column)]
 					addToMatches(positions)
 					thereIsAMatch = true
 				if(column >= 2 && !emptyTile(row,column-1) && grid[row][column-1].blockType == blockType and !emptyTile(row,column-2) && grid[row][column-2].blockType == blockType):
-					uniqueAdd(toDelete, Vector2(row, column-2))
-					uniqueAdd(toDelete, Vector2(row, column-1))
-					uniqueAdd(toDelete, Vector2(row, column))
+					uniqueAdd(toTreat, Vector2(row, column-2))
+					uniqueAdd(toTreat, Vector2(row, column-1))
+					uniqueAdd(toTreat, Vector2(row, column))
 					var positions = [Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column)]
 					addToMatches(positions)
 					thereIsAMatch = true
@@ -185,49 +178,39 @@ func treatBigMatches() -> void:
 			grid[i][j].nextBlock = moutonBlock
 	matches = []
 
-func triggerNeighbours() -> void:
-	var toTrigger = toDelete.duplicate()
-	var alreadyTriggered = []
-	while !toTrigger.is_empty():
-		var position: Vector2 = toTrigger.pop_front()
-		var row: int = position.x
-		var col: int = position.y
-
-		var neighbours = [Vector2(row, col), Vector2(row-1, col), Vector2(row+1, col), Vector2(row, col-1), Vector2(row, col+1)]
-		for neighbour in neighbours:
-			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
-				var block = grid[neighbour.x][neighbour.y]
-				if(block and block.hasTrigger and neighbour not in alreadyTriggered):
-					await block.trigger(toTrigger, alreadyTriggered, toDelete, neighbour)
-					uniqueAdd(alreadyTriggered, neighbour)
-
 func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
+
+	var toDelete: Array = []
+	while toTreat.size() > 0:
+		var pos = toTreat.pop_front()
+		await deleteTile(pos, toDelete)
+
 	var lastSignal: Signal
-	for position in toDelete:
-		if position in emptyTiles:
-			continue
-		var i = position.x
-		var j = position.y
-		if position in webs:
-			if(conditionDictionary.has("web")):
-				conditionDictionary["web"] +=1
-			lastSignal = get_node("web" + str(i) + str(j)).shrink()
+	var toShrink: Array = toDelete.duplicate()
+	while toShrink.size() > 0:
+		var pos = toShrink.pop_front()
+		var i: int = pos.x
+		var j: int = pos.y
+		if pos in webs:
+			var web: Web = get_node("web" + str(i) + str(j))
+			lastSignal = web.shrink()
 		else:
-			if(conditionDictionary.has(grid[i][j].blockType)):
-				conditionDictionary[grid[i][j].blockType] +=1
-			lastSignal = grid[position.x][position.y].shrink()
+			lastSignal = grid[i][j].shrink()
 	await lastSignal
 
-	for position in toDelete:
-		if position in emptyTiles:
-			continue
-		var i = position.x
-		var j = position.y
-		if position in webs:
+	while toDelete.size() > 0:
+		var pos = toDelete.pop_front()
+		var i: int = pos.x
+		var j: int = pos.y
+		if(conditionDictionary.has(grid[i][j].blockType)):
+				conditionDictionary[grid[i][j].blockType] +=1
+		if pos in webs:
+			if(conditionDictionary.has("web")):
+				conditionDictionary["web"] +=1
 			var web: Web = get_node("web" + str(i) + str(j))
 			remove_child(web)
 			web.queue_free()
-			webs.remove_at(webs.find(position))
+			webs.remove_at(webs.find(pos))
 		else:
 			remove_child(grid[i][j])
 			grid[i][j].queue_free()
@@ -236,7 +219,6 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 				grid[i][j] = grid[i][j].nextBlock
 			else:
 				grid[i][j] = null
-	toDelete = []
 	return conditionDictionary
 
 func getBlocksDown2() -> void:
@@ -287,23 +269,23 @@ func fillEmptyBlocks() -> void:
 				grid[i][j] = block
 	await lastSignal
 
-func deleteTile(position: Vector2) -> String:
-	if position in emptyTiles:
-		return ""
-	if position in toDelete:
-		toDelete.erase(position)
-	var blockType: String = grid[position.x][position.y].blockType
-	if position in webs:
-		var web = get_node("web" + str(position.x) + str(position.y))
-		await web.shrink()
-		remove_child(web)
-		web.queue_free()
-		webs.remove_at(webs.find(position))
-	else :
-		await grid[position.x][position.y].shrink()
-		remove_child(grid[position.x][position.y])
-		grid[position.x][position.y] = null
-	return blockType
+func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true) -> void:
+	if pos in emptyTiles:
+		return
+	var i = pos.x
+	var j = pos.y
+	var blockType: String = grid[i][j].blockType
+	uniqueAdd(toDelete, pos)
+
+	if(grid[i][j].hasTrigger):
+		await grid[i][j].trigger(pos, self, toDelete)
+	if(triggerNeighbours):
+		var neighbours = [Vector2(i, j), Vector2(i-1, j), Vector2(i+1, j), Vector2(i, j-1), Vector2(i, j+1)]
+		for neighbour in neighbours:
+			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
+				var block = grid[neighbour.x][neighbour.y]
+				if(block and block.hasTrigger):
+					await block.trigger(neighbour, self, toDelete)
 
 func replaceBlock(pos: Vector2, block: Block) -> void:
 	block.position = grid[pos.x][pos.y].position

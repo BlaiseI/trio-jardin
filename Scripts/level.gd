@@ -26,7 +26,6 @@ var numberMovesLeft: int
 func setLevelName(levelName: String) -> void:
 	self.levelName = levelName
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	loadParameters("res://levels/level" + levelName + ".json")
@@ -70,7 +69,6 @@ func loadParameters(filePath: String) -> void:
 	numberForCondition2 = parametersDictionary["numberForCondition2"]
 	numberMovesLeft = parametersDictionary["numberMovesLeft"]
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if state == waitInput:
 		getSlideInput()
@@ -103,7 +101,7 @@ func getSlideInput() -> void:
 func treatSlide(slideEndPos: Vector2) -> void:
 	if slideBeginPos == slideEndPos:
 		return
-	if slideBeginPos in grid.webs or slideEndPos in grid.webs:
+	if slideBeginPos in grid.webs or slideEndPos in grid.webs  or !grid.grid[slideBeginPos.x][slideBeginPos.y].moveable or !grid.grid[slideEndPos.x][slideEndPos.y].moveable:
 		await grid.shakeBlocks(slideBeginPos, slideEndPos)
 		return
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
@@ -114,14 +112,14 @@ func treatSlide(slideEndPos: Vector2) -> void:
 	else:
 		await grid.swapBlocks(slideBeginPos, slideEndPos)
 
-func treatMatches() -> void:
+func treatMatches(triggerEOT:bool = true) -> void:
 	while grid.getMatchesOnGrid():
 		await grid.treatBigMatches()
-		await grid.triggerNeighbours()
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
-	await Ronce.endOfTurn(self)
+	if triggerEOT:
+		await Ronce.endOfTurn(self)
 	if state == gameOver:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true
@@ -159,17 +157,11 @@ func getPowerUpInput() -> void:
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
 			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				state = treatPowerUp
-				var blockTypeDeleted: String = await grid.deleteTile(tileTouched)
-				if blockTypeDeleted == ConditionType1:
-					updateNumberConditions(1,0)
-				if blockTypeDeleted == ConditionType2:
-					updateNumberConditions(0,1)
+				grid.toTreat.append(tileTouched)
 				nbCarrots -= 1
 				hud.unBlackenBackground()
 				hud.updateNbCarrots(nbCarrots)
-				await grid.getBlocksDown()
-				await grid.fillEmptyBlocks()
-				await treatMatches()
+				await treatMatches(false)
 				state = waitInput
 		hud.unBlackenBackground()
 		state = waitInput

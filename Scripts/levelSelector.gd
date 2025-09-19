@@ -33,7 +33,6 @@ func loadParameters(filePath: String) -> void:
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	loadParameters("res://gameSave/save.json")
 	#saveParameters()
@@ -42,6 +41,5 @@ func update() -> void:
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		gardeningRectangle.update(actualLevel)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
