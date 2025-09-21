@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfy5364kwr0uk"]
+
+[ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_0gjea"]
+[ext_resource type="Texture2D" uid="uid://cfioeer75qta7" path="res://art/Finished/weeds/morille.png" id="2_utuok"]
+
+[node name="blockMorille" instance=ExtResource("1_0gjea")]
+blockType = "morille"
+
+[node name="Sprite2D" parent="CenterContainer/Control" index="0"]
+texture = ExtResource("2_utuok")

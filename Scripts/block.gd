@@ -5,7 +5,9 @@ static var blocks = [
 	"res://Scenes/block_chardon.tscn",
 	"res://Scenes/block_chenille.tscn",
 	"res://Scenes/block_ortie.tscn",
-	"res://Scenes/block_egopode.tscn"
+	"res://Scenes/block_egopode.tscn",
+	"res://Scenes/block_pissenlit.tscn",
+	"res://Scenes/block_morille.tscn"
 ]
 
 static var rng: RandomNumberGenerator = RandomNumberGenerator.new()

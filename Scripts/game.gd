@@ -37,7 +37,6 @@ func launchLevel(levelNumber: int) -> void:
 	levelSelector.visible = false
 
 func levelFinished(levelNumber: int, succeeded: bool) -> void:
-
 	$"HUD/hudLevel".queue_free()
 	level.queue_free()
 	if succeeded and levelNumber == levelSelector.actualLevel:
