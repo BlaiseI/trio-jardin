@@ -9,12 +9,13 @@ static var blocks = [
 	"res://Scenes/block_pissenlit.tscn",
 	"res://Scenes/block_morille.tscn"
 ]
+static var nbDifferentBlocks: int = 6
 
 static var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 static var blockId: int = 0
 
 static func createRandomBlock() -> Block:
-	var block: Block = load(blocks[rng.randi_range(0, blocks.size()-1)]).instantiate()
+	var block: Block = load(blocks[rng.randi() % nbDifferentBlocks]).instantiate()
 	block.name = block.name + str(blockId)
 	blockId += 1
 	return block

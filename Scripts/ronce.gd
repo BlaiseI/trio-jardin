@@ -13,7 +13,6 @@ func _ready() -> void:
 	moveable = false
 
 func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> void:
-	print("ronce deleted in tile " + str(gridPos.x) + str(gridPos.y))
 	if blockTriggered:
 		return
 	blockTriggered = true

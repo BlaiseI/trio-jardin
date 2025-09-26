@@ -32,6 +32,8 @@ func _ready() -> void:
 	updateParametersInHUD()
 	grid.initGrid()
 	state = waitInput
+	#print($"TopBannerBackground/numberBackground1".z_index)
+	print($"../HUD/hudLevel/WinningConditions/Condition1".z_index)
 
 func updateParametersInHUD() -> void:
 	hud.updateNbCarrots(nbCarrots)
@@ -62,6 +64,7 @@ func loadParameters(filePath: String) -> void:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		Ronce.roncesPositions.append(positionVector)
 
+	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
 	nbCarrots = parametersDictionary["nbCarrots"]
 	ConditionType1 = parametersDictionary["ConditionType1"]
 	ConditionType2 = parametersDictionary["ConditionType2"]
