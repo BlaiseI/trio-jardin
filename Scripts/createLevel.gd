@@ -7,6 +7,7 @@ func createLevel() -> void:
 		"gridEmptyTiles":[],
 		"gridWebs" : [],
 		"gridRonce" : [],
+		"gridLierre" : [],
 		"nbDifferentBlocks":4,
 		"nbCarrots":1,
 		"ConditionType1":"Chardon",

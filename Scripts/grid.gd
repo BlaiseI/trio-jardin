@@ -10,6 +10,9 @@ var state
 @export var yStart: int
 @export var offset: int
 
+
+static var classesToInit = [Ronce, Lierre]
+
 var width: int
 var height: int
 var emptyTiles : PackedVector2Array
@@ -59,7 +62,8 @@ func fillGrid() -> void:
 				web.position = utils.getTileCoords(Vector2(i,j), self)
 				web.name = "web" + str(i) + str(j)
 				add_child(web)
-	Ronce.init(self)
+	for _class in classesToInit:
+		_class.init(self)
 
 func createNonMatchingBlock(row: int, column: int) -> Block:
 	var block: Block

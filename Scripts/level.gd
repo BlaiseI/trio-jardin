@@ -11,6 +11,8 @@ var currentPowerUp
 
 @export var levelName = "1"
 
+static var classesEOT = [Ronce, Lierre]
+
 var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
@@ -32,8 +34,6 @@ func _ready() -> void:
 	updateParametersInHUD()
 	grid.initGrid()
 	state = waitInput
-	#print($"TopBannerBackground/numberBackground1".z_index)
-	print($"../HUD/hudLevel/WinningConditions/Condition1".z_index)
 
 func updateParametersInHUD() -> void:
 	hud.updateNbCarrots(nbCarrots)
@@ -63,6 +63,10 @@ func loadParameters(filePath: String) -> void:
 	for positionString: String in parametersDictionary["gridRonce"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		Ronce.roncesPositions.append(positionVector)
+	Lierre.lierrePositions = []
+	for positionString: String in parametersDictionary["gridLierre"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		Lierre.lierrePositions.append(positionVector)
 
 	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
 	nbCarrots = parametersDictionary["nbCarrots"]
@@ -122,7 +126,8 @@ func treatMatches(triggerEOT:bool = true) -> void:
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
 	if triggerEOT:
-		await Ronce.endOfTurn(self)
+		for _class in classesEOT:
+			await _class.endOfTurn(self)
 	if state == gameOver:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true
