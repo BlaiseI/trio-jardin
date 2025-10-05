@@ -55,6 +55,10 @@ func loadParameters(filePath: String) -> void:
 	for positionString: String in parametersDictionary["gridEmptyTiles"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		grid.emptyTiles.append(positionVector)
+	grid.fixedBlocks = []
+	for fixedBlock: Array in parametersDictionary["fixedBlocks"]:
+		fixedBlock[0] = str_to_var("Vector2" + fixedBlock[0])
+		grid.fixedBlocks.append(fixedBlock)
 	grid.webs = []
 	for positionString: String in parametersDictionary["gridWebs"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)

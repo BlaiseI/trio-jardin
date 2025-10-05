@@ -2,7 +2,8 @@ class_name HUDLevel
 extends CanvasLayer
 
 var level:Level
-var conditionTexturePaths: Dictionary = {"chardon": "res://art/Finished/weeds/chardon60.png",
+var conditionTexturePaths: Dictionary = {
+	"chardon": "res://art/Finished/weeds/chardon60.png",
  	"chenille": "res://art/Finished/weeds/chenille60.png",
 	"egopode": "res://art/Finished/weeds/egopode60.png",
 	"ortie": "res://art/Finished/weeds/ortie60.png",

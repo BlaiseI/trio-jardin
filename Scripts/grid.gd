@@ -16,6 +16,7 @@ static var classesToInit = [Ronce, Lierre]
 var width: int
 var height: int
 var emptyTiles : PackedVector2Array
+var fixedBlocks = []
 var webs : PackedVector2Array
 var toTreat = []
 var matches = []
@@ -26,7 +27,7 @@ var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 var webPreload = preload("res://Scenes/web.tscn")
-var firecrakerPreload = preload("res://Scenes/firecracker.tscn")
+var firecrakerPreload = preload("res://Scenes/block_firecracker.tscn")
 var moutonPreload = preload("res://Scenes/block_mouton.tscn")
 
 var buttonReleasedAfterCarrot = false
@@ -62,6 +63,10 @@ func fillGrid() -> void:
 				web.position = utils.getTileCoords(Vector2(i,j), self)
 				web.name = "web" + str(i) + str(j)
 				add_child(web)
+	for fixedBlock in fixedBlocks:
+		match fixedBlock:
+			[var coords, var blockType]:
+				replaceBlock(coords, Block.createBlock(blockType))
 	for _class in classesToInit:
 		_class.init(self)
 

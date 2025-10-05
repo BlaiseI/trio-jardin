@@ -20,6 +20,13 @@ static func createRandomBlock() -> Block:
 	blockId += 1
 	return block
 
+static func createBlock(blockType: String) -> Block:
+	var blockScenePath = "res://Scenes/block_" + blockType + ".tscn"
+	var block: Block = load(blockScenePath).instantiate()
+	block.name = block.name + str(blockId)
+	blockId += 1
+	return block
+
 @export var blockType: String
 var partOfMatch: bool = false
 var doesMatch = true
