@@ -8,6 +8,7 @@ extends Node2D
 @export var offset: int
 @export var levelName: String = "1"
 var grid = []
+var gridCadres = []
 var webs = []
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 var webPreload = preload("res://Scenes/web.tscn")
@@ -65,11 +66,14 @@ func getTilePositionFromCoords(coords: Vector2) -> Vector2:
 	return Vector2(floor((coords.y - yStart)/offset), floor((coords.x - xStart)/offset))
 
 func createEmptyGrid() -> void:
+	for cadre in gridCadres:
+		remove_child(cadre)
 	for i in height:
 		grid.append([])
 		for j in width:
 			grid[i].append(null)
 			var cadre: Block = cadrePreload.instantiate()
+			gridCadres.append(cadre)
 			add_child(cadre)
 			cadre.position = getTileCoords(Vector2(i,j))
 
@@ -99,3 +103,33 @@ func _process(delta: float) -> void:
 				remove_child(grid[tileTouched.x][tileTouched.y])
 			grid[tileTouched.x][tileTouched.y] = block
 			add_child(block)
+
+func treatInput(type: String) -> void:
+	if type.contains("height"):
+		if type.contains("add"):
+			height += 1
+			$"HeightSelect/Number".text = str(height)
+			createEmptyGrid()
+		if type.contains("sub"):
+			height -= 1
+			$"HeightSelect/Number".text = str(height)
+			createEmptyGrid()
+	if type.contains("width"):
+		if type.contains("add"):
+			width += 1
+			$"WidthSelect/Number".text = str(width)
+			createEmptyGrid()
+		if type.contains("sub"):
+			width -= 1
+			$"WidthSelect/Number".text = str(width)
+			createEmptyGrid()
+	if type.contains("level"):
+		print("level")
+		if type.contains("add"):
+			print("add")
+			levelName = str(int(levelName)+1)
+			$"LevelSelect/Number".text = levelName
+			print($"LevelSelect/Number".text)
+		if type.contains("sub"):
+			levelName = str(int(levelName)-1)
+			$"LevelSelect/Number".text = levelName

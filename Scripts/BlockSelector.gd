@@ -28,7 +28,7 @@ func _ready() -> void:
 	texture_normal = load(blockTexturePaths[blockType])
 	if(blockType == "ortie"):
 		scale = Vector2(0.6, 0.6)
-	changeSelected.connect($"..".changeSelectedBlock)
+	changeSelected.connect($"../..".changeSelectedBlock)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
