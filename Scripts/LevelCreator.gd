@@ -23,13 +23,98 @@ var nbDifferentBlocks: int = 4
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	createEmptyGrid()
+	loadParameters("res://levels/level" + levelName + ".json")
 	var cadre = cadrePreload.instantiate()
 	cadre.name = "cadre"
 	cadre.position = Vector2(49,89)
 	#cadre.find_child("Sprite2D").zIndex = -1
 	cadre.z_index = -1
 	add_child(cadre)
+
+func updateCondition1(selectedBlock: String) -> void:
+	var block
+	if(selectedBlock == "web"):
+		block = webPreload.instantiate()
+	else:
+		block = Block.createBlock(selectedBlock)
+	block.position = Vector2(400, 890)
+	block.name = "condition1"
+	var last_block = find_child("condition1", true, false)
+	if(last_block):
+		remove_child(last_block)
+	add_child(block)
+
+func updateCondition2(selectedBlock: String) -> void:
+	var block
+	if(selectedBlock == "null"):
+		return
+	if(selectedBlock == "web"):
+		block = webPreload.instantiate()
+	else:
+		block = Block.createBlock(selectedBlock)
+	block.position = Vector2(510, 890)
+	block.name = "condition2"
+	var last_block = find_child("condition2", true, false)
+	if(last_block):
+		remove_child(last_block)
+	add_child(block)
+
+func loadParameters(filePath: String) -> void:
+	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
+	var paramsJSONString = saveFile.get_line()
+	var paramsJSON = JSON.new()
+	paramsJSON.parse(paramsJSONString)
+	var parametersDictionary: Dictionary = paramsJSON.data
+	height = parametersDictionary["gridHeight"]
+	width = parametersDictionary["gridWidth"]
+	createEmptyGrid()
+	for positionString: String in parametersDictionary["gridEmptyTiles"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		var block = Block.createBlock("empty")
+		block.position = getTileCoords(positionVector)
+		grid[positionVector.x][positionVector.y] = block
+		add_child(block)
+	for fixedBlock: Array in parametersDictionary["fixedBlocks"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + fixedBlock[0])
+		var block = Block.createBlock(fixedBlock[1])
+		block.position = getTileCoords(positionVector)
+		grid[positionVector.x][positionVector.y] = block
+		add_child(block)
+	for positionString: String in parametersDictionary["gridWebs"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		var block = webPreload.instantiate()
+		block.position = getTileCoords(positionVector)
+		grid[positionVector.x][positionVector.y] = block
+		add_child(block)
+	for positionString: String in parametersDictionary["gridRonce"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		var block = Block.createBlock("ronce")
+		block.position = getTileCoords(positionVector)
+		grid[positionVector.x][positionVector.y] = block
+		add_child(block)
+	for positionString: String in parametersDictionary["gridLierre"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		var block = Block.createBlock("lierre")
+		block.position = getTileCoords(positionVector)
+		grid[positionVector.x][positionVector.y] = block
+		add_child(block)
+
+	nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
+	condition1= parametersDictionary["ConditionType1"]
+	updateCondition1(condition1)
+	condition2 = parametersDictionary["ConditionType2"]
+	updateCondition2(condition2)
+	numberForCondition1 = parametersDictionary["numberForCondition1"]
+	numberForCondition2 = parametersDictionary["numberForCondition2"]
+	nbMovesLeft = parametersDictionary["numberMovesLeft"]
+
+	$"HeightSelect/Number".text = str(height)
+	$"WidthSelect/Number".text = str(width)
+	$"LevelSelect/Number".text = levelName
+	$"NbMovesLeftSelect/Number".text = str(nbMovesLeft)
+	$"Condition1Select/Number".text = str(numberForCondition1)
+	$"Condition2Select/Number".text = str(numberForCondition2)
+	$"DifBlockSelect/Number".text = str(nbDifferentBlocks)
 
 func getTileCoords(position: Vector2) -> Vector2:
 	var xCoord: int = xStart+30 + (position.y*offset)
@@ -75,6 +160,9 @@ func getTilePositionFromCoords(coords: Vector2) -> Vector2:
 func createEmptyGrid() -> void:
 	for cadre in gridCadres:
 		remove_child(cadre)
+	for row in grid:
+		for elem in row:
+				remove_child(elem)
 	for i in height:
 		grid.append([])
 		for j in width:
@@ -108,13 +196,18 @@ func isInCondition2(coords: Vector2) -> bool:
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_touch"):
 		var touchCoords: Vector2 = get_global_mouse_position()
-		print(touchCoords)
 		if isInGrid(touchCoords):
 			var tileTouched: Vector2 = getTilePositionFromCoords(touchCoords)
+			if selectedBlock == "null":
+				if(grid[tileTouched.x][tileTouched.y]):
+					remove_child(grid[tileTouched.x][tileTouched.y])
+					grid[tileTouched.x][tileTouched.y] = null
+				return
 			var block
 			if(selectedBlock == "web"):
 				block = webPreload.instantiate()
 			else:
+				print(selectedBlock)
 				block = Block.createBlock(selectedBlock)
 			block.position = getTileCoords(tileTouched)
 			if(grid[tileTouched.x][tileTouched.y]):
@@ -122,63 +215,34 @@ func _process(delta: float) -> void:
 			grid[tileTouched.x][tileTouched.y] = block
 			add_child(block)
 		elif isInCondition1(touchCoords):
-			print("in condition 1")
-			var block
-			if(selectedBlock == "web"):
-				block = webPreload.instantiate()
-			else:
-				block = Block.createBlock(selectedBlock)
-			block.position = Vector2(400,890)
-			block.name = "condition1"
-			var last_block = find_child("condition1", true, false)
-			if(last_block):
-				remove_child(last_block)
-			add_child(block)
+			updateCondition1(selectedBlock)
 			condition1 = selectedBlock
 		elif isInCondition2(touchCoords):
-			print("in condition 2")
-			var block
-			if(selectedBlock == "web"):
-				block = webPreload.instantiate()
-			else:
-				block = Block.createBlock(selectedBlock)
-			block.position = Vector2(510, 890)
-			block.name = "condition2"
-			var last_block = find_child("condition2", true, false)
-			if(last_block):
-				remove_child(last_block)
-			add_child(block)
+			updateCondition2(selectedBlock)
 			condition2 = selectedBlock
 
 func treatInput(type: String) -> void:
 	if type.contains("height"):
 		if type.contains("add"):
 			height += 1
-			$"HeightSelect/Number".text = str(height)
-			createEmptyGrid()
 		if type.contains("sub"):
 			height -= 1
-			$"HeightSelect/Number".text = str(height)
-			createEmptyGrid()
+		$"HeightSelect/Number".text = str(height)
+		createEmptyGrid()
 	if type.contains("width"):
 		if type.contains("add"):
 			width += 1
-			$"WidthSelect/Number".text = str(width)
-			createEmptyGrid()
 		if type.contains("sub"):
 			width -= 1
-			$"WidthSelect/Number".text = str(width)
-			createEmptyGrid()
+		$"WidthSelect/Number".text = str(width)
+		createEmptyGrid()
 	if type.contains("level"):
-		print("level")
 		if type.contains("add"):
-			print("add")
 			levelName = str(int(levelName)+1)
-			$"LevelSelect/Number".text = levelName
-			print($"LevelSelect/Number".text)
 		if type.contains("sub"):
 			levelName = str(int(levelName)-1)
-			$"LevelSelect/Number".text = levelName
+		$"LevelSelect/Number".text = levelName
+		loadParameters("res://levels/level" + levelName + ".json")
 	if type.contains("moves"):
 		if type.contains("add"):
 			nbMovesLeft += 1

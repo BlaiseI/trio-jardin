@@ -13,7 +13,8 @@ static var blockTexturePaths: Dictionary = {
 	"ronce": "res://art/Finished/obstacles/ronceMoche.png",
 	"lierre": "res://art/Finished/obstacles/lierreMoche.png",
 	"mouton": "res://art/Finished/power-ups/mouton1.png",
-	"empty": "res://art/Finished/weeds/empty.png"
+	"empty": "res://art/Finished/weeds/empty.png",
+	"null" : "res://art/Finished/LevelCreator/null.png"
 }
 
 @export var blockType: String

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://8e8du5xmixa0"]
+[gd_scene load_steps=9 format=3 uid="uid://8e8du5xmixa0"]
 
 [ext_resource type="Script" path="res://Scripts/LevelCreator.gd" id="1_y1y6h"]
 [ext_resource type="Texture2D" uid="uid://c6i3kfiabx6v3" path="res://art/Finished/level background/gridContainer.png" id="2_mn7si"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="4_3ebx4"]
 [ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/LevelCreator/up.png" id="4_vptl4"]
 [ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/LevelCreator/down.png" id="5_kirta"]
+[ext_resource type="Texture2D" uid="uid://d10hj0g1o3lpd" path="res://art/Finished/LevelCreator/null.png" id="6_5am8q"]
 
 [node name="LevelCreator" type="Node2D"]
 script = ExtResource("1_y1y6h")
@@ -145,6 +146,15 @@ offset_right = 449.0
 offset_bottom = 206.0
 blockType = "mouton"
 
+[node name="erase" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+offset_left = 247.0
+offset_top = 5.0
+offset_right = 262.0
+offset_bottom = 15.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("6_5am8q")
+blockType = "null"
+
 [node name="Empty" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
 layout_mode = 2
 offset_left = 478.0
@@ -272,9 +282,9 @@ offset_bottom = 40.0
 
 [node name="Number" type="Label" parent="Condition1Select"]
 layout_mode = 0
-offset_left = 378.0
+offset_left = 365.0
 offset_top = 929.0
-offset_right = 410.0
+offset_right = 404.0
 offset_bottom = 952.0
 scale = Vector2(2, 2)
 text = "0
@@ -285,16 +295,16 @@ layout_mode = 0
 offset_left = 403.0
 offset_top = 934.0
 offset_right = 418.0
-offset_bottom = 949.0
+offset_bottom = 943.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("4_vptl4")
 
 [node name="Substract" type="TextureButton" parent="Condition1Select"]
 layout_mode = 0
-offset_left = 403.0
-offset_top = 948.0
-offset_right = 418.0
-offset_bottom = 963.0
+offset_left = 404.0
+offset_top = 956.0
+offset_right = 419.0
+offset_bottom = 965.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("5_kirta")
 
@@ -306,9 +316,9 @@ offset_bottom = 40.0
 
 [node name="Number" type="Label" parent="Condition2Select"]
 layout_mode = 0
-offset_left = 491.0
+offset_left = 478.0
 offset_top = 930.0
-offset_right = 523.0
+offset_right = 517.0
 offset_bottom = 953.0
 scale = Vector2(2, 2)
 text = "0
@@ -319,16 +329,16 @@ layout_mode = 0
 offset_left = 516.0
 offset_top = 935.0
 offset_right = 531.0
-offset_bottom = 950.0
+offset_bottom = 944.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("4_vptl4")
 
 [node name="Substract" type="TextureButton" parent="Condition2Select"]
 layout_mode = 0
-offset_left = 516.0
-offset_top = 949.0
-offset_right = 531.0
-offset_bottom = 964.0
+offset_left = 517.0
+offset_top = 957.0
+offset_right = 532.0
+offset_bottom = 966.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("5_kirta")
 
@@ -340,9 +350,9 @@ offset_bottom = 40.0
 
 [node name="Number" type="Label" parent="NbMovesLeftSelect"]
 layout_mode = 0
-offset_left = 279.0
+offset_left = 270.0
 offset_top = 930.0
-offset_right = 311.0
+offset_right = 302.0
 offset_bottom = 953.0
 scale = Vector2(2, 2)
 theme_override_colors/font_color = Color(0.85098, 0.34902, 0.121569, 1)
@@ -354,16 +364,16 @@ layout_mode = 0
 offset_left = 318.0
 offset_top = 935.0
 offset_right = 333.0
-offset_bottom = 950.0
+offset_bottom = 944.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("4_vptl4")
 
 [node name="Substract" type="TextureButton" parent="NbMovesLeftSelect"]
 layout_mode = 0
-offset_left = 318.0
-offset_top = 949.0
-offset_right = 333.0
-offset_bottom = 964.0
+offset_left = 319.0
+offset_top = 957.0
+offset_right = 334.0
+offset_bottom = 966.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("5_kirta")
 
