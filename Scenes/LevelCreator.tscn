@@ -147,6 +147,7 @@ offset_bottom = 206.0
 blockType = "mouton"
 
 [node name="erase" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 0
 offset_left = 247.0
 offset_top = 5.0
 offset_right = 262.0
