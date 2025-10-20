@@ -92,11 +92,12 @@ func loadParameters(filePath: String) -> void:
 		block.position = getTileCoords(positionVector)
 		grid[positionVector.x][positionVector.y] = block
 		add_child(block)
-	for positionString: String in parametersDictionary["gridLierre"]:
-		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+	for lierreInfo: Array in parametersDictionary["gridLierre"]:
+		lierreInfo[0] = str_to_var("Vector2" + lierreInfo[0])
 		var block = Block.createBlock("lierre")
-		block.position = getTileCoords(positionVector)
-		grid[positionVector.x][positionVector.y] = block
+		block.layers = lierreInfo[1]
+		block.position = getTileCoords(lierreInfo[0])
+		grid[lierreInfo[0].x][lierreInfo[0].y] = block
 		add_child(block)
 
 	nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
@@ -149,7 +150,7 @@ func saveLevel() -> void:
 			elif(grid[i][j].blockType == "ronce"):
 				parametersDictionary["gridRonce"].append(Vector2(i,j))
 			elif(grid[i][j].blockType == "lierre"):
-				parametersDictionary["gridLierre"].append(Vector2(i,j))
+				parametersDictionary["gridLierre"].append([Vector2(i,j),grid[i][j].layers])
 			else:
 				parametersDictionary["fixedBlocks"].append([Vector2(i,j), grid[i][j].blockType])
 	Level.saveParameters(parametersDictionary, levelName)
@@ -158,6 +159,7 @@ func getTilePositionFromCoords(coords: Vector2) -> Vector2:
 	return Vector2(floor((coords.y - yStart)/offset), floor((coords.x - xStart)/offset))
 
 func createEmptyGrid() -> void:
+	grid = []
 	for cadre in gridCadres:
 		remove_child(cadre)
 	for row in grid:
@@ -206,8 +208,18 @@ func _process(delta: float) -> void:
 			var block
 			if(selectedBlock == "web"):
 				block = webPreload.instantiate()
+			elif(selectedBlock == "lierre"):
+				var currentBlock = grid[tileTouched.x][tileTouched.y]
+				if (currentBlock and currentBlock.blockType == "lierre"):
+					if currentBlock.layers < 3:
+						block = Block.createBlock(selectedBlock)
+						block.layers = currentBlock.layers + 1
+					else:
+						return
+				else:
+					block = Block.createBlock(selectedBlock)
+					block.layers = 1
 			else:
-				print(selectedBlock)
 				block = Block.createBlock(selectedBlock)
 			block.position = getTileCoords(tileTouched)
 			if(grid[tileTouched.x][tileTouched.y]):
@@ -271,3 +283,20 @@ func treatInput(type: String) -> void:
 		if type.contains("sub"):
 			nbDifferentBlocks -= 1
 			$"DifBlockSelect/Number".text = str(nbDifferentBlocks)
+
+func printGrid() -> void:
+	var toPrint: String = ""
+	toPrint += "["
+	for row in grid:
+		toPrint += "["
+		for elem in row :
+			if(elem):
+				if(elem is Web):
+					toPrint += "web, "
+				else:
+					toPrint += elem.blockType + ", "
+			else:
+				toPrint += "null, "
+		toPrint += "]"
+	toPrint += "]"
+	print(toPrint)

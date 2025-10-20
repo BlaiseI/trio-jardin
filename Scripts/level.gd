@@ -67,10 +67,10 @@ func loadParameters(filePath: String) -> void:
 	for positionString: String in parametersDictionary["gridRonce"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		Ronce.roncesPositions.append(positionVector)
-	Lierre.lierrePositions = []
-	for positionString: String in parametersDictionary["gridLierre"]:
-		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
-		Lierre.lierrePositions.append(positionVector)
+	Lierre.lierresInfo = []
+	for lierreInfo: Array in parametersDictionary["gridLierre"]:
+		lierreInfo[0] = str_to_var("Vector2" + lierreInfo[0])
+		Lierre.lierresInfo.append(lierreInfo)
 
 	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
 	nbCarrots = parametersDictionary["nbCarrots"]

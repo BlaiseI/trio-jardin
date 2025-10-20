@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0rypo262y2mk"]
 
-[ext_resource type="Script" path="res://Scripts/lierre.gd" id="1_52mny"]
-[ext_resource type="Texture2D" uid="uid://rql2j2ayyigg" path="res://art/Finished/weeds/empty.png" id="2_6ux8p"]
+[ext_resource type="Script" path="res://Scripts/block.gd" id="1_imx3e"]
+[ext_resource type="Texture2D" uid="uid://cqki3yi0u5bcx" path="res://art/Finished/weeds/empty.png" id="2_6ux8p"]
 
 [node name="blockEmpty" type="Node2D"]
-script = ExtResource("1_52mny")
+script = ExtResource("1_imx3e")
 blockType = "empty"
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
