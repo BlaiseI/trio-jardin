@@ -33,6 +33,11 @@ func _ready() -> void:
 
 func updateCondition1(selectedBlock: String) -> void:
 	var block
+	if(selectedBlock == "null"):
+		var last_block = find_child("condition1", true, false)
+		if(last_block):
+			remove_child(last_block)
+		return
 	if(selectedBlock == "web"):
 		block = webPreload.instantiate()
 	else:
@@ -47,6 +52,9 @@ func updateCondition1(selectedBlock: String) -> void:
 func updateCondition2(selectedBlock: String) -> void:
 	var block
 	if(selectedBlock == "null"):
+		var last_block = find_child("condition2", true, false)
+		if(last_block):
+			remove_child(last_block)
 		return
 	if(selectedBlock == "web"):
 		block = webPreload.instantiate()
@@ -60,6 +68,12 @@ func updateCondition2(selectedBlock: String) -> void:
 	add_child(block)
 
 func loadParameters(filePath: String) -> void:
+	print("")
+	print("")
+	print("")
+	for block in find_children("block*", "", true, false):
+		print(block.name)
+		remove_child(block)
 	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
 	var paramsJSONString = saveFile.get_line()
 	var paramsJSON = JSON.new()
@@ -83,6 +97,8 @@ func loadParameters(filePath: String) -> void:
 	for positionString: String in parametersDictionary["gridWebs"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		var block = webPreload.instantiate()
+		block.name = "blockWeb" + str(Block.blockId)
+		Block.blockId += 1
 		block.position = getTileCoords(positionVector)
 		grid[positionVector.x][positionVector.y] = block
 		add_child(block)
@@ -208,6 +224,8 @@ func _process(delta: float) -> void:
 			var block
 			if(selectedBlock == "web"):
 				block = webPreload.instantiate()
+				block.name = "blockWeb" + str(Block.blockId)
+				Block.blockId += 1
 			elif(selectedBlock == "lierre"):
 				var currentBlock = grid[tileTouched.x][tileTouched.y]
 				if (currentBlock and currentBlock.blockType == "lierre"):

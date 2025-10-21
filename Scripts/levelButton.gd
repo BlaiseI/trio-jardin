@@ -19,4 +19,5 @@ func _ready() -> void:
 		$Button.disabled = true
 
 func _on_button_pressed() -> void:
+	print(correspondingLevel)
 	pressedSignal.emit(correspondingLevel)

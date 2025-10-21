@@ -6,7 +6,7 @@ var levelButtonTemplate = preload("res://Scenes/LevelButton.tscn")
 var actualLevel: int
 var firstLevel: int
 var nbLevels: int
-var offset: Vector2 = Vector2(15, 20)
+var offset: Vector2 = Vector2(15, 10)
 
 func _ready() -> void:
 	for i in range(nbLevels):
@@ -14,8 +14,10 @@ func _ready() -> void:
 		levelButton.position = offset + Vector2((i%2)*120, (i/2)*70)
 		levelButton.actualLevel = actualLevel
 		levelButton.correspondingLevel = firstLevel + i
-		levelButton.pressedSignal.connect($"../../..".launchLevel)
+		levelButton.pressedSignal.connect($"../..".launchLevel)
 		add_child(levelButton)
+		print(actualLevel)
+		print(levelButton.get_z_index())
 
 func spawn() -> Signal:
 	self.scale = Vector2(0.1,0.1)

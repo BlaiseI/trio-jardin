@@ -283,7 +283,6 @@ func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true) -
 		return
 	var i = pos.x
 	var j = pos.y
-	var blockType: String = grid[i][j].blockType
 	uniqueAdd(toDelete, pos)
 
 	if(grid[i][j].hasTrigger):
