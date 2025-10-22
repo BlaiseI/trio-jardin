@@ -141,6 +141,54 @@ func addToMatches(positions: Array) -> void:
 	else :
 		matches.append([positions.size(), positions])
 
+func canMatch(row, column) -> bool:
+	return (row >= 0 and row < height and column >= 0 and column < width and !emptyTile(row,column) and grid[row][column].doesMatch)
+
+func shuffle() -> void:
+	var lastSignal: Signal
+	for row in height:
+		for column in width:
+			if (canMatch(row, column)):
+				lastSignal = grid[row][column].shrink()
+	await lastSignal
+	for row in height:
+		for column in width:
+			if (canMatch(row, column)):
+				remove_child(grid[row][column])
+				grid[row][column].queue_free()
+				var block:Node = createNonMatchingBlock(row, column)
+				block.position = utils.getTileCoords(Vector2(row,column), self)
+				add_child(block)
+				lastSignal = block.spawn()
+				grid[row][column] = block
+	await lastSignal
+
+func enforcePossibleMatches() -> void:
+	for row in height:
+		for column in width:
+			if (canMatch(row, column)):
+				var matchingType = grid[row][column].blockType
+				if(canMatch(row-1, column) and grid[row-1][column].blockType == matchingType):
+					if(canMatch(row-3, column) and grid[row-3][column].blockType == matchingType
+					or canMatch(row-2, column-1) and grid[row-2][column-1].blockType == matchingType
+					or canMatch(row-2, column+1) and grid[row-2][column+1].blockType == matchingType
+					or canMatch(row+1, column-1) and grid[row+1][column-1].blockType == matchingType
+					or canMatch(row+1, column+1) and grid[row+1][column+1].blockType == matchingType
+					or canMatch(row+2, column) and grid[row+2][column].blockType == matchingType):
+						return
+				if(canMatch(row, column-1) and grid[row][column-1].blockType == matchingType):
+					if(canMatch(row, column-3) and grid[row][column-3].blockType == matchingType
+					or canMatch(row-1, column-2) and grid[row-1][column-2].blockType == matchingType
+					or canMatch(row+1, column-2) and grid[row+1][column-2].blockType == matchingType
+					or canMatch(row-1, column+1) and grid[row-1][column+1].blockType == matchingType
+					or canMatch(row+1, column+1) and grid[row+1][column+1].blockType == matchingType
+					or canMatch(row, column+2) and grid[row][column+2].blockType == matchingType):
+						return
+	await $"..".displayShuffle()
+	await shuffle()
+	await enforcePossibleMatches()
+
+
 func getMatchesOnGrid() -> bool:
 	var thereIsAMatch: bool = !toTreat.is_empty()
 	for row in height:

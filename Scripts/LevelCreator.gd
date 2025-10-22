@@ -68,11 +68,7 @@ func updateCondition2(selectedBlock: String) -> void:
 	add_child(block)
 
 func loadParameters(filePath: String) -> void:
-	print("")
-	print("")
-	print("")
 	for block in find_children("block*", "", true, false):
-		print(block.name)
 		remove_child(block)
 	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
 	var paramsJSONString = saveFile.get_line()

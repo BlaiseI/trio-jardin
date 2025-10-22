@@ -10,7 +10,6 @@
 
 [node name="levelScene" type="Node2D"]
 script = ExtResource("9_f3jec")
-levelName = null
 
 [node name="GridBackground" type="TextureRect" parent="."]
 offset_top = 192.0

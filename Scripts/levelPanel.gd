@@ -16,8 +16,6 @@ func _ready() -> void:
 		levelButton.correspondingLevel = firstLevel + i
 		levelButton.pressedSignal.connect($"../..".launchLevel)
 		add_child(levelButton)
-		print(actualLevel)
-		print(levelButton.get_z_index())
 
 func spawn() -> Signal:
 	self.scale = Vector2(0.1,0.1)

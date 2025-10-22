@@ -1,7 +1,7 @@
 class_name Level
 extends Node2D
 
-enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver}
+enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver, shuffle}
 var state
 enum{carrot}
 var currentPowerUp
@@ -33,6 +33,7 @@ func _ready() -> void:
 	loadParameters("res://levels/level" + levelName + ".json")
 	updateParametersInHUD()
 	grid.initGrid()
+	await grid.enforcePossibleMatches()
 	state = waitInput
 
 func updateParametersInHUD() -> void:
@@ -143,7 +144,14 @@ func treatMatches(triggerEOT:bool = true) -> void:
 		get_tree().paused = true
 		await get_tree().create_timer(2).timeout
 		get_parent().levelFinished(int(levelName), false)
+	await grid.enforcePossibleMatches()
 	return
+
+func displayShuffle() -> void:
+	state = shuffle
+	hud.updateGameOverMessage("Shuffle !")
+	await get_tree().create_timer(1).timeout
+	hud.updateGameOverMessage("")
 
 func deleteMatches() -> void:
 	var conditionDictionary: Dictionary = {ConditionType1: 0, ConditionType2: 0}

@@ -21,7 +21,6 @@ func _process(delta: float) -> void:
 	pass
 
 func launchLevel(levelNumber: int) -> void:
-	print(levelNumber)
 	level = levelTemplate.instantiate()
 	level.setLevelName(str(levelNumber))
 	level.name = "level"

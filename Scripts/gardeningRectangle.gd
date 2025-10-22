@@ -70,8 +70,6 @@ func _onButtonPressed() -> void:
 		levelPanel.firstLevel = firstLevel
 		levelPanel.nbLevels = nbLevels
 		levelPanel.position = (Vector2(576, 1024) - levelPanel.size)/2
-		print(levelPanel.position)
-		print(DisplayServer.screen_get_size())
 		levelPanel.z_index = 1
 		levelPanel.name = "levelPanel"
 		$"../".add_child(levelPanel)
