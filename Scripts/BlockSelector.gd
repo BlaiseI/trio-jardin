@@ -1,7 +1,7 @@
 class_name BlockSelector
 extends TextureButton
 
-static var blockTexturePaths: Dictionary = {
+const blockTexturePaths: Dictionary = {
 	"chardon": "res://art/Finished/weeds/chardon60.png",
  	"chenille": "res://art/Finished/weeds/chenille60.png",
 	"egopode": "res://art/Finished/weeds/egopode60.png",

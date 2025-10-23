@@ -2,8 +2,12 @@ class_name Lierre
 extends Block
 
 static var lierresInfo = []
-static var lierrePreload = preload("res://Scenes/block_lierre.tscn")
-static var lierreTextures = [
+
+func clear() -> void:
+	lierresInfo = []
+
+const lierrePreload = preload("res://Scenes/block_lierre.tscn")
+const lierreTextures = [
 	preload("res://art/Finished/obstacles/lierre1.png"),
 	preload("res://art/Finished/obstacles/lierre2.png"),
 	preload("res://art/Finished/obstacles/lierre3.png")

@@ -1,7 +1,7 @@
 class_name Block
 extends Node2D
 
-static var blocks = [
+const blocks = [
 	"res://Scenes/block_chardon.tscn",
 	"res://Scenes/block_chenille.tscn",
 	"res://Scenes/block_ortie.tscn",

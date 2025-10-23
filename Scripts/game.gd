@@ -3,6 +3,7 @@ extends Node2D
 const levelSelectorTemplate = preload("res://Scenes/LevelSelector.tscn")
 const levelTemplate = preload("res://Scenes/level_scene.tscn")
 const hudLevelTemplate = preload("res://Scenes/HUDLevel.tscn")
+var classesToClear = [Ronce, Lierre]
 
 
 var levelSelector: LevelSelector
@@ -44,4 +45,6 @@ func levelFinished(levelNumber: int, succeeded: bool) -> void:
 		levelSelector.update()
 	levelSelector.visible = true
 	levelSelector.saveParameters()
+	for _class in classesToClear:
+		_class.clear()
 	get_tree().paused = false

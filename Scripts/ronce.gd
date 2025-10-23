@@ -3,7 +3,12 @@ extends Block
 
 static var triggered = false
 static var roncesPositions = []
-static var roncePreload = preload("res://Scenes/block_ronce.tscn")
+
+func clear() -> void:
+	triggered = false
+	roncesPositions = []
+
+const roncePreload = preload("res://Scenes/block_ronce.tscn")
 
 var blockTriggered = false
 
