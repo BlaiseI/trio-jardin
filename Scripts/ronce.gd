@@ -45,11 +45,7 @@ static func endOfTurn(level: Level) -> void:
 		grid.replaceBlock(freeSpot, roncePreload.instantiate())
 		grid.grid[freeSpot.x][freeSpot.y].spawn()
 		roncesPositions.append(freeSpot)
-	if(level.ConditionType1 == "ronce"):
-		level.numberForCondition1 = roncesPositions.size()
-	if(level.ConditionType2 == "ronce"):
-		level.numberForCondition2 = roncesPositions.size()
-	level.updateNumberConditions(0,0)
+		level.signalUpdateConditions.emit("add", "ronce")
 	triggered = false
 
 static func init(grid:Grid) -> void:

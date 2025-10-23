@@ -11,7 +11,8 @@ var currentPowerUp
 
 @export var levelName = "1"
 
-static var classesEOT = [Ronce, Lierre]
+static var classesEOT = [Ronce]
+signal signalUpdateConditions(addOrSub: String, blockType: String)
 
 var slideOngoing: bool = false
 var slideBeginPos: Vector2
@@ -29,6 +30,7 @@ func setLevelName(levelName: String) -> void:
 	self.levelName = levelName
 
 func _ready() -> void:
+	signalUpdateConditions.connect(updateConditions)
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	loadParameters("res://levels/level" + levelName + ".json")
 	updateParametersInHUD()
@@ -154,19 +156,25 @@ func displayShuffle() -> void:
 	hud.updateGameOverMessage("")
 
 func deleteMatches() -> void:
-	var conditionDictionary: Dictionary = {ConditionType1: 0, ConditionType2: 0}
-	conditionDictionary = await grid.deleteMatches(conditionDictionary)
-	updateNumberConditions(conditionDictionary[ConditionType1], conditionDictionary[ConditionType2])
+	await grid.deleteMatches()
 
-func updateNumberConditions(numberDeletedCondition1: int, numberDeletedCondition2: int) -> void:
-	numberForCondition1 -=  numberDeletedCondition1
-	numberForCondition2 -=  numberDeletedCondition2
-	if numberForCondition1 <= 0:
-		numberForCondition1 = 0
-	hud.updateNbCondition1(numberForCondition1)
-	if numberForCondition2 <= 0:
-		numberForCondition2 = 0
-	hud.updateNbCondition2(numberForCondition2)
+func updateConditions(addOrSub: String, blockType: String) -> void:
+	if blockType == ConditionType1:
+		if addOrSub == "add":
+			numberForCondition1 += 1
+		elif addOrSub == "sub":
+			numberForCondition1 -= 1
+			if numberForCondition1 <= 0:
+				numberForCondition1 = 0
+		hud.updateNbCondition1(numberForCondition1)
+	if blockType == ConditionType2:
+		if addOrSub == "add":
+			numberForCondition2 += 1
+		elif addOrSub == "sub":
+			numberForCondition2 -= 1
+			if numberForCondition2 <= 0:
+				numberForCondition2 = 0
+		hud.updateNbCondition2(numberForCondition2)
 	if numberForCondition1 <= 0 and numberForCondition2 <= 0:
 		state = gameOver
 

@@ -5,6 +5,7 @@ enum {wait, checkMove, treatMove, resolveMatches, carrot}
 var state
 
 @onready var utils:Utils = $"../utilsCodeContainer"
+@onready var level:Level = $".."
 
 @export var xStart: int
 @export var yStart: int
@@ -188,7 +189,6 @@ func enforcePossibleMatches() -> void:
 	await shuffle()
 	await enforcePossibleMatches()
 
-
 func getMatchesOnGrid() -> bool:
 	var thereIsAMatch: bool = !toTreat.is_empty()
 	for row in height:
@@ -235,7 +235,7 @@ func treatBigMatches() -> void:
 			grid[i][j].nextBlock = moutonBlock
 	matches = []
 
-func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
+func deleteMatches() -> void:
 
 	var toDelete: Array = []
 	while toTreat.size() > 0:
@@ -259,11 +259,7 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 		var pos = toDelete.pop_front()
 		var i: int = pos.x
 		var j: int = pos.y
-		if(conditionDictionary.has(grid[i][j].blockType)):
-				conditionDictionary[grid[i][j].blockType] +=1
 		if pos in webs:
-			if(conditionDictionary.has("web")):
-				conditionDictionary["web"] +=1
 			var web: Web = get_node("web" + str(i) + str(j))
 			remove_child(web)
 			web.queue_free()
@@ -276,7 +272,7 @@ func deleteMatches(conditionDictionary: Dictionary) -> Dictionary:
 				grid[i][j] = grid[i][j].nextBlock
 			else:
 				grid[i][j] = null
-	return conditionDictionary
+	return
 
 func getBlocksDown2() -> void:
 	var lastSignal
@@ -326,12 +322,18 @@ func fillEmptyBlocks() -> void:
 				grid[i][j] = block
 	await lastSignal
 
-func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true) -> void:
+func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true, modifyConditions: bool = true) -> void:
 	if pos in emptyTiles:
 		return
 	var i = pos.x
 	var j = pos.y
-	uniqueAdd(toDelete, pos)
+	if pos not in toDelete:
+		toDelete.push_back(pos)
+		if modifyConditions:
+			if Vector2(i,j) in webs:
+				level.signalUpdateConditions.emit("sub", "web")
+			else:
+				level.signalUpdateConditions.emit("sub", grid[i][j].blockType)
 
 	if(grid[i][j].hasTrigger):
 		await grid[i][j].trigger(pos, self, toDelete)
