@@ -26,16 +26,18 @@ func _ready() -> void:
 		nextBlock.layers = layers - 1
 		nextBlock.position = position
 
-func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> void:
+func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> Array:
+	var animSignals: Array = []
 	if triggered:
-		return
+		return animSignals
 	triggered = true
-	grid.deleteTile(gridPos, toDelete, false)
+	animSignals.append(await grid.deleteTile(gridPos, toDelete, false))
 	if layers > 1:
 		var lierreIndex = lierresInfo.find([gridPos,layers])
 		lierresInfo[lierreIndex][1] -= 1
 	else:
 		lierresInfo.erase([gridPos,layers])
+	return animSignals
 
 static func init(grid:Grid) -> void:
 	for lierreInfo in lierresInfo:

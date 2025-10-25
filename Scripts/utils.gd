@@ -17,7 +17,17 @@ static func getSlideDirection(slideBeginCoords: Vector2, slideEndCoords: Vector2
 			return Vector2(-1, 0)
 	return Vector2(0, 0)
 
-func getTileCoords(pos: Vector2, grid: Grid) -> Vector2:
+static func flatten(array:Array) -> Array:
+	var flattenedArray = []
+	for elem in array:
+		if elem is Array:
+			for elemElem in flatten(elem):
+				flattenedArray.append(elemElem)
+		else:
+			flattenedArray.append(elem)
+	return flattenedArray
+
+static func getTileCoords(pos: Vector2, grid: Grid) -> Vector2:
 	var xCoord: int = grid.xStart+30 + (pos.y*grid.offset)
 	var yCoord: int = grid.yStart+30 + (pos.x*grid.offset)
 	return Vector2(xCoord,yCoord)
