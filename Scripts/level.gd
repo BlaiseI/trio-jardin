@@ -132,9 +132,6 @@ func treatMatches(triggerEOT:bool = true) -> void:
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
-	if triggerEOT:
-		for _class in classesEOT:
-			await _class.endOfTurn(self)
 	if state == gameOver:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true
@@ -146,6 +143,9 @@ func treatMatches(triggerEOT:bool = true) -> void:
 		get_tree().paused = true
 		await get_tree().create_timer(2).timeout
 		get_parent().levelFinished(int(levelName), false)
+	elif triggerEOT :
+		for _class in classesEOT:
+			await _class.endOfTurn(self)
 	await grid.enforcePossibleMatches()
 	return
 
