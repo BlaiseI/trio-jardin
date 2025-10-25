@@ -38,16 +38,12 @@ func setCondition1(conditionType1: String) -> void:
 		$"WinningConditions/Condition1".texture = null
 	else:
 		$"WinningConditions/Condition1".texture = load(conditionTexturePaths[conditionType1])
-		if($"WinningConditions/Condition1".texture.get_width() > 60):
-			$"WinningConditions/Condition1".scale = Vector2(0.6, 0.6)
 
 func setCondition2(conditionType2: String) -> void:
 	if conditionType2 == "null":
 		$"WinningConditions/Condition2".texture = null
 	else:
 		$"WinningConditions/Condition2".texture = load(conditionTexturePaths[conditionType2])
-		if($"WinningConditions/Condition2".texture.get_width() > 60):
-			$"WinningConditions/Condition2".scale = Vector2(0.6, 0.6)
 
 func blackenBackground() -> void:
 	$"..".changeBrightness("/root/Game/level/TopBannerBackground", 0.5)
