@@ -236,15 +236,11 @@ func treatBigMatches() -> void:
 	matches = []
 
 func deleteMatches() -> void:
-	var animSignals: Array = []
+
 	var toDelete: Array = []
 	while toTreat.size() > 0:
 		var pos = toTreat.pop_front()
-		animSignals.append(deleteTile(pos, toDelete))
-
-	for _signal in utils.flatten(animSignals):
-		if(_signal != 'Nil'):
-			await _signal
+		await deleteTile(pos, toDelete)
 
 	var lastSignal: Signal
 	var toShrink: Array = toDelete.duplicate()
@@ -326,10 +322,9 @@ func fillEmptyBlocks() -> void:
 				grid[i][j] = block
 	await lastSignal
 
-func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true, modifyConditions: bool = true) -> Array:
-	var animSignals: Array = []
+func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true, modifyConditions: bool = true) -> void:
 	if pos in emptyTiles:
-		return animSignals
+		return
 	var i = pos.x
 	var j = pos.y
 	if pos not in toDelete:
@@ -341,15 +336,14 @@ func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true, m
 				level.signalUpdateConditions.emit("sub", grid[i][j].blockType)
 
 	if(grid[i][j].hasTrigger):
-		animSignals.append(await grid[i][j].trigger(pos, self, toDelete))
+		await grid[i][j].trigger(pos, self, toDelete)
 	if(triggerNeighbours):
 		var neighbours = [Vector2(i, j), Vector2(i-1, j), Vector2(i+1, j), Vector2(i, j-1), Vector2(i, j+1)]
 		for neighbour in neighbours:
 			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
 				var block = grid[neighbour.x][neighbour.y]
 				if(block and block.hasTrigger):
-					animSignals.append(await block.trigger(neighbour, self, toDelete))
-	return animSignals
+					await block.trigger(neighbour, self, toDelete)
 
 func replaceBlock(pos: Vector2, block: Block) -> void:
 	block.position = grid[pos.x][pos.y].position

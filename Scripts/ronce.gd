@@ -17,15 +17,13 @@ func _ready() -> void:
 	doesMatch = false
 	moveable = false
 
-func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> Array:
-	var animSignals = []
+func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> void:
 	if blockTriggered:
-		return animSignals
+		return
 	blockTriggered = true
 	triggered = true
-	animSignals.append(await grid.deleteTile(gridPos, toDelete, false))
+	grid.deleteTile(gridPos, toDelete, false)
 	roncesPositions.erase(gridPos)
-	return animSignals
 
 static func endOfTurn(level: Level) -> void:
 	var grid:Grid = level.grid
