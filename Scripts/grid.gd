@@ -20,6 +20,7 @@ var emptyTiles : PackedVector2Array
 var fixedBlocks = []
 var webs : PackedVector2Array
 var toTreat = []
+var deletedThisTurn = []
 var matches = []
 var nbCarrots: int
 var powerUps: Array = ["firecracker", "mouton"]
@@ -47,9 +48,10 @@ func createEmptyGrid() -> void:
 		grid.append([])
 		for j in width:
 			grid[i].append(null)
-			var cadre: Block = cadrePreload.instantiate()
-			add_child(cadre)
-			cadre.position = utils.getTileCoords(Vector2(i,j), self)
+			if Vector2(i,j) not in emptyTiles:
+				var cadre: Block = cadrePreload.instantiate()
+				add_child(cadre)
+				cadre.position = utils.getTileCoords(Vector2(i,j), self)
 
 func fillGrid() -> void:
 	for i in height:
@@ -236,42 +238,13 @@ func treatBigMatches() -> void:
 	matches = []
 
 func deleteMatches() -> void:
-
-	var toDelete: Array = []
+	var funcsToWait: Array = []
 	while toTreat.size() > 0:
 		var pos = toTreat.pop_front()
-		await deleteTile(pos, toDelete)
-
-	var lastSignal: Signal
-	var toShrink: Array = toDelete.duplicate()
-	while toShrink.size() > 0:
-		var pos = toShrink.pop_front()
-		var i: int = pos.x
-		var j: int = pos.y
-		if pos in webs:
-			var web: Web = get_node("web" + str(i) + str(j))
-			lastSignal = web.shrink()
-		else:
-			lastSignal = grid[i][j].shrink()
-	await lastSignal
-
-	while toDelete.size() > 0:
-		var pos = toDelete.pop_front()
-		var i: int = pos.x
-		var j: int = pos.y
-		if pos in webs:
-			var web: Web = get_node("web" + str(i) + str(j))
-			remove_child(web)
-			web.queue_free()
-			webs.remove_at(webs.find(pos))
-		else:
-			remove_child(grid[i][j])
-			grid[i][j].queue_free()
-			if grid[i][j].nextBlock:
-				add_child(grid[i][j].nextBlock)
-				grid[i][j] = grid[i][j].nextBlock
-			else:
-				grid[i][j] = null
+		deleteTile(pos, funcsToWait)
+	while funcsToWait.size() > 0:
+		await get_tree().create_timer(0.02).timeout
+	deletedThisTurn = []
 	return
 
 func getBlocksDown2() -> void:
@@ -322,28 +295,53 @@ func fillEmptyBlocks() -> void:
 				grid[i][j] = block
 	await lastSignal
 
-func deleteTile(pos: Vector2, toDelete: Array, triggerNeighbours: bool = true, modifyConditions: bool = true) -> void:
-	if pos in emptyTiles:
+func deleteTile(pos: Vector2, funcsToWait: Array, triggerNeighbours: bool = true, modifyConditions: bool = true):
+	if pos in deletedThisTurn or pos in emptyTiles:
 		return
+	deletedThisTurn.append(pos)
+	funcsToWait.append(pos)
 	var i = pos.x
 	var j = pos.y
-	if pos not in toDelete:
-		toDelete.push_back(pos)
-		if modifyConditions:
+
+	if(triggerNeighbours):
+		var neighbours = [Vector2(i-1, j), Vector2(i+1, j), Vector2(i, j-1), Vector2(i, j+1)]
+		for neighbour in neighbours:
+			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
+				var block = grid[neighbour.x][neighbour.y]
+				if(block and block.hasTrigger):
+					block.trigger(neighbour, self, funcsToWait)
+
+	if(grid[i][j].hasTrigger):
+		await grid[i][j].trigger(pos, self, funcsToWait)
+
+	if modifyConditions:
 			if Vector2(i,j) in webs:
 				level.signalUpdateConditions.emit("sub", "web")
 			else:
 				level.signalUpdateConditions.emit("sub", grid[i][j].blockType)
 
-	if(grid[i][j].hasTrigger):
-		await grid[i][j].trigger(pos, self, toDelete)
-	if(triggerNeighbours):
-		var neighbours = [Vector2(i, j), Vector2(i-1, j), Vector2(i+1, j), Vector2(i, j-1), Vector2(i, j+1)]
-		for neighbour in neighbours:
-			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
-				var block = grid[neighbour.x][neighbour.y]
-				if(block and block.hasTrigger):
-					await block.trigger(neighbour, self, toDelete)
+	if pos in webs:
+		var web: Web = get_node("web" + str(i) + str(j))
+		await web.shrink()
+	else:
+		await grid[i][j].shrink()
+
+	if pos in webs:
+		var web: Web = get_node("web" + str(i) + str(j))
+		remove_child(web)
+		web.queue_free()
+		webs.remove_at(webs.find(pos))
+	else:
+		remove_child(grid[i][j])
+		grid[i][j].queue_free()
+		if grid[i][j].nextBlock:
+			add_child(grid[i][j].nextBlock)
+			grid[i][j] = grid[i][j].nextBlock
+		else:
+			grid[i][j] = null
+
+	funcsToWait.erase(pos)
+	return
 
 func replaceBlock(pos: Vector2, block: Block) -> void:
 	block.position = grid[pos.x][pos.y].position

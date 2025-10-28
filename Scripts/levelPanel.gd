@@ -9,6 +9,7 @@ var nbLevels: int
 var offset: Vector2 = Vector2(15, 10)
 
 func _ready() -> void:
+	$CloseButton.pressed.connect($"../".closeLevelPanel)
 	for i in range(nbLevels):
 		var levelButton = levelButtonTemplate.instantiate()
 		levelButton.position = offset + Vector2((i%2)*120, (i/2)*70)

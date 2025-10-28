@@ -33,6 +33,12 @@ func loadParameters(filePath: String) -> void:
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
 
+func closeLevelPanel() -> void:
+	var levelPanel = find_child("levelPanel", false, false)
+	levelPanel.queue_free()
+	remove_child(levelPanel)
+	return
+
 func _ready() -> void:
 	loadParameters("res://gameSave/save.json")
 	#saveParameters()
