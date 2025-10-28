@@ -48,9 +48,10 @@ func createEmptyGrid() -> void:
 		grid.append([])
 		for j in width:
 			grid[i].append(null)
-			var cadre: Block = cadrePreload.instantiate()
-			add_child(cadre)
-			cadre.position = utils.getTileCoords(Vector2(i,j), self)
+			if Vector2(i,j) not in emptyTiles:
+				var cadre: Block = cadrePreload.instantiate()
+				add_child(cadre)
+				cadre.position = utils.getTileCoords(Vector2(i,j), self)
 
 func fillGrid() -> void:
 	for i in height:

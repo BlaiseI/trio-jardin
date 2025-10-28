@@ -24,8 +24,8 @@ script = ExtResource("4_rjc1o")
 
 [node name="grid" type="Node2D" parent="."]
 script = ExtResource("1_luu4e")
-xStart = 20
-yStart = 264
+xStart = 24
+yStart = 265
 offset = 67
 
 [node name="TopBannerBackground" type="TextureRect" parent="."]
