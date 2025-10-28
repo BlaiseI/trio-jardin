@@ -64,7 +64,7 @@ static func fromDict(parametersDictionary: Dictionary) -> GardeningRectangle:
 
 func _onButtonPressed() -> void:
 	var actualLevel = $"..".actualLevel
-	if actualLevel < firstLevel + nbLevels:
+	if actualLevel < firstLevel + nbLevels and not $"../".find_child("levelPanel", false, false):
 		var levelPanel: LevelPanel = levelPanelTemplate.instantiate()
 		levelPanel.actualLevel = actualLevel
 		levelPanel.firstLevel = firstLevel
