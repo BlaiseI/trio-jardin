@@ -17,13 +17,16 @@ func _ready() -> void:
 	doesMatch = false
 	moveable = false
 
-func trigger(gridPos: Vector2, grid: Grid, toDelete:Array) -> void:
+func trigger(gridPos: Vector2, grid: Grid, funcsToWait:Array) -> void:
 	if blockTriggered:
 		return
 	blockTriggered = true
 	triggered = true
-	grid.deleteTile(gridPos, toDelete, false)
+	funcsToWait.append(gridPos)
+	grid.deleteTile(gridPos, funcsToWait, false)
 	roncesPositions.erase(gridPos)
+	funcsToWait.erase(gridPos)
+	return
 
 static func endOfTurn(level: Level) -> void:
 	var grid:Grid = level.grid
