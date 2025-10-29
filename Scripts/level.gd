@@ -18,7 +18,7 @@ var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
 
-var nbCarrots: int
+var powerUps: Dictionary
 var carrotButtonReleased: bool = false
 var ConditionType1: String
 var numberForCondition1: int
@@ -39,7 +39,7 @@ func _ready() -> void:
 	state = waitInput
 
 func updateParametersInHUD() -> void:
-	hud.updateNbCarrots(nbCarrots)
+	hud.updateNbCarrots(powerUps["carrot"])
 	hud.updateNbCondition1(numberForCondition1)
 	hud.updateNbCondition2(numberForCondition2)
 	hud.updateNbMovesLeft(numberMovesLeft)
@@ -76,7 +76,6 @@ func loadParameters(filePath: String) -> void:
 		Lierre.lierresInfo.append(lierreInfo)
 
 	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
-	nbCarrots = parametersDictionary["nbCarrots"]
 	ConditionType1 = parametersDictionary["ConditionType1"]
 	ConditionType2 = parametersDictionary["ConditionType2"]
 	numberForCondition1 = parametersDictionary["numberForCondition1"]
@@ -186,9 +185,9 @@ func getPowerUpInput() -> void:
 			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				state = treatPowerUp
 				grid.toTreat.append(tileTouched)
-				nbCarrots -= 1
+				powerUps["carrot"] -= 1
 				hud.unBlackenBackground()
-				hud.updateNbCarrots(nbCarrots)
+				hud.updateNbCarrots(powerUps["carrot"])
 				await treatMatches(false)
 				state = waitInput
 		hud.unBlackenBackground()
@@ -200,7 +199,7 @@ func getPowerUpInput() -> void:
 func carrotPressed() -> void:
 	if state != waitInput:
 		return
-	if nbCarrots > 0:
+	if powerUps["carrot"] > 0:
 		state = waitPowerUpInput
 		currentPowerUp = carrot
 		hud.blackenBackground()

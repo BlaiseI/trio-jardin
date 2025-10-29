@@ -10,9 +10,11 @@ func saveParameters() -> void:
 		"actualLevel":actualLevel,
 		"nbGardeningRectangles":nbGardeningRectangles,
 		"gardeningRectangles":[],
+		"powerUps":{}
 	}
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		parametersDictionary["gardeningRectangles"].append(gardeningRectangle.toDict())
+	parametersDictionary["powerUps"] = $"../".powerUps.duplicate()
 	DirAccess.make_dir_recursive_absolute("res://gameSave")
 	var filePath: String = "res://gameSave/save.json"
 	var saveFile = FileAccess.open(filePath, FileAccess.WRITE_READ)
@@ -32,6 +34,9 @@ func loadParameters(filePath: String) -> void:
 		var gardeningRectangle : GardeningRectangle = GardeningRectangle.fromDict(gardeningRectangleDict)
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
+	$"../".powerUps = parametersDictionary["powerUps"]
+
+
 
 func closeLevelPanel() -> void:
 	var levelPanel = find_child("levelPanel", false, false)

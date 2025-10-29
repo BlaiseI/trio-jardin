@@ -144,7 +144,6 @@ func saveLevel() -> void:
 		"gridLierre" : [],
 		"fixedBlocks" : [],
 		"nbDifferentBlocks":nbDifferentBlocks,
-		"nbCarrots":1,
 		"ConditionType1":condition1,
 		"numberForCondition1":numberForCondition1,
 		"ConditionType2":condition2,
