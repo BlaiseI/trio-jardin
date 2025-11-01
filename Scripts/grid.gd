@@ -20,7 +20,8 @@ var emptyTiles : PackedVector2Array
 var fixedBlocks = []
 var webs : PackedVector2Array
 var toTreat = []
-var deletedThisTurn = []
+var deletedAndTriggered = []
+var deletedWithoutTrigger = []
 var matches = []
 var nbCarrots: int
 var powerUps: Array = ["firecracker", "mouton"]
@@ -244,7 +245,8 @@ func deleteMatches() -> void:
 		deleteTile(pos, funcsToWait)
 	while funcsToWait.size() > 0:
 		await get_tree().create_timer(0.02).timeout
-	deletedThisTurn = []
+	deletedAndTriggered = []
+	deletedWithoutTrigger = []
 	return
 
 func getBlocksDown2() -> void:
@@ -295,21 +297,30 @@ func fillEmptyBlocks() -> void:
 				grid[i][j] = block
 	await lastSignal
 
-func deleteTile(pos: Vector2, funcsToWait: Array, triggerNeighbours: bool = true, modifyConditions: bool = true):
-	if pos in deletedThisTurn or pos in emptyTiles:
+func triggerNeighbours(i: int, j: int, funcsToWait: Array) -> void:
+	var neighbours = [Vector2(i-1, j), Vector2(i+1, j), Vector2(i, j-1), Vector2(i, j+1)]
+	for neighbour in neighbours:
+		if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
+			var block = grid[neighbour.x][neighbour.y]
+			if(block and block.hasTrigger):
+				block.trigger(neighbour, self, funcsToWait)
+
+func deleteTile(pos: Vector2, funcsToWait: Array, doTriggerNeighbours: bool = true, modifyConditions: bool = true):
+	if pos in deletedAndTriggered or pos in emptyTiles:
 		return
-	deletedThisTurn.append(pos)
 	funcsToWait.append(pos)
 	var i = pos.x
 	var j = pos.y
-
-	if(triggerNeighbours):
-		var neighbours = [Vector2(i-1, j), Vector2(i+1, j), Vector2(i, j-1), Vector2(i, j+1)]
-		for neighbour in neighbours:
-			if(neighbour.x >= 0 and neighbour.x < height and neighbour.y >= 0 and neighbour.y < width):
-				var block = grid[neighbour.x][neighbour.y]
-				if(block and block.hasTrigger):
-					block.trigger(neighbour, self, funcsToWait)
+	if doTriggerNeighbours and pos in deletedWithoutTrigger:
+		deletedAndTriggered.append(pos)
+		triggerNeighbours(i, j, funcsToWait)
+		funcsToWait.erase(pos)
+		return
+	elif doTriggerNeighbours:
+		deletedAndTriggered.append(pos)
+		triggerNeighbours(i, j, funcsToWait)
+	else:
+		deletedWithoutTrigger.append(pos)
 
 	if(grid[i][j].hasTrigger):
 		await grid[i][j].trigger(pos, self, funcsToWait)

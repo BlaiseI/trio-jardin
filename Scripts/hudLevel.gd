@@ -11,6 +11,7 @@ var conditionTexturePaths: Dictionary = {
 	"morille": "res://art/Finished/weeds/morille.png",
 	"web": "res://art/Finished/obstacles/Web.png",
 	"firecracker": "res://art/Finished/power-ups/firecracker1.png",
+	"mouton": "res://art/Finished/power-ups/mouton1.png",
 	"ronce": "res://art/Finished/obstacles/ronceMoche.png",
 	"lierre": "res://art/Finished/obstacles/lierreMoche.png"
 }
