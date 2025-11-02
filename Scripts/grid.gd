@@ -39,6 +39,8 @@ var slideOngoing: bool = false
 var debug = false
 
 func initGrid() -> void:
+	xStart += (8-width)*offset/2
+	yStart += (8-height)*offset/2
 	createEmptyGrid()
 	fillGrid()
 
@@ -76,14 +78,21 @@ func createNonMatchingBlock(row: int, column: int) -> Block:
 			isMatch = false
 	return block
 
-func givesMatch(row: int, column: int, block) -> bool:
-	if column >= 2 and !emptyTile(row,column-1) and !emptyTile(row,column-2):
-		if (block.blockType == grid[row][column-1].blockType and block.blockType == grid[row][column-2].blockType):
-			return true
-	if row >= 2 and !emptyTile(row-1,column) and !emptyTile(row-2,column):
-		if (block.blockType == grid[row-1][column].blockType and block.blockType == grid[row-2][column].blockType):
-			return true
-	return false
+func givesMatch(row: int, column: int, block, extended:bool = false) -> bool:
+	var _match:bool = false
+	if not extended:
+		if column >= 2 and !emptyTile(row,column-1) and !emptyTile(row,column-2):
+			if (block.blockType == grid[row][column-1].blockType and block.blockType == grid[row][column-2].blockType):
+				return true
+		if row >= 2 and !emptyTile(row-1,column) and !emptyTile(row-2,column):
+			if (block.blockType == grid[row-1][column].blockType and block.blockType == grid[row-2][column].blockType):
+				return true
+	else :
+		var lastBlock = grid[row][column]
+		grid[row][column] = block
+		_match = getMatchesOnGrid(false)
+		grid[row][column] = lastBlock
+	return _match
 
 func emptyTile(row: int, column:int) -> bool:
 	return Vector2(row, column) in emptyTiles
@@ -185,25 +194,31 @@ func enforcePossibleMatches() -> void:
 	await shuffle()
 	await enforcePossibleMatches()
 
-func getMatchesOnGrid() -> bool:
+func getMatchesOnGrid(add: bool = true) -> bool:
 	var thereIsAMatch: bool = !toTreat.is_empty()
 	for row in height:
 		for column in width:
 			if (!emptyTile(row,column) and grid[row][column].doesMatch):
 				var blockType: String = grid[row][column].blockType
 				if(row >= 2 && !emptyTile(row-1,column) && grid[row-1][column].blockType == blockType and !emptyTile(row-2,column) && grid[row-2][column].blockType == blockType):
-					uniqueAdd(toTreat, Vector2(row-2, column))
-					uniqueAdd(toTreat, Vector2(row-1, column))
-					uniqueAdd(toTreat, Vector2(row, column))
-					var positions = [Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column)]
-					addToMatches(positions)
+					if(add):
+						uniqueAdd(toTreat, Vector2(row-2, column))
+						uniqueAdd(toTreat, Vector2(row-1, column))
+						uniqueAdd(toTreat, Vector2(row, column))
+						var positions = [Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column)]
+						addToMatches(positions)
+					else:
+						print(blockType, Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column))
 					thereIsAMatch = true
 				if(column >= 2 && !emptyTile(row,column-1) && grid[row][column-1].blockType == blockType and !emptyTile(row,column-2) && grid[row][column-2].blockType == blockType):
-					uniqueAdd(toTreat, Vector2(row, column-2))
-					uniqueAdd(toTreat, Vector2(row, column-1))
-					uniqueAdd(toTreat, Vector2(row, column))
-					var positions = [Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column)]
-					addToMatches(positions)
+					if(add):
+						uniqueAdd(toTreat, Vector2(row, column-2))
+						uniqueAdd(toTreat, Vector2(row, column-1))
+						uniqueAdd(toTreat, Vector2(row, column))
+						var positions = [Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column)]
+						addToMatches(positions)
+					else:
+						print(blockType, Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column))
 					thereIsAMatch = true
 	return thereIsAMatch
 

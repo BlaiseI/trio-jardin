@@ -1,1 +1,1 @@
-{"ConditionType1":"ronce","ConditionType2":"web","fixedBlocks":[],"gridEmptyTiles":[],"gridHeight":8,"gridLierre":[],"gridRonce":["(0, 0)","(0, 7)","(7, 0)","(7, 7)"],"gridWidth":8,"nbDifferentBlocks":6,"numberForCondition1":4,"numberForCondition2":0,"numberMovesLeft":20}
+{"ConditionType1":"ronce","ConditionType2":"null","fixedBlocks":[],"gridEmptyTiles":[],"gridHeight":8,"gridLierre":[],"gridRonce":["(0, 0)","(0, 7)","(7, 0)","(7, 7)"],"gridWidth":8,"nbDifferentBlocks":6,"numberForCondition1":4,"numberForCondition2":0,"numberMovesLeft":25}

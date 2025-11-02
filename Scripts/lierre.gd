@@ -47,14 +47,8 @@ static func init(grid:Grid) -> void:
 		grid.replaceBlock(lierreInfo[0], lierre)
 
 static func endOfTurn(level: Level) -> void:
-	var nbLierre : int = 0
 	for lierreInfo in lierresInfo:
-		nbLierre += level.grid.grid[lierreInfo[0].x][lierreInfo[0].y].layers
-	if(level.ConditionType1 == "lierre"):
-		level.numberForCondition1 = nbLierre
-	if(level.ConditionType2 == "lierre"):
-		level.numberForCondition2 = nbLierre
-	level.updateNumberConditions(0,0)
+		lierreInfo.triggered = false
 
 func _process(delta: float) -> void:
 	pass
