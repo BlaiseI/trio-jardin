@@ -3,6 +3,8 @@ extends Node2D
 const levelSelectorTemplate = preload("res://Scenes/LevelSelector.tscn")
 const levelTemplate = preload("res://Scenes/level_scene.tscn")
 const hudLevelTemplate = preload("res://Scenes/HUDLevel.tscn")
+var classesToClear = [Ronce, Lierre]
+var powerUps: Dictionary = {}
 
 
 var levelSelector: LevelSelector
@@ -24,6 +26,7 @@ func launchLevel(levelNumber: int) -> void:
 	level = levelTemplate.instantiate()
 	level.setLevelName(str(levelNumber))
 	level.name = "level"
+	level.powerUps = powerUps
 	var hudLevel = hudLevelTemplate.instantiate()
 	hudLevel.set_script(load("res://Scripts/hudLevel.gd"))
 	hudLevel.level = level
@@ -31,7 +34,7 @@ func launchLevel(levelNumber: int) -> void:
 	$HUD.add_child(hudLevel)
 	var carrotButton = $"HUD/hudLevel/CarrotButton"
 	var carrotButtonFunc = $"HUD/hudLevel"._on_carrot_button_pressed
-	carrotButton.pressed.connect(carrotButtonFunc.bind(carrotButton))
+	carrotButton.pressed.connect(carrotButtonFunc)
 	add_child(level)
 	find_child("levelPanel", true, false).queue_free()
 	levelSelector.visible = false
@@ -43,4 +46,7 @@ func levelFinished(levelNumber: int, succeeded: bool) -> void:
 		levelSelector.actualLevel += 1
 		levelSelector.update()
 	levelSelector.visible = true
+	levelSelector.saveParameters()
+	for _class in classesToClear:
+		_class.clear()
 	get_tree().paused = false

@@ -1,7 +1,7 @@
 class_name Level
 extends Node2D
 
-enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver}
+enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver, shuffle}
 var state
 enum{carrot}
 var currentPowerUp
@@ -11,11 +11,14 @@ var currentPowerUp
 
 @export var levelName = "1"
 
+static var classesEOT = [Ronce]
+signal signalUpdateConditions(addOrSub: String, blockType: String)
+
 var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
 
-var nbCarrots: int
+var powerUps: Dictionary
 var carrotButtonReleased: bool = false
 var ConditionType1: String
 var numberForCondition1: int
@@ -26,16 +29,17 @@ var numberMovesLeft: int
 func setLevelName(levelName: String) -> void:
 	self.levelName = levelName
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	signalUpdateConditions.connect(updateConditions)
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	loadParameters("res://levels/level" + levelName + ".json")
 	updateParametersInHUD()
 	grid.initGrid()
+	await grid.enforcePossibleMatches()
 	state = waitInput
 
 func updateParametersInHUD() -> void:
-	hud.updateNbCarrots(nbCarrots)
+	hud.updateNbCarrots(powerUps["carrot"])
 	hud.updateNbCondition1(numberForCondition1)
 	hud.updateNbCondition2(numberForCondition2)
 	hud.updateNbMovesLeft(numberMovesLeft)
@@ -54,14 +58,26 @@ func loadParameters(filePath: String) -> void:
 	for positionString: String in parametersDictionary["gridEmptyTiles"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
 		grid.emptyTiles.append(positionVector)
-	nbCarrots = parametersDictionary["nbCarrots"]
+	grid.fixedBlocks = []
+	for fixedBlock: Array in parametersDictionary["fixedBlocks"]:
+		fixedBlock[0] = str_to_var("Vector2" + fixedBlock[0])
+		grid.fixedBlocks.append(fixedBlock)
+	Ronce.roncesPositions = []
+	for positionString: String in parametersDictionary["gridRonce"]:
+		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
+		Ronce.roncesPositions.append(positionVector)
+	Lierre.lierresInfo = []
+	for lierreInfo: Array in parametersDictionary["gridLierre"]:
+		lierreInfo[0] = str_to_var("Vector2" + lierreInfo[0])
+		Lierre.lierresInfo.append(lierreInfo)
+
+	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
 	ConditionType1 = parametersDictionary["ConditionType1"]
 	ConditionType2 = parametersDictionary["ConditionType2"]
 	numberForCondition1 = parametersDictionary["numberForCondition1"]
 	numberForCondition2 = parametersDictionary["numberForCondition2"]
 	numberMovesLeft = parametersDictionary["numberMovesLeft"]
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if state == waitInput:
 		getSlideInput()
@@ -75,7 +91,7 @@ func getSlideInput() -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
-			if !grid.isTileEmpty(tileTouched):
+			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				slideOngoing = true
 				slideBeginCoords = touchCoords
 				slideBeginPos =  tileTouched
@@ -85,7 +101,7 @@ func getSlideInput() -> void:
 			if grid.isInGrid(touchCoords):
 				var slideDirection: Vector2 = Utils.getSlideDirection(slideBeginCoords, touchCoords)
 				var tileTouched: Vector2 = Vector2(slideBeginPos.x + slideDirection.x, slideBeginPos.y + slideDirection.y)
-				if !grid.isTileEmpty(tileTouched):
+				if !grid.emptyTile(tileTouched.x, tileTouched.y):
 					state = treatMove
 					await treatSlide(tileTouched)
 					state = waitInput
@@ -94,7 +110,9 @@ func getSlideInput() -> void:
 func treatSlide(slideEndPos: Vector2) -> void:
 	if slideBeginPos == slideEndPos:
 		return
-
+	if !grid.grid[slideBeginPos.x][slideBeginPos.y].moveable or !grid.grid[slideEndPos.x][slideEndPos.y].moveable:
+		await grid.shakeBlocks(slideBeginPos, slideEndPos)
+		return
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
 	if grid.getMatchesOnGrid():
 		numberMovesLeft -= 1
@@ -103,8 +121,9 @@ func treatSlide(slideEndPos: Vector2) -> void:
 	else:
 		await grid.swapBlocks(slideBeginPos, slideEndPos)
 
-func treatMatches() -> void:
+func treatMatches(triggerEOT:bool = true) -> void:
 	while grid.getMatchesOnGrid():
+		await grid.treatBigMatches()
 		await deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
@@ -119,22 +138,38 @@ func treatMatches() -> void:
 		get_tree().paused = true
 		await get_tree().create_timer(2).timeout
 		get_parent().levelFinished(int(levelName), false)
+	elif triggerEOT :
+		for _class in classesEOT:
+			await _class.endOfTurn(self)
+	await grid.enforcePossibleMatches()
 	return
 
-func deleteMatches() -> void:
-	var conditionDictionary: Dictionary = {ConditionType1: 0, ConditionType2: 0}
-	conditionDictionary = await grid.deleteMatches(conditionDictionary)
-	updateNumberConditions(conditionDictionary[ConditionType1], conditionDictionary[ConditionType2])
+func displayShuffle() -> void:
+	state = shuffle
+	hud.updateGameOverMessage("Shuffle !")
+	await get_tree().create_timer(1).timeout
+	hud.updateGameOverMessage("")
 
-func updateNumberConditions(numberDeletedCondition1: int, numberDeletedCondition2: int) -> void:
-	numberForCondition1 -=  numberDeletedCondition1
-	numberForCondition2 -=  numberDeletedCondition2
-	if numberForCondition1 <= 0:
-		numberForCondition1 = 0
-	hud.updateNbCondition1(numberForCondition1)
-	if numberForCondition2 <= 0:
-		numberForCondition2 = 0
-	hud.updateNbCondition2(numberForCondition2)
+func deleteMatches() -> void:
+	await grid.deleteMatches()
+
+func updateConditions(addOrSub: String, blockType: String) -> void:
+	if blockType == ConditionType1:
+		if addOrSub == "add":
+			numberForCondition1 += 1
+		elif addOrSub == "sub":
+			numberForCondition1 -= 1
+			if numberForCondition1 <= 0:
+				numberForCondition1 = 0
+		hud.updateNbCondition1(numberForCondition1)
+	if blockType == ConditionType2:
+		if addOrSub == "add":
+			numberForCondition2 += 1
+		elif addOrSub == "sub":
+			numberForCondition2 -= 1
+			if numberForCondition2 <= 0:
+				numberForCondition2 = 0
+		hud.updateNbCondition2(numberForCondition2)
 	if numberForCondition1 <= 0 and numberForCondition2 <= 0:
 		state = gameOver
 
@@ -143,19 +178,13 @@ func getPowerUpInput() -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
-			if !grid.isTileEmpty(tileTouched):
+			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				state = treatPowerUp
-				var blockTypeDeleted: String = await grid.deleteTile(tileTouched)
-				if blockTypeDeleted == ConditionType1:
-					updateNumberConditions(1,0)
-				if blockTypeDeleted == ConditionType2:
-					updateNumberConditions(0,1)
-				nbCarrots -= 1
+				grid.toTreat.append(tileTouched)
+				powerUps["carrot"] -= 1
 				hud.unBlackenBackground()
-				hud.updateNbCarrots(nbCarrots)
-				await grid.getBlocksDown()
-				await grid.fillEmptyBlocks()
-				await treatMatches()
+				hud.updateNbCarrots(powerUps["carrot"])
+				await treatMatches(false)
 				state = waitInput
 		hud.unBlackenBackground()
 		state = waitInput
@@ -166,7 +195,7 @@ func getPowerUpInput() -> void:
 func carrotPressed() -> void:
 	if state != waitInput:
 		return
-	if nbCarrots > 0:
+	if powerUps["carrot"] > 0:
 		state = waitPowerUpInput
 		currentPowerUp = carrot
 		hud.blackenBackground()

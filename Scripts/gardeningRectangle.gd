@@ -64,15 +64,16 @@ static func fromDict(parametersDictionary: Dictionary) -> GardeningRectangle:
 
 func _onButtonPressed() -> void:
 	var actualLevel = $"..".actualLevel
-	if actualLevel < firstLevel + nbLevels:
+	if actualLevel < firstLevel + nbLevels and not $"../".find_child("levelPanel", false, false):
 		var levelPanel: LevelPanel = levelPanelTemplate.instantiate()
 		levelPanel.actualLevel = actualLevel
 		levelPanel.firstLevel = firstLevel
 		levelPanel.nbLevels = nbLevels
-		levelPanel.position = Vector2(-40,0)
-		print(levelPanel.position)
+		levelPanel.position = (Vector2(576, 1024) - levelPanel.size)/2
 		levelPanel.z_index = 1
 		levelPanel.name = "levelPanel"
-		add_child(levelPanel)
+		$"../".add_child(levelPanel)
+		var spawned : Signal = levelPanel.spawn()
+		await spawned
 	else :
 		print("no more levels !")

@@ -10,9 +10,11 @@ func saveParameters() -> void:
 		"actualLevel":actualLevel,
 		"nbGardeningRectangles":nbGardeningRectangles,
 		"gardeningRectangles":[],
+		"powerUps":{}
 	}
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		parametersDictionary["gardeningRectangles"].append(gardeningRectangle.toDict())
+	parametersDictionary["powerUps"] = $"../".powerUps.duplicate()
 	DirAccess.make_dir_recursive_absolute("res://gameSave")
 	var filePath: String = "res://gameSave/save.json"
 	var saveFile = FileAccess.open(filePath, FileAccess.WRITE_READ)
@@ -32,8 +34,16 @@ func loadParameters(filePath: String) -> void:
 		var gardeningRectangle : GardeningRectangle = GardeningRectangle.fromDict(gardeningRectangleDict)
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
+	$"../".powerUps = parametersDictionary["powerUps"]
 
-# Called when the node enters the scene tree for the first time.
+
+
+func closeLevelPanel() -> void:
+	var levelPanel = find_child("levelPanel", false, false)
+	levelPanel.queue_free()
+	remove_child(levelPanel)
+	return
+
 func _ready() -> void:
 	loadParameters("res://gameSave/save.json")
 	#saveParameters()
@@ -42,6 +52,5 @@ func update() -> void:
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		gardeningRectangle.update(actualLevel)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

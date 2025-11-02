@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://jdda1bbg03yu" path="res://art/Finished/weeds/chardon60.png" id="2_q2aqj"]
 
 [node name="blockChardon" instance=ExtResource("1_8uwmu")]
-blockType = "Chardon"
+blockType = "chardon"
 
 [node name="CenterContainer" parent="." index="0"]
 offset_left = -30.0

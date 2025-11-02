@@ -1,0 +1,429 @@
+[gd_scene load_steps=9 format=3 uid="uid://8e8du5xmixa0"]
+
+[ext_resource type="Script" path="res://Scripts/LevelCreator.gd" id="1_y1y6h"]
+[ext_resource type="Texture2D" uid="uid://c6i3kfiabx6v3" path="res://art/Finished/level background/gridContainer.png" id="2_mn7si"]
+[ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="3_fpvvf"]
+[ext_resource type="PackedScene" uid="uid://cmnwaw863jv23" path="res://Scenes/block_selector.tscn" id="3_ts03y"]
+[ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="4_3ebx4"]
+[ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/LevelCreator/up.png" id="4_vptl4"]
+[ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/LevelCreator/down.png" id="5_kirta"]
+[ext_resource type="Texture2D" uid="uid://d10hj0g1o3lpd" path="res://art/Finished/LevelCreator/null.png" id="6_5am8q"]
+
+[node name="LevelCreator" type="Node2D"]
+script = ExtResource("1_y1y6h")
+xStart = 23
+yStart = 264
+offset = 67
+
+[node name="GridBackground" type="TextureRect" parent="."]
+offset_top = 192.0
+offset_right = 576.0
+offset_bottom = 832.0
+texture = ExtResource("2_mn7si")
+
+[node name="SaveButton" type="Button" parent="."]
+offset_left = 15.0
+offset_top = 5.0
+offset_right = 83.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 25
+text = "SAVE"
+
+[node name="TopBannerBackground" type="TextureRect" parent="."]
+offset_left = -1.0
+offset_top = 828.0
+offset_right = 575.0
+offset_bottom = 1020.0
+texture = ExtResource("3_fpvvf")
+
+[node name="numberBackground1" type="TextureRect" parent="TopBannerBackground"]
+layout_mode = 0
+offset_left = 361.0
+offset_top = 107.0
+offset_right = 401.0
+offset_bottom = 147.0
+texture = ExtResource("4_3ebx4")
+
+[node name="numberBackground2" type="TextureRect" parent="TopBannerBackground"]
+layout_mode = 0
+offset_left = 474.0
+offset_top = 108.0
+offset_right = 514.0
+offset_bottom = 148.0
+texture = ExtResource("4_3ebx4")
+
+[node name="BlocksContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Chardon" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 19.0
+offset_top = 59.0
+offset_right = 79.0
+offset_bottom = 119.0
+blockType = "chardon"
+
+[node name="Ortie" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 96.0
+offset_top = 59.0
+offset_right = 156.0
+offset_bottom = 119.0
+blockType = "ortie"
+
+[node name="Chenille" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 190.0
+offset_top = 61.0
+offset_right = 250.0
+offset_bottom = 121.0
+blockType = "chenille"
+
+[node name="Egopode" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 281.0
+offset_top = 62.0
+offset_right = 341.0
+offset_bottom = 122.0
+blockType = "egopode"
+
+[node name="Morille" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 382.0
+offset_top = 62.0
+offset_right = 442.0
+offset_bottom = 122.0
+blockType = "morille"
+
+[node name="Pissenlit" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 479.0
+offset_top = 61.0
+offset_right = 539.0
+offset_bottom = 121.0
+blockType = "pissenlit"
+
+[node name="Lierre" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 20.0
+offset_top = 150.0
+offset_right = 80.0
+offset_bottom = 210.0
+blockType = "lierre"
+
+[node name="Ronce" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 110.0
+offset_top = 147.0
+offset_right = 170.0
+offset_bottom = 207.0
+blockType = "ronce"
+
+[node name="Web" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 198.0
+offset_top = 144.0
+offset_right = 258.0
+offset_bottom = 204.0
+blockType = "web"
+
+[node name="Firecracker" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 289.0
+offset_top = 147.0
+offset_right = 349.0
+offset_bottom = 207.0
+blockType = "firecracker"
+
+[node name="Mouton" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 389.0
+offset_top = 146.0
+offset_right = 449.0
+offset_bottom = 206.0
+blockType = "mouton"
+
+[node name="erase" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 5.0
+offset_right = 262.0
+offset_bottom = 15.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("6_5am8q")
+blockType = "null"
+
+[node name="Empty" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
+layout_mode = 2
+offset_left = 478.0
+offset_top = 146.0
+offset_right = 538.0
+offset_bottom = 206.0
+blockType = "empty"
+
+[node name="LevelSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 902.0
+offset_right = 49.0
+offset_bottom = 925.0
+scale = Vector2(2, 2)
+text = "1"
+
+[node name="Add" type="TextureButton" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 907.0
+offset_right = 58.0
+offset_bottom = 916.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 929.0
+offset_right = 58.0
+offset_bottom = 938.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="HeightSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 70.0
+offset_right = 110.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="HeightSelect"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 904.0
+offset_right = 47.0
+offset_bottom = 927.0
+rotation = 0.00283305
+scale = Vector2(2, 2)
+text = "8"
+
+[node name="Add" type="TextureButton" parent="HeightSelect"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 910.0
+offset_right = 59.0
+offset_bottom = 919.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="HeightSelect"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 931.0
+offset_right = 60.0
+offset_bottom = 940.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="WidthSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 140.0
+offset_right = 180.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="WidthSelect"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 906.0
+offset_right = 49.0
+offset_bottom = 929.0
+scale = Vector2(2, 2)
+text = "8
+"
+
+[node name="Add" type="TextureButton" parent="WidthSelect"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 909.0
+offset_right = 58.0
+offset_bottom = 918.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="WidthSelect"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 930.0
+offset_right = 59.0
+offset_bottom = 939.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="WinningConditions" type="CanvasLayer" parent="."]
+
+[node name="Condition1" type="Sprite2D" parent="WinningConditions"]
+position = Vector2(400, 890)
+
+[node name="Condition2" type="Sprite2D" parent="WinningConditions"]
+position = Vector2(510, 890)
+
+[node name="Condition1Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition1Select"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 929.0
+offset_right = 404.0
+offset_bottom = 952.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition1Select"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 934.0
+offset_right = 418.0
+offset_bottom = 943.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="Condition1Select"]
+layout_mode = 0
+offset_left = 404.0
+offset_top = 956.0
+offset_right = 419.0
+offset_bottom = 965.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="Condition2Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition2Select"]
+layout_mode = 0
+offset_left = 478.0
+offset_top = 930.0
+offset_right = 517.0
+offset_bottom = 953.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition2Select"]
+layout_mode = 0
+offset_left = 516.0
+offset_top = 935.0
+offset_right = 531.0
+offset_bottom = 944.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="Condition2Select"]
+layout_mode = 0
+offset_left = 517.0
+offset_top = 957.0
+offset_right = 532.0
+offset_bottom = 966.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="NbMovesLeftSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="NbMovesLeftSelect"]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 930.0
+offset_right = 302.0
+offset_bottom = 953.0
+scale = Vector2(2, 2)
+theme_override_colors/font_color = Color(0.85098, 0.34902, 0.121569, 1)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="NbMovesLeftSelect"]
+layout_mode = 0
+offset_left = 318.0
+offset_top = 935.0
+offset_right = 333.0
+offset_bottom = 944.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="NbMovesLeftSelect"]
+layout_mode = 0
+offset_left = 319.0
+offset_top = 957.0
+offset_right = 334.0
+offset_bottom = 966.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="DifBlockSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="DifBlockSelect"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 956.0
+offset_right = 53.0
+offset_bottom = 979.0
+scale = Vector2(2, 2)
+text = "4
+"
+
+[node name="Add" type="TextureButton" parent="DifBlockSelect"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 960.0
+offset_right = 62.0
+offset_bottom = 969.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="DifBlockSelect"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 982.0
+offset_right = 62.0
+offset_bottom = 991.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[connection signal="pressed" from="SaveButton" to="." method="saveLevel"]
+[connection signal="pressed" from="LevelSelect/Add" to="." method="treatInput" binds= ["leveladd"]]
+[connection signal="pressed" from="LevelSelect/Substract" to="." method="treatInput" binds= ["levelsub"]]
+[connection signal="pressed" from="HeightSelect/Add" to="." method="treatInput" binds= ["heightadd"]]
+[connection signal="pressed" from="HeightSelect/Substract" to="." method="treatInput" binds= ["heightsub"]]
+[connection signal="pressed" from="WidthSelect/Add" to="." method="treatInput" binds= ["widthadd"]]
+[connection signal="pressed" from="WidthSelect/Substract" to="." method="treatInput" binds= ["widthsub"]]
+[connection signal="pressed" from="Condition1Select/Add" to="." method="treatInput" binds= ["condition1add"]]
+[connection signal="pressed" from="Condition1Select/Substract" to="." method="treatInput" binds= ["condition1sub"]]
+[connection signal="pressed" from="Condition2Select/Add" to="." method="treatInput" binds= ["condition2add"]]
+[connection signal="pressed" from="Condition2Select/Substract" to="." method="treatInput" binds= ["condition2sub"]]
+[connection signal="pressed" from="NbMovesLeftSelect/Add" to="." method="treatInput" binds= ["movesadd"]]
+[connection signal="pressed" from="NbMovesLeftSelect/Substract" to="." method="treatInput" binds= ["movessub"]]
+[connection signal="pressed" from="DifBlockSelect/Add" to="." method="treatInput" binds= ["difBlocksadd"]]
+[connection signal="pressed" from="DifBlockSelect/Substract" to="." method="treatInput" binds= ["difBlockssub"]]

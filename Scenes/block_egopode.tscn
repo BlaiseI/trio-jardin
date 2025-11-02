@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bjtd78mt3oymn" path="res://art/Finished/weeds/egopode60.png" id="2_w4qep"]
 
 [node name="blockEgopode" instance=ExtResource("1_ts18e")]
-blockType = "Egopode"
+blockType = "egopode"
 
 [node name="Sprite2D" parent="CenterContainer/Control" index="0"]
 texture = ExtResource("2_w4qep")

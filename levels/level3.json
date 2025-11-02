@@ -1,1 +1,1 @@
-{"ConditionType1":"null", "ConditionType2":"Chardon","gridEmptyTiles":["(3, 4)","(4, 3)"],"gridHeight":8,"gridWidth":8,"nbCarrots":1,"numberForCondition1":0,"numberForCondition2":3,"numberMovesLeft":3}
+{"ConditionType1":"morille","ConditionType2":"pissenlit","fixedBlocks":[["(2, 2)","mouton"],["(5, 5)","mouton"]],"gridEmptyTiles":["(7, 0)","(7, 7)"],"gridHeight":8,"gridLierre":[],"gridRonce":[],"gridWidth":8,"nbDifferentBlocks":6,"numberForCondition1":12,"numberForCondition2":12,"numberMovesLeft":20}

@@ -1,17 +1,38 @@
 class_name Block
 extends Node2D
 
-static var blocks = [
+const blocks = [
 	"res://Scenes/block_chardon.tscn",
 	"res://Scenes/block_chenille.tscn",
 	"res://Scenes/block_ortie.tscn",
-	"res://Scenes/block_egopode.tscn"
+	"res://Scenes/block_egopode.tscn",
+	"res://Scenes/block_pissenlit.tscn",
+	"res://Scenes/block_morille.tscn"
 ]
+static var nbDifferentBlocks: int = 6
 
 static var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+static var blockId: int = 0
+
+static func createRandomBlock() -> Block:
+	var block: Block = load(blocks[rng.randi() % nbDifferentBlocks]).instantiate()
+	block.name = block.name + str(blockId)
+	blockId += 1
+	return block
+
+static func createBlock(blockType: String) -> Block:
+	var blockScenePath = "res://Scenes/block_" + blockType + ".tscn"
+	var block: Block = load(blockScenePath).instantiate()
+	block.name = "block_" + block.name + str(blockId)
+	blockId += 1
+	return block
 
 @export var blockType: String
 var partOfMatch: bool = false
+var doesMatch = true
+var hasTrigger = false
+var moveable = true
+var nextBlock: Block = null
 
 func move(coords: Vector2) -> Signal:
 	var tween = create_tween()
@@ -20,7 +41,7 @@ func move(coords: Vector2) -> Signal:
 
 func shrink() -> Signal:
 	var tween:Tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(.1,.1), .2)
+	tween.tween_property(self, "scale", Vector2(.1,.1), .1)
 	return tween.finished
 
 func spawn() -> Signal:
@@ -28,7 +49,3 @@ func spawn() -> Signal:
 	var tween:Tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1,1), .2)
 	return tween.finished
-
-static func createRandomBlock() -> Block:
-	var block: Block = load(blocks[rng.randi_range(0, blocks.size()-1)]).instantiate()
-	return block
