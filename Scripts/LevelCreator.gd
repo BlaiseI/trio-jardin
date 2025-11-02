@@ -11,7 +11,6 @@ var grid = []
 var gridCadres = []
 var webs = []
 var cadrePreload = preload("res://Scenes/cadre.tscn")
-var webPreload = preload("res://Scenes/web.tscn")
 var selectedBlock: String = "chardon"
 var condition1: String = "null"
 var numberForCondition1 = 0
@@ -38,10 +37,7 @@ func updateCondition1(selectedBlock: String) -> void:
 		if(last_block):
 			remove_child(last_block)
 		return
-	if(selectedBlock == "web"):
-		block = webPreload.instantiate()
-	else:
-		block = Block.createBlock(selectedBlock)
+	block = Block.createBlock(selectedBlock)
 	block.position = Vector2(400, 890)
 	block.name = "condition1"
 	var last_block = find_child("condition1", true, false)
@@ -56,10 +52,7 @@ func updateCondition2(selectedBlock: String) -> void:
 		if(last_block):
 			remove_child(last_block)
 		return
-	if(selectedBlock == "web"):
-		block = webPreload.instantiate()
-	else:
-		block = Block.createBlock(selectedBlock)
+	block = Block.createBlock(selectedBlock)
 	block.position = Vector2(510, 890)
 	block.name = "condition2"
 	var last_block = find_child("condition2", true, false)
@@ -87,14 +80,6 @@ func loadParameters(filePath: String) -> void:
 	for fixedBlock: Array in parametersDictionary["fixedBlocks"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + fixedBlock[0])
 		var block = Block.createBlock(fixedBlock[1])
-		block.position = getTileCoords(positionVector)
-		grid[positionVector.x][positionVector.y] = block
-		add_child(block)
-	for positionString: String in parametersDictionary["gridWebs"]:
-		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
-		var block = webPreload.instantiate()
-		block.name = "blockWeb" + str(Block.blockId)
-		Block.blockId += 1
 		block.position = getTileCoords(positionVector)
 		grid[positionVector.x][positionVector.y] = block
 		add_child(block)
@@ -139,7 +124,6 @@ func saveLevel() -> void:
 		"gridHeight":height,
 		"gridWidth":width,
 		"gridEmptyTiles":[],
-		"gridWebs" : [],
 		"gridRonce" : [],
 		"gridLierre" : [],
 		"fixedBlocks" : [],
@@ -154,14 +138,14 @@ func saveLevel() -> void:
 		for j in width:
 			if(grid[i][j] == null):
 				continue
-			elif(grid[i][j] is Web):
-				parametersDictionary["gridWebs"].append(Vector2(i,j))
 			elif(grid[i][j].blockType == "empty"):
 				parametersDictionary["gridEmptyTiles"].append(Vector2(i,j))
 			elif(grid[i][j].blockType == "ronce"):
 				parametersDictionary["gridRonce"].append(Vector2(i,j))
 			elif(grid[i][j].blockType == "lierre"):
 				parametersDictionary["gridLierre"].append([Vector2(i,j),grid[i][j].layers])
+			elif(grid[i][j] is Web):
+				parametersDictionary["fixedBlocks"].append([Vector2(i,j), "web"])
 			else:
 				parametersDictionary["fixedBlocks"].append([Vector2(i,j), grid[i][j].blockType])
 	Level.saveParameters(parametersDictionary, levelName)
@@ -217,11 +201,7 @@ func _process(delta: float) -> void:
 					grid[tileTouched.x][tileTouched.y] = null
 				return
 			var block
-			if(selectedBlock == "web"):
-				block = webPreload.instantiate()
-				block.name = "blockWeb" + str(Block.blockId)
-				Block.blockId += 1
-			elif(selectedBlock == "lierre"):
+			if(selectedBlock == "lierre"):
 				var currentBlock = grid[tileTouched.x][tileTouched.y]
 				if (currentBlock and currentBlock.blockType == "lierre"):
 					if currentBlock.layers < 3:
@@ -304,10 +284,7 @@ func printGrid() -> void:
 		toPrint += "["
 		for elem in row :
 			if(elem):
-				if(elem is Web):
-					toPrint += "web, "
-				else:
-					toPrint += elem.blockType + ", "
+				toPrint += elem.blockType + ", "
 			else:
 				toPrint += "null, "
 		toPrint += "]"

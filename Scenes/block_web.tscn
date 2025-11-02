@@ -1,10 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://dcwntaseh45si"]
 
-[ext_resource type="Script" path="res://Scripts/web.gd" id="1_cklwv"]
-[ext_resource type="Texture2D" uid="uid://cc5hrrvql7nxl" path="res://art/Finished/obstacles/Web.png" id="1_hbxvm"]
+[ext_resource type="Script" path="res://Scripts/web.gd" id="1_6fg08"]
+[ext_resource type="Texture2D" uid="uid://cc5hrrvql7nxl" path="res://art/Finished/obstacles/Web.png" id="2_2rtsv"]
 
-[node name="Node2D" type="Node2D"]
-script = ExtResource("1_cklwv")
+[node name="blockWeb" type="Node2D"]
+script = ExtResource("1_6fg08")
+blockType = "web"
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 8
@@ -23,4 +24,6 @@ grow_vertical = 2
 layout_mode = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CenterContainer/Control"]
-texture = ExtResource("1_hbxvm")
+
+[node name="Web" type="Sprite2D" parent="CenterContainer/Control"]
+texture = ExtResource("2_2rtsv")

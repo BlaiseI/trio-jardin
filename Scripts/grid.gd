@@ -18,7 +18,6 @@ var width: int
 var height: int
 var emptyTiles : PackedVector2Array
 var fixedBlocks = []
-var webs : PackedVector2Array
 var toTreat = []
 var deletedAndTriggered = []
 var deletedWithoutTrigger = []
@@ -29,7 +28,6 @@ var powerUps: Array = ["firecracker", "mouton"]
 var grid = []
 
 var cadrePreload = preload("res://Scenes/cadre.tscn")
-var webPreload = preload("res://Scenes/web.tscn")
 var firecrakerPreload = preload("res://Scenes/block_firecracker.tscn")
 var moutonPreload = preload("res://Scenes/block_mouton.tscn")
 
@@ -62,11 +60,6 @@ func fillGrid() -> void:
 				add_child(block)
 				block.position = utils.getTileCoords(Vector2(i,j), self)
 				grid[i][j] = block
-			if Vector2(i,j) in webs:
-				var web: Node = webPreload.instantiate()
-				web.position = utils.getTileCoords(Vector2(i,j), self)
-				web.name = "web" + str(i) + str(j)
-				add_child(web)
 	for fixedBlock in fixedBlocks:
 		match fixedBlock:
 			[var coords, var blockType]:
@@ -218,7 +211,7 @@ func treatBigMatches() -> void:
 	for _match in matches:
 		if _match[0] == 4:
 			for pos in _match[1]:
-				if pos in webs or pos in emptyTiles:
+				if pos in emptyTiles:
 					_match[1].erase(pos)
 			var explodingBlock: Block = firecrakerPreload.instantiate()
 			var explodingTile = _match[1][randi() % _match[1].size()]
@@ -228,7 +221,7 @@ func treatBigMatches() -> void:
 			grid[i][j].nextBlock = explodingBlock
 		elif _match[0] > 4:
 			for pos in _match[1]:
-				if pos in webs or pos in emptyTiles:
+				if pos in emptyTiles:
 					_match[1].erase(pos)
 			var moutonBlock: Block = moutonPreload.instantiate()
 			var moutonTile = _match[1][randi() % _match[1].size()]
@@ -269,19 +262,19 @@ func getBlocksDown() -> void:
 		for j in width:
 			if !grid[i][j] and !emptyTile(i,j):
 				var k: int = i-1
-				var nbWebs: int = 0
+				var nbObstacles: int = 0
 				while(k >= 0 and grid[k][j]):
-					if Vector2(k,j) in webs or !grid[k][j].moveable:
-						nbWebs +=1
+					if !grid[k][j].moveable:
+						nbObstacles +=1
 						k -= 1
 					else:
-						var newHeight: int = k+1+nbWebs
+						var newHeight: int = k+1+nbObstacles
 						lastSignal = grid[k][j].move(utils.getTileCoords(Vector2(newHeight,j), self))
 						grid[newHeight][j] = grid[k][j]
 						grid[k][j] = null
 						k -= 1
-						if nbWebs > 0:
-							nbWebs = 0
+						if nbObstacles > 0:
+							nbObstacles = 0
 	if lastSignal:
 		await lastSignal
 
@@ -326,30 +319,20 @@ func deleteTile(pos: Vector2, funcsToWait: Array, doTriggerNeighbours: bool = tr
 		await grid[i][j].trigger(pos, self, funcsToWait)
 
 	if modifyConditions:
-			if Vector2(i,j) in webs:
+			if grid[i][j] is Web:
 				level.signalUpdateConditions.emit("sub", "web")
 			else:
 				level.signalUpdateConditions.emit("sub", grid[i][j].blockType)
 
-	if pos in webs:
-		var web: Web = get_node("web" + str(i) + str(j))
-		await web.shrink()
-	else:
-		await grid[i][j].shrink()
+	await grid[i][j].shrink()
 
-	if pos in webs:
-		var web: Web = get_node("web" + str(i) + str(j))
-		remove_child(web)
-		web.queue_free()
-		webs.remove_at(webs.find(pos))
+	remove_child(grid[i][j])
+	grid[i][j].queue_free()
+	if grid[i][j].nextBlock:
+		add_child(grid[i][j].nextBlock)
+		grid[i][j] = grid[i][j].nextBlock
 	else:
-		remove_child(grid[i][j])
-		grid[i][j].queue_free()
-		if grid[i][j].nextBlock:
-			add_child(grid[i][j].nextBlock)
-			grid[i][j] = grid[i][j].nextBlock
-		else:
-			grid[i][j] = null
+		grid[i][j] = null
 
 	funcsToWait.erase(pos)
 	return
@@ -358,11 +341,6 @@ func replaceBlock(pos: Vector2, block: Block) -> void:
 	block.position = grid[pos.x][pos.y].position
 	remove_child(grid[pos.x][pos.y])
 	grid[pos.x][pos.y].queue_free()
-	if(pos in webs):
-		var web: Web = get_node("web" + str(pos.x) + str(pos.y))
-		remove_child(web)
-		web.queue_free()
-		webs.remove_at(webs.find(pos))
 	add_child(block)
 	grid[pos.x][pos.y] = block
 

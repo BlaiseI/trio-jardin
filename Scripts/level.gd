@@ -62,10 +62,6 @@ func loadParameters(filePath: String) -> void:
 	for fixedBlock: Array in parametersDictionary["fixedBlocks"]:
 		fixedBlock[0] = str_to_var("Vector2" + fixedBlock[0])
 		grid.fixedBlocks.append(fixedBlock)
-	grid.webs = []
-	for positionString: String in parametersDictionary["gridWebs"]:
-		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
-		grid.webs.append(positionVector)
 	Ronce.roncesPositions = []
 	for positionString: String in parametersDictionary["gridRonce"]:
 		var positionVector:Vector2 = str_to_var("Vector2" + positionString)
@@ -114,7 +110,7 @@ func getSlideInput() -> void:
 func treatSlide(slideEndPos: Vector2) -> void:
 	if slideBeginPos == slideEndPos:
 		return
-	if slideBeginPos in grid.webs or slideEndPos in grid.webs  or !grid.grid[slideBeginPos.x][slideBeginPos.y].moveable or !grid.grid[slideEndPos.x][slideEndPos.y].moveable:
+	if !grid.grid[slideBeginPos.x][slideBeginPos.y].moveable or !grid.grid[slideEndPos.x][slideEndPos.y].moveable:
 		await grid.shakeBlocks(slideBeginPos, slideEndPos)
 		return
 	await grid.swapBlocks(slideBeginPos, slideEndPos)
