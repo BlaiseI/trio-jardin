@@ -13,6 +13,7 @@ config_version=5
 config/name="Trio Jardin"
 run/main_scene="res://Scenes/game.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
 
 [display]
@@ -34,5 +35,6 @@ ui_touch={
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
+renderer/rendering_method.web="mobile"
 textures/vram_compression/import_etc2_astc=true
 2d/snap/snap_2d_transforms_to_pixel=true

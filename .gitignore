@@ -18,3 +18,6 @@ mono_crash.*.json
 Scenes/*.tmp
 
 backup.txt
+art/Finished/legacy
+art/Finished/tests
+*.import

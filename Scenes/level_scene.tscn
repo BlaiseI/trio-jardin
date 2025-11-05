@@ -1,15 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://cfvus1bseqnk1"]
+[gd_scene load_steps=9 format=3 uid="uid://cfvus1bseqnk1"]
 
-[ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="1_7r6xw"]
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
-[ext_resource type="Texture2D" uid="uid://c6i3kfiabx6v3" path="res://art/Finished/level background/gridContainer.png" id="2_1v6qg"]
+[ext_resource type="Texture2D" uid="uid://b40pqtb7vpp5v" path="res://art/Finished/level background/gridContainer.png" id="2_1v6qg"]
+[ext_resource type="Texture2D" uid="uid://bf1x5e41fjy82" path="res://art/Finished/level background/LevelBackground.png" id="2_sxine"]
 [ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="3_qur5x"]
 [ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
+[ext_resource type="Texture2D" uid="uid://dqnv7xxnuaiq" path="res://art/Finished/level background/topBanner.png" id="5_jlvdi"]
 [ext_resource type="Script" path="res://Scripts/level.gd" id="9_f3jec"]
 [ext_resource type="Texture2D" uid="uid://cxdew1nju2yft" path="res://art/Finished/level background/botBanner.png" id="10_acrw4"]
 
 [node name="levelScene" type="Node2D"]
 script = ExtResource("9_f3jec")
+
+[node name="GlobalBackground" type="TextureRect" parent="."]
+offset_right = 576.0
+offset_bottom = 1024.0
+texture = ExtResource("2_sxine")
 
 [node name="GridBackground" type="TextureRect" parent="."]
 offset_top = 192.0
@@ -31,7 +37,7 @@ offset = 67
 [node name="TopBannerBackground" type="TextureRect" parent="."]
 offset_right = 576.0
 offset_bottom = 192.0
-texture = ExtResource("1_7r6xw")
+texture = ExtResource("5_jlvdi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="TopBannerBackground"]
 layer = 2
