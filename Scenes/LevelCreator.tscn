@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://8e8du5xmixa0"]
 
 [ext_resource type="Script" path="res://Scripts/LevelCreator.gd" id="1_y1y6h"]
-[ext_resource type="Texture2D" uid="uid://c6i3kfiabx6v3" path="res://art/Finished/level background/gridContainer.png" id="2_mn7si"]
-[ext_resource type="Texture2D" uid="uid://c2tldgkrj3hp1" path="res://art/topBanner.png" id="3_fpvvf"]
+[ext_resource type="Texture2D" uid="uid://bphhtbdf1jnin" path="res://art/Finished/level background/gridContainer.png" id="2_mn7si"]
+[ext_resource type="Texture2D" uid="uid://g8seyyd3q4xw" path="res://art/Finished/level background/topBanner.png" id="3_frbx6"]
 [ext_resource type="PackedScene" uid="uid://cmnwaw863jv23" path="res://Scenes/block_selector.tscn" id="3_ts03y"]
-[ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="4_3ebx4"]
-[ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/LevelCreator/up.png" id="4_vptl4"]
-[ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/LevelCreator/down.png" id="5_kirta"]
-[ext_resource type="Texture2D" uid="uid://d10hj0g1o3lpd" path="res://art/Finished/LevelCreator/null.png" id="6_5am8q"]
+[ext_resource type="PackedScene" uid="uid://d3sckk5vjpjh8" path="res://Scenes/condition.tscn" id="4_hflut"]
+[ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/legacy/backup v1_1/LevelCreator/up.png" id="4_vptl4"]
+[ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/legacy/backup v1_1/LevelCreator/down.png" id="5_kirta"]
+[ext_resource type="Texture2D" uid="uid://d10hj0g1o3lpd" path="res://art/Finished/legacy/backup v1_1/LevelCreator/null.png" id="6_5am8q"]
 
 [node name="LevelCreator" type="Node2D"]
 script = ExtResource("1_y1y6h")
@@ -34,23 +34,35 @@ offset_left = -1.0
 offset_top = 828.0
 offset_right = 575.0
 offset_bottom = 1020.0
-texture = ExtResource("3_fpvvf")
+texture = ExtResource("3_frbx6")
 
-[node name="numberBackground1" type="TextureRect" parent="TopBannerBackground"]
+[node name="ConditionBackground1" parent="TopBannerBackground" instance=ExtResource("4_hflut")]
 layout_mode = 0
-offset_left = 361.0
-offset_top = 107.0
-offset_right = 401.0
-offset_bottom = 147.0
-texture = ExtResource("4_3ebx4")
+offset_left = 364.0
+offset_top = 12.0
+offset_right = 424.0
+offset_bottom = 72.0
 
-[node name="numberBackground2" type="TextureRect" parent="TopBannerBackground"]
+[node name="ConditionBackground2" parent="TopBannerBackground" instance=ExtResource("4_hflut")]
 layout_mode = 0
-offset_left = 474.0
-offset_top = 108.0
-offset_right = 514.0
+offset_left = 484.0
+offset_top = 12.0
+offset_right = 544.0
+offset_bottom = 72.0
+
+[node name="ConditionBackground3" parent="TopBannerBackground" instance=ExtResource("4_hflut")]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 88.0
+offset_right = 425.0
 offset_bottom = 148.0
-texture = ExtResource("4_3ebx4")
+
+[node name="ConditionBackground4" parent="TopBannerBackground" instance=ExtResource("4_hflut")]
+layout_mode = 0
+offset_left = 484.0
+offset_top = 88.0
+offset_right = 544.0
+offset_bottom = 148.0
 
 [node name="BlocksContainer" type="Control" parent="."]
 layout_mode = 3
@@ -275,6 +287,74 @@ position = Vector2(400, 890)
 [node name="Condition2" type="Sprite2D" parent="WinningConditions"]
 position = Vector2(510, 890)
 
+[node name="Condition4Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition4Select"]
+layout_mode = 0
+offset_left = 527.0
+offset_top = 936.0
+offset_right = 566.0
+offset_bottom = 959.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition4Select"]
+layout_mode = 0
+offset_left = 555.0
+offset_top = 933.0
+offset_right = 570.0
+offset_bottom = 947.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="Condition4Select"]
+layout_mode = 0
+offset_left = 557.0
+offset_top = 960.0
+offset_right = 572.0
+offset_bottom = 969.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
+[node name="Condition3Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition3Select"]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 936.0
+offset_right = 448.0
+offset_bottom = 959.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition3Select"]
+layout_mode = 0
+offset_left = 443.0
+offset_top = 940.0
+offset_right = 458.0
+offset_bottom = 949.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("4_vptl4")
+
+[node name="Substract" type="TextureButton" parent="Condition3Select"]
+layout_mode = 0
+offset_left = 443.0
+offset_top = 964.0
+offset_right = 458.0
+offset_bottom = 973.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_kirta")
+
 [node name="Condition1Select" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -283,29 +363,29 @@ offset_bottom = 40.0
 
 [node name="Number" type="Label" parent="Condition1Select"]
 layout_mode = 0
-offset_left = 365.0
-offset_top = 929.0
-offset_right = 404.0
-offset_bottom = 952.0
+offset_left = 413.0
+offset_top = 861.0
+offset_right = 452.0
+offset_bottom = 884.0
 scale = Vector2(2, 2)
 text = "0
 "
 
 [node name="Add" type="TextureButton" parent="Condition1Select"]
 layout_mode = 0
-offset_left = 403.0
-offset_top = 934.0
-offset_right = 418.0
-offset_bottom = 943.0
+offset_left = 446.0
+offset_top = 863.0
+offset_right = 461.0
+offset_bottom = 872.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("4_vptl4")
 
 [node name="Substract" type="TextureButton" parent="Condition1Select"]
 layout_mode = 0
-offset_left = 404.0
-offset_top = 956.0
-offset_right = 419.0
-offset_bottom = 965.0
+offset_left = 447.0
+offset_top = 885.0
+offset_right = 462.0
+offset_bottom = 894.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("5_kirta")
 
@@ -317,29 +397,29 @@ offset_bottom = 40.0
 
 [node name="Number" type="Label" parent="Condition2Select"]
 layout_mode = 0
-offset_left = 478.0
-offset_top = 930.0
-offset_right = 517.0
-offset_bottom = 953.0
+offset_left = 531.0
+offset_top = 860.0
+offset_right = 570.0
+offset_bottom = 883.0
 scale = Vector2(2, 2)
 text = "0
 "
 
 [node name="Add" type="TextureButton" parent="Condition2Select"]
 layout_mode = 0
-offset_left = 516.0
-offset_top = 935.0
-offset_right = 531.0
-offset_bottom = 944.0
+offset_left = 564.0
+offset_top = 862.0
+offset_right = 579.0
+offset_bottom = 871.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("4_vptl4")
 
 [node name="Substract" type="TextureButton" parent="Condition2Select"]
 layout_mode = 0
-offset_left = 517.0
-offset_top = 957.0
-offset_right = 532.0
-offset_bottom = 966.0
+offset_left = 565.0
+offset_top = 884.0
+offset_right = 580.0
+offset_bottom = 893.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("5_kirta")
 
@@ -419,6 +499,10 @@ texture_normal = ExtResource("5_kirta")
 [connection signal="pressed" from="HeightSelect/Substract" to="." method="treatInput" binds= ["heightsub"]]
 [connection signal="pressed" from="WidthSelect/Add" to="." method="treatInput" binds= ["widthadd"]]
 [connection signal="pressed" from="WidthSelect/Substract" to="." method="treatInput" binds= ["widthsub"]]
+[connection signal="pressed" from="Condition4Select/Add" to="." method="treatInput" binds= ["condition4add"]]
+[connection signal="pressed" from="Condition4Select/Substract" to="." method="treatInput" binds= ["condition4sub"]]
+[connection signal="pressed" from="Condition3Select/Add" to="." method="treatInput" binds= ["condition3add"]]
+[connection signal="pressed" from="Condition3Select/Substract" to="." method="treatInput" binds= ["condition3sub"]]
 [connection signal="pressed" from="Condition1Select/Add" to="." method="treatInput" binds= ["condition1add"]]
 [connection signal="pressed" from="Condition1Select/Substract" to="." method="treatInput" binds= ["condition1sub"]]
 [connection signal="pressed" from="Condition2Select/Add" to="." method="treatInput" binds= ["condition2add"]]

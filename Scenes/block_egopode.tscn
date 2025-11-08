@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://c2xrvtvwfks7r"]
 
 [ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_ts18e"]
-[ext_resource type="Texture2D" uid="uid://bjtd78mt3oymn" path="res://art/Finished/weeds/egopode60.png" id="2_w4qep"]
+[ext_resource type="Texture2D" uid="uid://bmbhql8qjg3jf" path="res://art/Finished/weeds/egopode60.png" id="2_ldly4"]
 
 [node name="blockEgopode" instance=ExtResource("1_ts18e")]
 blockType = "egopode"
 
 [node name="Sprite2D" parent="CenterContainer/Control" index="0"]
-texture = ExtResource("2_w4qep")
+texture = ExtResource("2_ldly4")

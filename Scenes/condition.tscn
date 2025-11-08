@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3sckk5vjpjh8"]
+
+[ext_resource type="Texture2D" uid="uid://bp6jdwr6muwan" path="res://art/Finished/level background/conditionBackground.png" id="1_p8n0w"]
+[ext_resource type="Texture2D" uid="uid://cx83a53lknqt3" path="res://art/Finished/level background/numberBackground.png" id="3_7dqnb"]
+[ext_resource type="FontFile" uid="uid://xt34up70b8nw" path="res://art/CarrotFont.ttf" id="4_fg3mh"]
+
+[node name="ConditionBackground" type="TextureRect"]
+texture = ExtResource("1_p8n0w")
+
+[node name="ConditionTexture" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = 69.0
+offset_bottom = 69.0
+scale = Vector2(0.7, 0.7)
+
+[node name="NumberHolder" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 28.0
+offset_right = 80.0
+offset_bottom = 60.0
+texture = ExtResource("3_7dqnb")
+
+[node name="ConditionNumber" type="Label" parent="NumberHolder"]
+z_index = 2
+z_as_relative = false
+layout_mode = 1
+anchors_preset = -1
+offset_left = 1.0
+offset_top = 7.0
+offset_right = 35.0
+offset_bottom = 27.0
+grow_horizontal = 2
+size_flags_horizontal = 5
+theme_override_colors/font_color = Color(0.745098, 0.376471, 0.152941, 1)
+theme_override_fonts/font = ExtResource("4_fg3mh")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

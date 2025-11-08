@@ -12,10 +12,7 @@ var gridCadres = []
 var webs = []
 var cadrePreload = preload("res://Scenes/cadre.tscn")
 var selectedBlock: String = "chardon"
-var condition1: String = "null"
-var numberForCondition1 = 0
-var condition2: String = "null"
-var numberForCondition2 = 0
+var conditions = []
 var nbMovesLeft = 0
 var nbDifferentBlocks: int = 4
 
@@ -30,32 +27,18 @@ func _ready() -> void:
 	cadre.z_index = -1
 	add_child(cadre)
 
-func updateCondition1(selectedBlock: String) -> void:
+func updateCondition(selectedBlock, i: int) -> void:
+	conditions[i][0] = selectedBlock
 	var block
 	if(selectedBlock == "null"):
-		var last_block = find_child("condition1", true, false)
+		var last_block = find_child("condition" + str(i+1), true, false)
 		if(last_block):
 			remove_child(last_block)
 		return
 	block = Block.createBlock(selectedBlock)
-	block.position = Vector2(400, 890)
-	block.name = "condition1"
-	var last_block = find_child("condition1", true, false)
-	if(last_block):
-		remove_child(last_block)
-	add_child(block)
-
-func updateCondition2(selectedBlock: String) -> void:
-	var block
-	if(selectedBlock == "null"):
-		var last_block = find_child("condition2", true, false)
-		if(last_block):
-			remove_child(last_block)
-		return
-	block = Block.createBlock(selectedBlock)
-	block.position = Vector2(510, 890)
-	block.name = "condition2"
-	var last_block = find_child("condition2", true, false)
+	block.name = "condition" + str(i+1)
+	block.position = Vector2(394 + ((i%2)*120), 870 + ((i/2)*76))
+	var last_block = find_child(block.name, true, false)
 	if(last_block):
 		remove_child(last_block)
 	add_child(block)
@@ -98,20 +81,21 @@ func loadParameters(filePath: String) -> void:
 		add_child(block)
 
 	nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
-	condition1= parametersDictionary["ConditionType1"]
-	updateCondition1(condition1)
-	condition2 = parametersDictionary["ConditionType2"]
-	updateCondition2(condition2)
-	numberForCondition1 = parametersDictionary["numberForCondition1"]
-	numberForCondition2 = parametersDictionary["numberForCondition2"]
+	conditions = parametersDictionary["conditions"]
+	for i in range(4):
+		if i >= conditions.size():
+			find_child("ConditionBackground" + str(i+1)).find_child("ConditionTexture").texture = null
+			conditions.append(["null", 0])
+			continue
+		updateCondition(conditions[i][0],i)
+		find_child("Condition" + str(i+1) + "Select", false, false).find_child("Number", false).text = str(conditions[i][1])
+
 	nbMovesLeft = parametersDictionary["numberMovesLeft"]
 
 	$"HeightSelect/Number".text = str(height)
 	$"WidthSelect/Number".text = str(width)
 	$"LevelSelect/Number".text = levelName
 	$"NbMovesLeftSelect/Number".text = str(nbMovesLeft)
-	$"Condition1Select/Number".text = str(numberForCondition1)
-	$"Condition2Select/Number".text = str(numberForCondition2)
 	$"DifBlockSelect/Number".text = str(nbDifferentBlocks)
 
 func getTileCoords(position: Vector2) -> Vector2:
@@ -128,12 +112,12 @@ func saveLevel() -> void:
 		"gridLierre" : [],
 		"fixedBlocks" : [],
 		"nbDifferentBlocks":nbDifferentBlocks,
-		"ConditionType1":condition1,
-		"numberForCondition1":numberForCondition1,
-		"ConditionType2":condition2,
-		"numberForCondition2":numberForCondition2,
-		"numberMovesLeft":nbMovesLeft
+		"numberMovesLeft":nbMovesLeft,
+		"conditions" : []
 	}
+	for condition in conditions:
+		if condition[0] != "null":
+			parametersDictionary["conditions"].append(condition)
 	for i in height:
 		for j in width:
 			if(grid[i][j] == null):
@@ -179,15 +163,16 @@ func isInGrid(coords: Vector2) -> bool:
 			return false
 	return true
 
-func isInCondition1(coords: Vector2) -> bool:
-	if(coords.x < 370 or coords.x > 430 or coords.y < 860 or coords.y > 920):
-			return false
-	return true
-
-func isInCondition2(coords: Vector2) -> bool:
-	if(coords.x < 480 or coords.x > 540 or coords.y < 860 or coords.y > 920):
-			return false
-	return true
+func isInCondition(coords: Vector2) -> int:
+	for i in range(4):
+		var conditionXStart = 364 + ((i%2)*100)
+		var conditionXEnd = conditionXStart + 80
+		var conditionYStart = 840 + ((i/2)*80)
+		var conditionYEnd = conditionYStart + 60
+		if(coords.x < conditionXStart or coords.x > conditionXEnd or coords.y < conditionYStart or coords.y > conditionYEnd):
+				continue
+		return i
+	return -1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -219,12 +204,8 @@ func _process(delta: float) -> void:
 				remove_child(grid[tileTouched.x][tileTouched.y])
 			grid[tileTouched.x][tileTouched.y] = block
 			add_child(block)
-		elif isInCondition1(touchCoords):
-			updateCondition1(selectedBlock)
-			condition1 = selectedBlock
-		elif isInCondition2(touchCoords):
-			updateCondition2(selectedBlock)
-			condition2 = selectedBlock
+		elif isInCondition(touchCoords) != -1:
+			updateCondition(selectedBlock, isInCondition(touchCoords))
 
 func treatInput(type: String) -> void:
 	if type.contains("height"):
@@ -255,20 +236,14 @@ func treatInput(type: String) -> void:
 		if type.contains("sub"):
 			nbMovesLeft -= 1
 			$"NbMovesLeftSelect/Number".text = str(nbMovesLeft)
-	if type.contains("condition1"):
-		if type.contains("add"):
-			numberForCondition1 += 1
-			$"Condition1Select/Number".text = str(numberForCondition1)
-		if type.contains("sub"):
-			numberForCondition1 -= 1
-			$"Condition1Select/Number".text = str(numberForCondition1)
-	if type.contains("condition2"):
-		if type.contains("add"):
-			numberForCondition2 += 1
-			$"Condition2Select/Number".text = str(numberForCondition2)
-		if type.contains("sub"):
-			numberForCondition2 -= 1
-			$"Condition2Select/Number".text = str(numberForCondition2)
+	if type.contains("condition"):
+		for i in range(conditions.size()):
+			if type.contains(str(i+1)):
+				if type.contains("add"):
+					conditions[i][1] += 1
+				if type.contains("sub"):
+					conditions[i][1] -= 1
+				find_child("Condition" + str(i+1) + "Select", false, false).find_child("Number", false).text = str(conditions[i][1])
 	if type.contains("difBlocks"):
 		if type.contains("add"):
 			nbDifferentBlocks += 1

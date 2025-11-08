@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfvus1bseqnk1"]
+[gd_scene load_steps=10 format=3 uid="uid://cfvus1bseqnk1"]
 
 [ext_resource type="Script" path="res://Scripts/grid.gd" id="1_luu4e"]
-[ext_resource type="Texture2D" uid="uid://b40pqtb7vpp5v" path="res://art/Finished/level background/gridContainer.png" id="2_1v6qg"]
-[ext_resource type="Texture2D" uid="uid://bf1x5e41fjy82" path="res://art/Finished/level background/LevelBackground.png" id="2_sxine"]
-[ext_resource type="Texture2D" uid="uid://b8kvf42g7n3wk" path="res://art/Finished/level background/numberBackground.png" id="3_qur5x"]
+[ext_resource type="Texture2D" uid="uid://bphhtbdf1jnin" path="res://art/Finished/level background/gridContainer.png" id="2_1v6qg"]
+[ext_resource type="Texture2D" uid="uid://doukdov5m88lh" path="res://art/Finished/level background/LevelBackground.png" id="2_sxine"]
+[ext_resource type="Texture2D" uid="uid://cx83a53lknqt3" path="res://art/Finished/level background/numberBackground.png" id="3_qur5x"]
 [ext_resource type="Script" path="res://Scripts/utils.gd" id="4_rjc1o"]
-[ext_resource type="Texture2D" uid="uid://dqnv7xxnuaiq" path="res://art/Finished/level background/topBanner.png" id="5_jlvdi"]
+[ext_resource type="Texture2D" uid="uid://g8seyyd3q4xw" path="res://art/Finished/level background/topBanner.png" id="5_jlvdi"]
 [ext_resource type="Script" path="res://Scripts/level.gd" id="9_f3jec"]
-[ext_resource type="Texture2D" uid="uid://cxdew1nju2yft" path="res://art/Finished/level background/botBanner.png" id="10_acrw4"]
+[ext_resource type="PackedScene" uid="uid://d3sckk5vjpjh8" path="res://Scenes/condition.tscn" id="9_muqpo"]
+[ext_resource type="Texture2D" uid="uid://db1ei82ejbwox" path="res://art/Finished/level background/botBanner.png" id="10_acrw4"]
 
 [node name="levelScene" type="Node2D"]
 script = ExtResource("9_f3jec")
@@ -39,23 +40,6 @@ offset_right = 576.0
 offset_bottom = 192.0
 texture = ExtResource("5_jlvdi")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="TopBannerBackground"]
-layer = 2
-
-[node name="numberBackground1" type="TextureRect" parent="TopBannerBackground/CanvasLayer"]
-offset_left = 420.0
-offset_top = 70.0
-offset_right = 460.0
-offset_bottom = 110.0
-texture = ExtResource("3_qur5x")
-
-[node name="numberBackground2" type="TextureRect" parent="TopBannerBackground/CanvasLayer"]
-offset_left = 533.0
-offset_top = 70.0
-offset_right = 573.0
-offset_bottom = 110.0
-texture = ExtResource("3_qur5x")
-
 [node name="BotBannerBackground" type="TextureRect" parent="."]
 offset_top = 832.0
 offset_right = 576.0
@@ -69,3 +53,31 @@ offset_top = 119.0
 offset_right = 292.0
 offset_bottom = 159.0
 texture = ExtResource("3_qur5x")
+
+[node name="ConditionBackground2" parent="." instance=ExtResource("9_muqpo")]
+visible = false
+offset_left = 480.0
+offset_top = 12.0
+offset_right = 540.0
+offset_bottom = 72.0
+
+[node name="ConditionBackground" parent="." instance=ExtResource("9_muqpo")]
+visible = false
+offset_left = 392.0
+offset_top = 12.0
+offset_right = 452.0
+offset_bottom = 72.0
+
+[node name="ConditionBackground3" parent="." instance=ExtResource("9_muqpo")]
+visible = false
+offset_left = 440.0
+offset_top = 80.0
+offset_right = 500.0
+offset_bottom = 140.0
+
+[node name="ConditionBackground4" parent="." instance=ExtResource("9_muqpo")]
+visible = false
+offset_left = 480.0
+offset_top = 80.0
+offset_right = 540.0
+offset_bottom = 140.0

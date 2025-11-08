@@ -1,1 +1,1 @@
-{"ConditionType1":"mouton","ConditionType2":"null","fixedBlocks":[],"gridEmptyTiles":[],"gridHeight":6,"gridLierre":[],"gridRonce":["(0, 0)","(0, 6)","(5, 0)","(5, 6)"],"gridWidth":7,"nbDifferentBlocks":4,"numberForCondition1":3,"numberForCondition2":0,"numberMovesLeft":50}
+{"conditions":[["mouton",3]],"fixedBlocks":[],"gridEmptyTiles":[],"gridHeight":6,"gridLierre":[],"gridRonce":["(0, 0)","(0, 6)","(5, 0)","(5, 6)"],"gridWidth":7,"nbDifferentBlocks":4,"numberMovesLeft":50}

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cskhncjohvvqq"]
 
 [ext_resource type="PackedScene" uid="uid://qyo2m5trdiyx" path="res://Scenes/block.tscn" id="1_5pbka"]
-[ext_resource type="Texture2D" uid="uid://dgyr6yu8lrt8w" path="res://art/Finished/weeds/ortie60.png" id="2_lqp0e"]
+[ext_resource type="Texture2D" uid="uid://diyxgi440icwn" path="res://art/Finished/weeds/ortie60.png" id="2_lqp0e"]
 
 [node name="blockOrtie" instance=ExtResource("1_5pbka")]
 blockType = "ortie"

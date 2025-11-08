@@ -1,7 +1,9 @@
 class_name HUDLevel
 extends CanvasLayer
 
+var conditionsNodes: Array
 var level:Level
+var conditionPreload = preload("res://Scenes/condition.tscn")
 var conditionTexturePaths: Dictionary = {
 	"chardon": "res://art/Finished/weeds/chardon60.png",
  	"chenille": "res://art/Finished/weeds/chenille60.png",
@@ -22,29 +24,14 @@ func _on_carrot_button_pressed() -> void:
 func updateNbCarrots(nbCarrots: int) -> void:
 	$"NumberOfCarrots".text = str(nbCarrots)
 
-func updateNbCondition1(nbCondition1: int) -> void:
-	$"NumbersForConditions/NumberForCondition1".text = str(nbCondition1)
-
-func updateNbCondition2(nbCondition2: int) -> void:
-	$"NumbersForConditions/NumberForCondition2".text = str(nbCondition2)
+func updateNbCondition(condition: Array, index: int) -> void:
+	conditionsNodes[index].find_child("ConditionNumber").text = str(condition[1])
 
 func updateNbMovesLeft(nbMovesLeft: int) -> void:
 	$"NumberMovesLeft".text = str(nbMovesLeft)
 
 func updateGameOverMessage(message: String) -> void:
 	$"GameOverMsg".text = message
-
-func setCondition1(conditionType1: String) -> void:
-	if conditionType1 == "null":
-		$"WinningConditions/Condition1".texture = null
-	else:
-		$"WinningConditions/Condition1".texture = load(conditionTexturePaths[conditionType1])
-
-func setCondition2(conditionType2: String) -> void:
-	if conditionType2 == "null":
-		$"WinningConditions/Condition2".texture = null
-	else:
-		$"WinningConditions/Condition2".texture = load(conditionTexturePaths[conditionType2])
 
 func blackenBackground() -> void:
 	$"..".changeBrightness("/root/Game/level/TopBannerBackground", 0.5)
@@ -53,3 +40,22 @@ func blackenBackground() -> void:
 func unBlackenBackground() -> void:
 	$"..".changeBrightness("/root/Game/level/TopBannerBackground", 1)
 	$"..".changeBrightness("/root/Game/level/GridBackground", 1)
+
+func createConditions(conditions: Array) -> void:
+	conditionsNodes = []
+	for i:int in range(conditions.size()):
+		var condition:Node = conditionPreload.instantiate()
+		condition.find_child("ConditionTexture").texture = load(conditionTexturePaths[conditions[i][0]])
+		condition.find_child("ConditionNumber").text = str(conditions[i][1])
+		condition.position = Vector2(392,12)
+		if not i%2:
+			condition.position.x += 88
+			if i==conditions.size()-1:
+				condition.position.x -= 40
+		if i/2:
+			condition.position.y += 68
+		elif conditions.size() < 3:
+			condition.position.y += 34
+		conditionsNodes.append(condition)
+		add_child(condition)
+	pass

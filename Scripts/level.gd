@@ -20,10 +20,7 @@ var slideBeginCoords: Vector2
 
 var powerUps: Dictionary
 var carrotButtonReleased: bool = false
-var ConditionType1: String
-var numberForCondition1: int
-var ConditionType2: String
-var numberForCondition2: int
+var conditions:Array
 var numberMovesLeft: int
 
 func setLevelName(levelName: String) -> void:
@@ -40,11 +37,8 @@ func _ready() -> void:
 
 func updateParametersInHUD() -> void:
 	hud.updateNbCarrots(powerUps["carrot"])
-	hud.updateNbCondition1(numberForCondition1)
-	hud.updateNbCondition2(numberForCondition2)
+	hud.createConditions(conditions)
 	hud.updateNbMovesLeft(numberMovesLeft)
-	hud.setCondition1(ConditionType1)
-	hud.setCondition2(ConditionType2)
 
 func loadParameters(filePath: String) -> void:
 	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
@@ -72,10 +66,7 @@ func loadParameters(filePath: String) -> void:
 		Lierre.lierresInfo.append(lierreInfo)
 
 	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
-	ConditionType1 = parametersDictionary["ConditionType1"]
-	ConditionType2 = parametersDictionary["ConditionType2"]
-	numberForCondition1 = parametersDictionary["numberForCondition1"]
-	numberForCondition2 = parametersDictionary["numberForCondition2"]
+	conditions = parametersDictionary["conditions"]
 	numberMovesLeft = parametersDictionary["numberMovesLeft"]
 
 func _process(delta: float) -> void:
@@ -154,23 +145,20 @@ func deleteMatches() -> void:
 	await grid.deleteMatches()
 
 func updateConditions(addOrSub: String, blockType: String) -> void:
-	if blockType == ConditionType1:
-		if addOrSub == "add":
-			numberForCondition1 += 1
-		elif addOrSub == "sub":
-			numberForCondition1 -= 1
-			if numberForCondition1 <= 0:
-				numberForCondition1 = 0
-		hud.updateNbCondition1(numberForCondition1)
-	if blockType == ConditionType2:
-		if addOrSub == "add":
-			numberForCondition2 += 1
-		elif addOrSub == "sub":
-			numberForCondition2 -= 1
-			if numberForCondition2 <= 0:
-				numberForCondition2 = 0
-		hud.updateNbCondition2(numberForCondition2)
-	if numberForCondition1 <= 0 and numberForCondition2 <= 0:
+	var allConditionsZero: bool = true
+	for i in range(conditions.size()):
+		var condition = conditions[i]
+		if condition[0] == blockType:
+			if addOrSub == "add":
+				condition[1] += 1
+			elif addOrSub == "sub":
+				condition[1] -= 1
+				if condition[1] <= 0:
+					condition[1] = 0
+			hud.updateNbCondition(condition, i)
+		if condition[1] > 0:
+			allConditionsZero = false
+	if allConditionsZero:
 		state = gameOver
 
 func getPowerUpInput() -> void:

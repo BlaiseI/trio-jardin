@@ -334,10 +334,10 @@ func deleteTile(pos: Vector2, funcsToWait: Array, doTriggerNeighbours: bool = tr
 		await grid[i][j].trigger(pos, self, funcsToWait)
 
 	if modifyConditions:
-			if grid[i][j] is Web:
-				level.signalUpdateConditions.emit("sub", "web")
-			else:
-				level.signalUpdateConditions.emit("sub", grid[i][j].blockType)
+		if grid[i][j] is Web:
+			level.signalUpdateConditions.emit("sub", "web")
+		else:
+			level.signalUpdateConditions.emit("sub", grid[i][j].blockType)
 
 	await grid[i][j].shrink()
 

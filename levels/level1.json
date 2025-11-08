@@ -1,1 +1,1 @@
-{"ConditionType1":"chardon","ConditionType2":"egopode","fixedBlocks":[],"gridEmptyTiles":[],"gridHeight":8,"gridLierre":[],"gridRonce":[],"gridWidth":8,"nbDifferentBlocks":4,"numberForCondition1":12,"numberForCondition2":12,"numberMovesLeft":10}
+{"conditions":[["chardon",12],["egopode",12]],"fixedBlocks":[],"gridEmptyTiles":[],"gridHeight":8,"gridLierre":[],"gridRonce":[],"gridWidth":8,"nbDifferentBlocks":4,"numberMovesLeft":10}
