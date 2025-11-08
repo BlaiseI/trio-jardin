@@ -207,8 +207,6 @@ func getMatchesOnGrid(add: bool = true) -> bool:
 						uniqueAdd(toTreat, Vector2(row, column))
 						var positions = [Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column)]
 						addToMatches(positions)
-					else:
-						print(blockType, Vector2(row-2, column), Vector2(row-1, column), Vector2(row, column))
 					thereIsAMatch = true
 				if(column >= 2 && !emptyTile(row,column-1) && grid[row][column-1].blockType == blockType and !emptyTile(row,column-2) && grid[row][column-2].blockType == blockType):
 					if(add):
@@ -217,8 +215,6 @@ func getMatchesOnGrid(add: bool = true) -> bool:
 						uniqueAdd(toTreat, Vector2(row, column))
 						var positions = [Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column)]
 						addToMatches(positions)
-					else:
-						print(blockType, Vector2(row, column-2), Vector2(row, column-1), Vector2(row, column))
 					thereIsAMatch = true
 	return thereIsAMatch
 

@@ -4,6 +4,7 @@ extends CanvasLayer
 var conditionsNodes: Array
 var level:Level
 var conditionPreload = preload("res://Scenes/condition.tscn")
+var powerUpPreload = preload("res://Scenes/powerUp.tscn")
 var conditionTexturePaths: Dictionary = {
 	"chardon": "res://art/Finished/weeds/chardon60.png",
  	"chenille": "res://art/Finished/weeds/chenille60.png",
@@ -17,12 +18,15 @@ var conditionTexturePaths: Dictionary = {
 	"ronce": "res://art/Finished/obstacles/ronceMoche.png",
 	"lierre": "res://art/Finished/obstacles/lierreMoche.png"
 }
+var powerUpTexturePaths: Dictionary = {
+	"carrot": "res://art/Finished/power-ups/carrot.png"
+}
 
 func _on_carrot_button_pressed() -> void:
 	level.carrotPressed()
 
-func updateNbCarrots(nbCarrots: int) -> void:
-	$"NumberOfCarrots".text = str(nbCarrots)
+func updateNbPowerUp(powerUp: PowerUp) -> void:
+	powerUp.get_parent().find_child("PowerUpNumber").text = str(powerUp.numberLeft)
 
 func updateNbCondition(condition: Array, index: int) -> void:
 	conditionsNodes[index].find_child("ConditionNumber").text = str(condition[1])
@@ -58,4 +62,18 @@ func createConditions(conditions: Array) -> void:
 			condition.position.y += 34
 		conditionsNodes.append(condition)
 		add_child(condition)
+	pass
+
+func createPowerUps(powerUps: Array) -> void:
+	conditionsNodes = []
+	for i:int in range(powerUps.size()):
+		var powerUpBackGround:Node = powerUpPreload.instantiate()
+		var powerUp: PowerUp = powerUpBackGround.find_child("PowerUpButton")
+		powerUp.texture_normal = load(powerUpTexturePaths[powerUps[i][0]])
+		powerUp.type = powerUps[i][0]
+		powerUp.numberLeft = powerUps[i][1]
+		powerUp.waitClick = powerUps[i][2]
+		updateNbPowerUp(powerUp)
+		powerUpBackGround.position = Vector2(28 + (i*104),912)
+		add_child(powerUpBackGround)
 	pass

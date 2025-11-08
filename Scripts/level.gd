@@ -3,8 +3,7 @@ extends Node2D
 
 enum{waitInput, treatMove, waitPowerUpInput, treatPowerUp, gameOver, shuffle}
 var state
-enum{carrot}
-var currentPowerUp
+var currentPowerUp: PowerUp
 
 @onready var grid:Grid = $"grid"
 @onready var hud:HUDLevel = $"../HUD/hudLevel"
@@ -18,8 +17,8 @@ var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
 
-var powerUps: Dictionary
-var carrotButtonReleased: bool = false
+var powerUps: Array
+var powerUpButtonReleased: bool = false
 var conditions:Array
 var numberMovesLeft: int
 
@@ -36,7 +35,7 @@ func _ready() -> void:
 	state = waitInput
 
 func updateParametersInHUD() -> void:
-	hud.updateNbCarrots(powerUps["carrot"])
+	hud.createPowerUps(powerUps)
 	hud.createConditions(conditions)
 	hud.updateNbMovesLeft(numberMovesLeft)
 
@@ -162,31 +161,39 @@ func updateConditions(addOrSub: String, blockType: String) -> void:
 		state = gameOver
 
 func getPowerUpInput() -> void:
-	if carrotButtonReleased and Input.is_action_just_pressed("ui_touch"):
+	if powerUpButtonReleased and Input.is_action_just_pressed("ui_touch"):
+		hud.unBlackenBackground()
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
 			if !grid.emptyTile(tileTouched.x, tileTouched.y):
 				state = treatPowerUp
-				grid.toTreat.append(tileTouched)
-				powerUps["carrot"] -= 1
-				hud.unBlackenBackground()
-				hud.updateNbCarrots(powerUps["carrot"])
-				await treatMatches(false)
-				state = waitInput
-		hud.unBlackenBackground()
+				var powerUpFunc = Callable(currentPowerUp, currentPowerUp.type)
+				powerUpFunc.call(self, tileTouched)
+				for powerUp in powerUps:
+					if powerUp[0] == currentPowerUp.type:
+						powerUp[1] -= 1
 		state = waitInput
-		carrotButtonReleased = false
+		powerUpButtonReleased = false
 	elif Input.is_action_just_released("ui_touch"):
-		carrotButtonReleased = true
+		powerUpButtonReleased = true
 
-func carrotPressed() -> void:
-	if state != waitInput:
+func powerUpPressed(powerUp: PowerUp) -> void:
+	if state != waitInput or powerUp.numberLeft <= 0:
 		return
-	if powerUps["carrot"] > 0:
+	currentPowerUp = powerUp
+	if(powerUp.waitClick):
 		state = waitPowerUpInput
-		currentPowerUp = carrot
 		hud.blackenBackground()
+	else:
+		state = treatPowerUp
+		var powerUpFunc = Callable(powerUp, powerUp.type)
+		powerUpFunc.call(self)
+		for powerUpParams in powerUps:
+					if powerUpParams[0] == currentPowerUp.type:
+						powerUpParams[1] -= 1
+		state = waitInput
+
 
 static func saveParameters(parametersDictionary: Dictionary, levelName:String) -> void:
 	DirAccess.make_dir_recursive_absolute("res://levels")

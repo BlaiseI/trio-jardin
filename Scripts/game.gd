@@ -4,7 +4,7 @@ const levelSelectorTemplate = preload("res://Scenes/LevelSelector.tscn")
 const levelTemplate = preload("res://Scenes/level_scene.tscn")
 const hudLevelTemplate = preload("res://Scenes/HUDLevel.tscn")
 var classesToClear = [Ronce, Lierre]
-var powerUps: Dictionary = {}
+var powerUps: Array = []
 
 
 var levelSelector: LevelSelector
@@ -32,9 +32,6 @@ func launchLevel(levelNumber: int) -> void:
 	hudLevel.level = level
 	hudLevel.name = "hudLevel"
 	$HUD.add_child(hudLevel)
-	var carrotButton = $"HUD/hudLevel/CarrotButton"
-	var carrotButtonFunc = $"HUD/hudLevel"._on_carrot_button_pressed
-	carrotButton.pressed.connect(carrotButtonFunc)
 	add_child(level)
 	find_child("levelPanel", true, false).queue_free()
 	levelSelector.visible = false
