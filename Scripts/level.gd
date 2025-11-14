@@ -187,11 +187,11 @@ func powerUpPressed(powerUp: PowerUp) -> void:
 		hud.blackenBackground()
 	else:
 		state = treatPowerUp
-		var powerUpFunc = Callable(powerUp, powerUp.type)
+		var powerUpFunc = Callable(currentPowerUp, currentPowerUp.type)
 		powerUpFunc.call(self)
 		for powerUpParams in powerUps:
-					if powerUpParams[0] == currentPowerUp.type:
-						powerUpParams[1] -= 1
+			if powerUpParams[0] == currentPowerUp.type:
+				powerUpParams[1] -= 1
 		state = waitInput
 
 

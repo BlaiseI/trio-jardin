@@ -19,7 +19,8 @@ var conditionTexturePaths: Dictionary = {
 	"lierre": "res://art/Finished/obstacles/lierreMoche.png"
 }
 var powerUpTexturePaths: Dictionary = {
-	"carrot": "res://art/Finished/power-ups/carrot.png"
+	"carrot": "res://art/Finished/power-ups/carrot.png",
+	"fraise": "res://art/Finished/power-ups/fraise.png"
 }
 
 func _on_carrot_button_pressed() -> void:

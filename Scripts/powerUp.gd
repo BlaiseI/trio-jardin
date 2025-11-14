@@ -12,6 +12,13 @@ func carrot(level: Level, pos: Vector2) -> void:
 	await level.treatMatches(false)
 	pass
 
+func fraise(level: Level) -> void:
+	numberLeft -= 1
+	level.numberMovesLeft += 5
+	level.hud.updateNbPowerUp(self)
+	level.hud.updateNbMovesLeft(level.numberMovesLeft)
+	pass
+
 func _on_pressed() -> void:
 	var level:Level = get_tree().root.find_child("level", true, false)
 	level.powerUpPressed(self)
