@@ -16,7 +16,8 @@ var conditionTexturePaths: Dictionary = {
 	"firecracker": "res://art/Finished/power-ups/firecracker1.png",
 	"mouton": "res://art/Finished/power-ups/mouton1.png",
 	"ronce": "res://art/Finished/obstacles/ronceMoche.png",
-	"lierre": "res://art/Finished/obstacles/lierreMoche.png"
+	"lierre": "res://art/Finished/obstacles/lierreMoche.png",
+	"carrot" : "res://art/Finished/collectables/carrot.png"
 }
 var powerUpTexturePaths: Dictionary = {
 	"carrot": "res://art/Finished/power-ups/carrot.png",

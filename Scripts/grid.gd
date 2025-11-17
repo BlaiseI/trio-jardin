@@ -12,7 +12,7 @@ var state
 @export var offset: int
 
 
-static var classesToInit = [Ronce, Lierre]
+static var classesToInit = [Ronce, Lierre, Collectable]
 
 var width: int
 var height: int
@@ -244,11 +244,12 @@ func treatBigMatches() -> void:
 
 func deleteMatches() -> void:
 	var funcsToWait: Array = []
-	while toTreat.size() > 0:
-		var pos = toTreat.pop_front()
-		deleteTile(pos, funcsToWait)
-	while funcsToWait.size() > 0:
-		await get_tree().create_timer(0.02).timeout
+	while(toTreat.size() > 0 or funcsToWait.size() > 0):
+		while toTreat.size() > 0:
+			var pos = toTreat.pop_front()
+			deleteTile(pos, funcsToWait)
+		if funcsToWait.size() > 0:
+			await get_tree().create_timer(0.02).timeout
 	deletedAndTriggered = []
 	deletedWithoutTrigger = []
 	return
@@ -310,7 +311,7 @@ func triggerNeighbours(i: int, j: int, funcsToWait: Array) -> void:
 				block.trigger(neighbour, self, funcsToWait)
 
 func deleteTile(pos: Vector2, funcsToWait: Array, doTriggerNeighbours: bool = true, modifyConditions: bool = true):
-	if pos in deletedAndTriggered or pos in emptyTiles:
+	if pos in deletedAndTriggered or pos in emptyTiles or not grid[pos.x][pos.y].deleteable:
 		return
 	funcsToWait.append(pos)
 	var i = pos.x

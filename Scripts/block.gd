@@ -32,6 +32,7 @@ var partOfMatch: bool = false
 var doesMatch = true
 var hasTrigger = false
 var moveable = true
+var deleteable = true
 var nextBlock: Block = null
 
 func move(coords: Vector2) -> Signal:

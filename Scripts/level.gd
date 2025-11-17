@@ -63,6 +63,10 @@ func loadParameters(filePath: String) -> void:
 	for lierreInfo: Array in parametersDictionary["gridLierre"]:
 		lierreInfo[0] = str_to_var("Vector2" + lierreInfo[0])
 		Lierre.lierresInfo.append(lierreInfo)
+	Collectable.collectablesInfo = []
+	for collectableInfo: Array in parametersDictionary["gridCollectable"]:
+		collectableInfo[0] = str_to_var("Vector2" + collectableInfo[0])
+		Collectable.collectablesInfo.append(collectableInfo)
 
 	Block.nbDifferentBlocks = parametersDictionary["nbDifferentBlocks"]
 	conditions = parametersDictionary["conditions"]
@@ -114,7 +118,7 @@ func treatSlide(slideEndPos: Vector2) -> void:
 func treatMatches(triggerEOT:bool = true) -> void:
 	while grid.getMatchesOnGrid():
 		await grid.treatBigMatches()
-		await deleteMatches()
+		await grid.deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
 	if state == gameOver:
@@ -140,9 +144,6 @@ func displayShuffle() -> void:
 	await get_tree().create_timer(1).timeout
 	hud.updateGameOverMessage("")
 
-func deleteMatches() -> void:
-	await grid.deleteMatches()
-
 func updateConditions(addOrSub: String, blockType: String) -> void:
 	var allConditionsZero: bool = true
 	for i in range(conditions.size()):
@@ -166,7 +167,7 @@ func getPowerUpInput() -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
-			if !grid.emptyTile(tileTouched.x, tileTouched.y):
+			if tileTouched not in grid.emptyTiles and grid.grid[tileTouched.x][tileTouched.y] is not Collectable:
 				state = treatPowerUp
 				var powerUpFunc = Callable(currentPowerUp, currentPowerUp.type)
 				powerUpFunc.call(self, tileTouched)
@@ -194,6 +195,8 @@ func powerUpPressed(powerUp: PowerUp) -> void:
 				powerUpParams[1] -= 1
 		state = waitInput
 
+func collected(type: String) -> void:
+	updateConditions("sub", type)
 
 static func saveParameters(parametersDictionary: Dictionary, levelName:String) -> void:
 	DirAccess.make_dir_recursive_absolute("res://levels")

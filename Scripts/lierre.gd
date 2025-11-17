@@ -2,9 +2,11 @@ class_name Lierre
 extends Block
 
 static var lierresInfo = []
+static var lierres = []
 
-func clear() -> void:
+static func clear() -> void:
 	lierresInfo = []
+	lierres = []
 
 const lierrePreload = preload("res://Scenes/block_lierre.tscn")
 const lierreTextures = [
@@ -17,6 +19,7 @@ var triggered = false
 var layers = 3
 
 func _ready() -> void:
+	lierres.append(self)
 	$CenterContainer/Control/Sprite2D.texture = lierreTextures[layers-1]
 	hasTrigger = true
 	doesMatch = false
@@ -47,8 +50,8 @@ static func init(grid:Grid) -> void:
 		grid.replaceBlock(lierreInfo[0], lierre)
 
 static func endOfTurn(level: Level) -> void:
-	for lierreInfo in lierresInfo:
-		lierreInfo.triggered = false
+	for lierre in lierres:
+		lierre.triggered = false
 
 func _process(delta: float) -> void:
 	pass
