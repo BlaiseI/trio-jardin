@@ -1,1 +1,1 @@
-{"conditions":[["morille",12],["pissenlit",12]],"fixedBlocks":[["(2, 2)","mouton"],["(5, 5)","mouton"]],"gridEmptyTiles":["(7, 0)","(7, 7)"],"gridHeight":8,"gridCollectable":[],"gridLierre":[],"gridRonce":[],"gridWidth":8,"nbDifferentBlocks":6,"numberMovesLeft":20}
+{"conditions":[["morille",12],["pissenlit",12],["carrot",1]],"fixedBlocks":[["(2, 2)","mouton"],["(5, 5)","mouton"]],"gridEmptyTiles":["(7, 0)","(7, 7)"],"gridHeight":8,"gridCollectable":[["(4,0)","carrot"]],"gridLierre":[],"gridRonce":[],"gridWidth":8,"nbDifferentBlocks":6,"numberMovesLeft":20}

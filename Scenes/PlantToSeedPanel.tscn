@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://jiqsmaenxerk"]
+
+[ext_resource type="Script" path="res://Scripts/seedPanel.gd" id="1_cgyy3"]
+[ext_resource type="Texture2D" uid="uid://c5shhvmljj2fe" path="res://art/Finished/gathering/PlantToSeedBackground.png" id="2_5t6p3"]
+[ext_resource type="Texture2D" uid="uid://37ra76elgavs" path="res://art/Finished/legacy/backup v1_1/level selection/Close.png" id="3_hm635"]
+[ext_resource type="Texture2D" uid="uid://d2mih5ycp24kc" path="res://art/Finished/gathering/PlantToSeedTile.png" id="5_ao8cs"]
+[ext_resource type="Texture2D" uid="uid://ieh4s3xsp5ox" path="res://art/Finished/gathering/PlantToSeedArrow.png" id="6_rhext"]
+
+[node name="Node2D" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 480.0
+offset_bottom = 480.0
+pivot_offset = Vector2(240, 240)
+script = ExtResource("1_cgyy3")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(6, 6)
+texture = ExtResource("2_5t6p3")
+
+[node name="CloseButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 450.0
+offset_top = -30.0
+offset_right = 480.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("3_hm635")
+
+[node name="Tile" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 102.0
+offset_top = 36.0
+offset_right = 112.0
+offset_bottom = 46.0
+scale = Vector2(6, 6)
+texture = ExtResource("5_ao8cs")
+
+[node name="Arrow" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 246.0
+offset_top = 174.0
+offset_right = 264.0
+offset_bottom = 196.0
+scale = Vector2(6, 6)
+texture_normal = ExtResource("6_rhext")
+
+[connection signal="pressed" from="Arrow" to="." method="_on_arrow_pressed"]

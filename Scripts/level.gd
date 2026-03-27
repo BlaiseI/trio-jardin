@@ -197,6 +197,7 @@ func powerUpPressed(powerUp: PowerUp) -> void:
 
 func collected(type: String) -> void:
 	updateConditions("sub", type)
+	$"../".levelSelector.updateCollectables(type)
 
 static func saveParameters(parametersDictionary: Dictionary, levelName:String) -> void:
 	DirAccess.make_dir_recursive_absolute("res://levels")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqbdi132543dh"]
+
+[ext_resource type="Texture2D" uid="uid://blwbp4l7iydgg" path="res://art/Finished/gathering/CarrotSeeds.png" id="1_5jwpx"]
+[ext_resource type="Script" path="res://Scripts/seed.gd" id="2_hsca2"]
+
+[node name="Seed" type="TextureButton"]
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("1_5jwpx")
+script = ExtResource("2_hsca2")
+
+[node name="Number" type="Label" parent="."]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 37.0
+offset_right = 60.0
+offset_bottom = 60.0
+text = "0"
+horizontal_alignment = 2
+
+[connection signal="pressed" from="." to="." method="_onButtonPressed"]

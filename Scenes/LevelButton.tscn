@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dr6fclsv3lynk"]
 
 [ext_resource type="Script" path="res://Scripts/levelButton.gd" id="1_0obht"]
-[ext_resource type="Texture2D" uid="uid://bingn1ulobvtb" path="res://art/Finished/level selection/LevelNumberHolder.png" id="2_suwqr"]
-[ext_resource type="Texture2D" uid="uid://upqbaiuab36l" path="res://art/Finished/level selection/LevelNumberHolderBorder.png" id="3_2fqvo"]
+[ext_resource type="Texture2D" uid="uid://bingn1ulobvtb" path="res://art/Finished/legacy/backup v1_1/level selection/LevelNumberHolder.png" id="2_suwqr"]
+[ext_resource type="Texture2D" uid="uid://upqbaiuab36l" path="res://art/Finished/legacy/backup v1_1/level selection/LevelNumberHolderBorder.png" id="3_2fqvo"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_0obht")
@@ -10,23 +10,23 @@ script = ExtResource("1_0obht")
 [node name="Border" type="TextureRect" parent="."]
 offset_right = 17.0
 offset_bottom = 10.0
-scale = Vector2(6, 6)
+scale = Vector2(7, 7)
 texture = ExtResource("3_2fqvo")
 
 [node name="Button" type="TextureButton" parent="."]
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 21.0
-offset_bottom = 14.0
-scale = Vector2(6, 6)
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 22.0
+offset_bottom = 15.0
+scale = Vector2(7, 7)
 texture_normal = ExtResource("2_suwqr")
 stretch_mode = 0
 
 [node name="Label" type="Label" parent="."]
-offset_left = 6.0
-offset_top = 6.0
-offset_right = 96.0
-offset_bottom = 54.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 112.0
+offset_bottom = 63.0
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 vertical_alignment = 1

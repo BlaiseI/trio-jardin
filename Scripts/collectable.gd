@@ -11,13 +11,15 @@ static func clear() -> void:
 	collectables = []
 
 const collectablesTextures = {
-	"carrot" : preload("res://art/Finished/collectables/carrot.png")
+	"carrot" : preload("res://art/Finished/collectables/carrot.png"),
+	"carrotSeeds" : preload("res://art/Finished/collectables/carrotSeeds.png")
 }
 
 var type: String = "null"
 
 func _ready() -> void:
 	$CenterContainer/Control/Sprite2D.texture = collectablesTextures[type]
+	#$CenterContainer/Control/Sprite2D.position += Vector2(5,5)
 	doesMatch = false
 	moveable = true
 	deleteable = false

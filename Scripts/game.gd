@@ -1,3 +1,4 @@
+class_name Game
 extends Node2D
 
 const levelSelectorTemplate = preload("res://Scenes/LevelSelector.tscn")
@@ -7,16 +8,18 @@ var classesToClear = [Ronce, Lierre]
 var powerUps: Array = []
 
 
+
 var levelSelector: LevelSelector
 var level: Level
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print(get_window().size)
 	levelSelector = levelSelectorTemplate.instantiate()
 	levelSelector.name = "levelSelector"
+	levelSelector.game = self
 	add_child(levelSelector)
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -33,7 +36,10 @@ func launchLevel(levelNumber: int) -> void:
 	hudLevel.name = "hudLevel"
 	$HUD.add_child(hudLevel)
 	add_child(level)
-	find_child("levelPanel", true, false).queue_free()
+	var levelPanel = find_child("levelPanel", true, false)
+	if levelPanel :
+		levelPanel.queue_free()
+		levelSelector.panelOpened = false
 	levelSelector.visible = false
 
 func levelFinished(levelNumber: int, succeeded: bool) -> void:

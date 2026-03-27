@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://ceo6dgepeqs60"]
+
+[ext_resource type="Script" path="res://Scripts/cropPanel.gd" id="1_x6y25"]
+[ext_resource type="Texture2D" uid="uid://mrwms884vuaq" path="res://art/Finished/gathering/CropBackground.png" id="2_lsayi"]
+[ext_resource type="Texture2D" uid="uid://37ra76elgavs" path="res://art/Finished/legacy/backup v1_1/level selection/Close.png" id="3_bfv2b"]
+[ext_resource type="Texture2D" uid="uid://bmry7238y6c55" path="res://art/Finished/level selection/playButton.png" id="4_l7476"]
+
+[node name="Node2D" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 480.0
+offset_bottom = 480.0
+pivot_offset = Vector2(240, 240)
+script = ExtResource("1_x6y25")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(6, 6)
+texture = ExtResource("2_lsayi")
+
+[node name="CloseButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 450.0
+offset_top = -30.0
+offset_right = 480.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("3_bfv2b")
+
+[node name="levelButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 375.0
+offset_right = 85.0
+offset_bottom = 399.0
+scale = Vector2(3, 3)
+texture_normal = ExtResource("4_l7476")
+
+[node name="Seed" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 96.0
+offset_bottom = 77.0
+scale = Vector2(6, 6)
+
+[connection signal="pressed" from="Seed" to="." method="gather"]

@@ -1,15 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdri2g36y8vpb"]
+[gd_scene load_steps=5 format=3 uid="uid://cdri2g36y8vpb"]
 
-[ext_resource type="Texture2D" uid="uid://feacv8cds1uk" path="res://art/Finished/level selection/LevelSelectBackground.png" id="1_aww8r"]
 [ext_resource type="Script" path="res://Scripts/levelPanel.gd" id="1_q1d8s"]
-[ext_resource type="Texture2D" uid="uid://37ra76elgavs" path="res://art/Finished/level selection/Close.png" id="3_ptynl"]
+[ext_resource type="Texture2D" uid="uid://d33em4un1eorf" path="res://art/Finished/level selection/LevelSelectBackground.png" id="2_jitcb"]
+[ext_resource type="Texture2D" uid="uid://37ra76elgavs" path="res://art/Finished/legacy/backup v1_1/level selection/Close.png" id="3_ptynl"]
+[ext_resource type="Texture2D" uid="uid://cra7om5hh0atg" path="res://art/Finished/gathering/seedButton.png" id="4_in4cs"]
 
 [node name="Node2D" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 252.0
-offset_bottom = 360.0
-pivot_offset = Vector2(126, 180)
+offset_right = 480.0
+offset_bottom = 480.0
+pivot_offset = Vector2(240, 240)
 script = ExtResource("1_q1d8s")
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -17,12 +18,21 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(6, 6)
-texture = ExtResource("1_aww8r")
+texture = ExtResource("2_jitcb")
 
 [node name="CloseButton" type="TextureButton" parent="."]
 layout_mode = 0
-offset_left = 235.0
-offset_top = -16.0
-offset_right = 265.0
-offset_bottom = 14.0
+offset_left = 450.0
+offset_top = -30.0
+offset_right = 480.0
+scale = Vector2(2, 2)
 texture_normal = ExtResource("3_ptynl")
+
+[node name="CropButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 206.0
+offset_top = 386.0
+offset_right = 230.0
+offset_bottom = 410.0
+scale = Vector2(3, 3)
+texture_normal = ExtResource("4_in4cs")

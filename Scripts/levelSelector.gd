@@ -1,20 +1,28 @@
 class_name LevelSelector
 extends Node2D
 
+var game: Game
 var actualLevel: int
 var nbGardeningRectangles: int
 var gardeningRectangles: Array = []
+var panelOpened: bool = false
+var seedsParams: Array = []
+var collectables: Array
 
 func saveParameters() -> void:
 	var parametersDictionary: Dictionary = {
 		"actualLevel":actualLevel,
 		"nbGardeningRectangles":nbGardeningRectangles,
 		"gardeningRectangles":[],
-		"powerUps":{}
+		"powerUps":{},
+		"seeds":[],
+		"collectables":[]
 	}
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		parametersDictionary["gardeningRectangles"].append(gardeningRectangle.toDict())
 	parametersDictionary["powerUps"] = $"../".powerUps.duplicate()
+	parametersDictionary["seeds"] = seedsParams.duplicate()
+	parametersDictionary["collectables"] = collectables.duplicate()
 	DirAccess.make_dir_recursive_absolute("res://gameSave")
 	var filePath: String = "res://gameSave/save.json"
 	var saveFile = FileAccess.open(filePath, FileAccess.WRITE_READ)
@@ -30,19 +38,15 @@ func loadParameters(filePath: String) -> void:
 
 	actualLevel = parametersDictionary["actualLevel"]
 	nbGardeningRectangles = parametersDictionary["nbGardeningRectangles"]
+	seedsParams = parametersDictionary["seeds"]
+	collectables = parametersDictionary["collectables"]
 	for gardeningRectangleDict: Dictionary in parametersDictionary["gardeningRectangles"]:
 		var gardeningRectangle : GardeningRectangle = GardeningRectangle.fromDict(gardeningRectangleDict)
+		gardeningRectangle.seeds = seedsParams
+		gardeningRectangle.collectables = collectables
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
 	$"../".powerUps = parametersDictionary["powerUps"]
-
-
-
-func closeLevelPanel() -> void:
-	var levelPanel = find_child("levelPanel", false, false)
-	levelPanel.queue_free()
-	remove_child(levelPanel)
-	return
 
 func _ready() -> void:
 	loadParameters("res://gameSave/save.json")
@@ -52,5 +56,38 @@ func update() -> void:
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		gardeningRectangle.update(actualLevel)
 
+func updateSeeds(newSeedsParams : Array) -> void:
+	seedsParams = newSeedsParams
+	for gardeningRectangle: GardeningRectangle in gardeningRectangles:
+		gardeningRectangle.seeds = seedsParams
+	saveParameters()
+
+func updatePlants(newPlantsParams : Array) -> void:
+	collectables = newPlantsParams
+	gardeningRectangles[0].collectables = collectables
+	saveParameters()
+
+func addPowerUps(type: String, number: int)-> void:
+	for powerUp in game.powerUps:
+		if powerUp[0] == type:
+			powerUp[1] += number
+	saveParameters()
+
+func updateCollectables(type: String) -> void:
+	for collectable : Array in collectables:
+		if collectable[0] == type:
+			collectable[1] += 1
+	saveParameters()
+	return
+
 func _process(delta: float) -> void:
+	pass
+
+func _on_play_button_pressed() -> void:
+	var game: Game = get_parent()
+	game.launchLevel(actualLevel)
+
+
+func _on_plant_to_seed_button_pressed() -> void:
+	gardeningRectangles[0].openPanel("seedPanel")
 	pass

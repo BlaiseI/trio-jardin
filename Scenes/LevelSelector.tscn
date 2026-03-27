@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://83g8dw1yhebc"]
+[gd_scene load_steps=7 format=3 uid="uid://83g8dw1yhebc"]
 
 [ext_resource type="Script" path="res://Scripts/levelSelector.gd" id="1_kaqcf"]
 [ext_resource type="Texture2D" uid="uid://ctqs87sn4mbig" path="res://art/Finished/level selection/level selector.png" id="2_t4xp5"]
 [ext_resource type="Texture2D" uid="uid://bpow2iviio0os" path="res://art/Finished/level selection/Maman.png" id="3_1hn20"]
+[ext_resource type="Texture2D" uid="uid://cnqrn4m6gji5o" path="res://art/Finished/level selection/botBanner.png" id="4_rfnmn"]
+[ext_resource type="Texture2D" uid="uid://bmry7238y6c55" path="res://art/Finished/level selection/playButton.png" id="5_e882x"]
+[ext_resource type="Texture2D" uid="uid://clorujtas70th" path="res://art/Finished/gathering/plantToSeedButton.png" id="6_c5aq8"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_kaqcf")
@@ -16,3 +19,29 @@ texture = ExtResource("2_t4xp5")
 position = Vector2(239, 117)
 scale = Vector2(2, 2)
 texture = ExtResource("3_1hn20")
+
+[node name="BotBannerBackground" type="TextureRect" parent="."]
+offset_top = 832.0
+offset_right = 576.0
+offset_bottom = 1024.0
+texture = ExtResource("4_rfnmn")
+
+[node name="PlayButton" type="TextureButton" parent="BotBannerBackground"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 65.0
+offset_right = 141.0
+offset_bottom = 89.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("5_e882x")
+
+[node name="PlantToSeedButton" type="TextureButton" parent="BotBannerBackground"]
+layout_mode = 0
+offset_left = 331.0
+offset_top = 79.0
+offset_right = 521.0
+offset_bottom = 149.0
+texture_normal = ExtResource("6_c5aq8")
+
+[connection signal="pressed" from="BotBannerBackground/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="BotBannerBackground/PlantToSeedButton" to="." method="_on_plant_to_seed_button_pressed"]
