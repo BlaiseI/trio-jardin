@@ -53,7 +53,6 @@ func blacken(intensity: float) -> void:
 	$"background".modulate.b = intensity
 
 func toDict() -> Dictionary:
-	print(timePlanted)
 	return {
 		"id": id,
 		"position": position,

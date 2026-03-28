@@ -25,7 +25,6 @@ func _ready() -> void:
 		seeds.append(seed)
 	if(seedPlanted != "null"):
 		var elapsedTime: float = Time.get_unix_time_from_system() - timePlanted
-		print(elapsedTime)
 		if (elapsedTime > 60):
 			seedReady = true
 			$"Seed".texture_normal = seedTextures[seedPlanted][seedTextures[seedPlanted].size()-1]

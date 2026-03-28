@@ -8,13 +8,12 @@ var gardeningRectangles: Array = []
 var panelOpened: bool = false
 var seedsParams: Array = []
 var collectables: Array
-var harvestingPlant: String = "null"
 
 func saveParameters() -> void:
 	var parametersDictionary: Dictionary = {
 		"actualLevel":actualLevel,
 		"nbGardeningRectangles":nbGardeningRectangles,
-		"harvestingPlant":  harvestingPlant,
+		"harvestingPlant":  game.harvestingPlant,
 		"gardeningRectangles":[],
 		"powerUps":{},
 		"seeds":[],
@@ -42,12 +41,12 @@ func loadParameters(filePath: String) -> void:
 	nbGardeningRectangles = parametersDictionary["nbGardeningRectangles"]
 	seedsParams = parametersDictionary["seeds"]
 	collectables = parametersDictionary["collectables"]
-	harvestingPlant = parametersDictionary["harvestingPlant"]
+	game.harvestingPlant = parametersDictionary["harvestingPlant"]
 	for gardeningRectangleDict: Dictionary in parametersDictionary["gardeningRectangles"]:
 		var gardeningRectangle : GardeningRectangle = GardeningRectangle.fromDict(gardeningRectangleDict)
 		gardeningRectangle.seeds = seedsParams
 		gardeningRectangle.collectables = collectables
-		gardeningRectangle.harvestingPlant = harvestingPlant
+		gardeningRectangle.harvestingPlant = game.harvestingPlant
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
 	$"../".powerUps = parametersDictionary["powerUps"]
@@ -72,7 +71,7 @@ func updatePlants(newPlantsParams : Array) -> void:
 	saveParameters()
 
 func updateHarvesting(newHarvestingPlant: String) -> void:
-	harvestingPlant = newHarvestingPlant
+	game.harvestingPlant = newHarvestingPlant
 	saveParameters()
 
 func addPowerUps(type: String, number: int)-> void:

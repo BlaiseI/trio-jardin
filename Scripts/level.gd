@@ -21,6 +21,7 @@ var powerUps: Array
 var powerUpButtonReleased: bool = false
 var conditions:Array
 var numberMovesLeft: int
+var harvestingPlant: String = "null"
 
 func setLevelName(levelName: String) -> void:
 	self.levelName = levelName
@@ -30,6 +31,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	loadParameters("res://levels/level" + levelName + ".json")
 	updateParametersInHUD()
+	Collectable.level = self
+	Block.harvestingPlant = harvestingPlant
 	grid.initGrid()
 	await grid.enforcePossibleMatches()
 	state = waitInput

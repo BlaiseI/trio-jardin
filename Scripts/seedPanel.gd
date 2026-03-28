@@ -12,7 +12,6 @@ var selectedPlant: String
 var harvestingPlant: String
 
 func _ready() -> void:
-	print(plantsParams)
 	$CloseButton.pressed.connect($"../../".closePanel)
 	for i in range(seedsParams.size()):
 		var seed = seedPreload.instantiate()
@@ -27,7 +26,6 @@ func _ready() -> void:
 		var plant = plantPreload.instantiate()
 		plant.position = Vector2(108 + (i%5)*54, 42 + (i/5)*54)
 		plant.type = plantsParams[i][0]
-		print(plant.type)
 		plant.name = plant.type
 		plant.number = plantsParams[i][1]
 		add_child(plant)
