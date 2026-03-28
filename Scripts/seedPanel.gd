@@ -9,6 +9,7 @@ var seeds: Array = []
 var plantsParams: Array = []
 var plants: Array = []
 var selectedPlant: String
+var harvestingPlant: String
 
 func _ready() -> void:
 	print(plantsParams)
@@ -31,6 +32,9 @@ func _ready() -> void:
 		plant.number = plantsParams[i][1]
 		add_child(plant)
 		plants.append(plant)
+	if(harvestingPlant != "null"):
+		$harvestingPlant.visible = true
+		$harvestingPlant.texture = Plant.plantTextures[harvestingPlant]
 
 func spawn() -> Signal:
 	self.scale = Vector2(0.1,0.1)
@@ -42,6 +46,8 @@ func activateTileAndArrow(plant: Plant) -> void:
 	$"Tile".position = plant.position - Vector2(6,6)
 	$"Tile".visible = true
 	$"Tile".modulate.b = 0
+	$"Gather".visible = true
+	$"Gather".modulate.b = 0
 	$"Arrow".visible = true
 	if(plant.number >= 1):
 		$"Arrow".modulate.r = 0
@@ -75,4 +81,12 @@ func _on_arrow_pressed() -> void:
 			$"../../../".updateSeeds(seedsParams)
 			$"../../../".updatePlants(plantsParams)
 			activateTileAndArrow(plant)
-	pass
+	return
+
+
+func _on_gather_pressed() -> void:
+	harvestingPlant = selectedPlant
+	$harvestingPlant.visible = true
+	$harvestingPlant.texture = Plant.plantTextures[harvestingPlant]
+	$"../../../".updateHarvesting(harvestingPlant)
+	return

@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://jiqsmaenxerk"]
+[gd_scene load_steps=8 format=3 uid="uid://jiqsmaenxerk"]
 
 [ext_resource type="Script" path="res://Scripts/seedPanel.gd" id="1_cgyy3"]
-[ext_resource type="Texture2D" uid="uid://c5shhvmljj2fe" path="res://art/Finished/gathering/PlantToSeedBackground.png" id="2_5t6p3"]
+[ext_resource type="Texture2D" uid="uid://7hnc54bi3mob" path="res://art/Finished/gathering/PlantToSeedBackground.png" id="2_5t6p3"]
 [ext_resource type="Texture2D" uid="uid://37ra76elgavs" path="res://art/Finished/legacy/backup v1_1/level selection/Close.png" id="3_hm635"]
 [ext_resource type="Texture2D" uid="uid://d2mih5ycp24kc" path="res://art/Finished/gathering/PlantToSeedTile.png" id="5_ao8cs"]
 [ext_resource type="Texture2D" uid="uid://ieh4s3xsp5ox" path="res://art/Finished/gathering/PlantToSeedArrow.png" id="6_rhext"]
+[ext_resource type="Texture2D" uid="uid://yppbemyrv8cd" path="res://art/Finished/gathering/GatherButton.png" id="6_ylrvq"]
+[ext_resource type="Texture2D" uid="uid://cpujv6dqneimv" path="res://art/Finished/gathering/carrot.png" id="7_ol3y6"]
 
 [node name="Node2D" type="Control"]
 layout_mode = 3
@@ -40,6 +42,7 @@ scale = Vector2(6, 6)
 texture = ExtResource("5_ao8cs")
 
 [node name="Arrow" type="TextureButton" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 246.0
 offset_top = 174.0
@@ -48,4 +51,25 @@ offset_bottom = 196.0
 scale = Vector2(6, 6)
 texture_normal = ExtResource("6_rhext")
 
+[node name="harvestingPlant" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 60.0
+offset_top = 192.0
+offset_right = 120.0
+offset_bottom = 252.0
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("7_ol3y6")
+
+[node name="Gather" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 36.0
+offset_top = 168.0
+offset_right = 60.0
+offset_bottom = 192.0
+scale = Vector2(6, 6)
+texture_normal = ExtResource("6_ylrvq")
+
 [connection signal="pressed" from="Arrow" to="." method="_on_arrow_pressed"]
+[connection signal="pressed" from="Gather" to="." method="_on_gather_pressed"]

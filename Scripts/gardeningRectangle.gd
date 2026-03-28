@@ -16,6 +16,7 @@ var seedPlanted:String = "null"
 var timePlanted: float
 var seeds: Array = []
 var collectables: Array = []
+var harvestingPlant: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -110,6 +111,7 @@ func openPanel(type:String = "levelPanel") -> void:
 		seedPanel.name = "seedPanel"
 		seedPanel.plantsParams = collectables
 		seedPanel.seedsParams = seeds
+		seedPanel.harvestingPlant = harvestingPlant
 		$"CanvasLayer".add_child(seedPanel)
 		var spawned : Signal = seedPanel.spawn()
 		await spawned
