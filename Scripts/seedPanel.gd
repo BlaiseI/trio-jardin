@@ -88,3 +88,10 @@ func _on_gather_pressed() -> void:
 	$harvestingPlant.texture = Plant.plantTextures[harvestingPlant]
 	$"../../../".updateHarvesting(harvestingPlant)
 	return
+
+func _on_clear_plant_pressed() -> void:
+	harvestingPlant = "null"
+	$harvestingPlant.visible = false
+	$harvestingPlant.texture = null
+	$"../../../".updateHarvesting(harvestingPlant)
+	pass

@@ -72,6 +72,8 @@ func updatePlants(newPlantsParams : Array) -> void:
 
 func updateHarvesting(newHarvestingPlant: String) -> void:
 	game.harvestingPlant = newHarvestingPlant
+	for gardeningRectangle: GardeningRectangle in gardeningRectangles:
+		gardeningRectangle.harvestingPlant = game.harvestingPlant
 	saveParameters()
 
 func addPowerUps(type: String, number: int)-> void:
