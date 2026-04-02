@@ -17,7 +17,6 @@ var slideOngoing: bool = false
 var slideBeginPos: Vector2
 var slideBeginCoords: Vector2
 
-var powerUps: Array
 var powerUpButtonReleased: bool = false
 var conditions:Array
 var numberMovesLeft: int
@@ -38,7 +37,7 @@ func _ready() -> void:
 	state = waitInput
 
 func updateParametersInHUD() -> void:
-	hud.createPowerUps(powerUps)
+	hud.createPowerUps()
 	hud.createConditions(conditions)
 	hud.updateNbMovesLeft(numberMovesLeft)
 
@@ -174,9 +173,9 @@ func getPowerUpInput() -> void:
 				state = treatPowerUp
 				var powerUpFunc = Callable(currentPowerUp, currentPowerUp.type)
 				powerUpFunc.call(self, tileTouched)
-				for powerUp in powerUps:
-					if powerUp[0] == currentPowerUp.type:
-						powerUp[1] -= 1
+				for powerUp in Global.powerUps:
+					if powerUp["type"] == currentPowerUp.type:
+						powerUp["number"] -= 1
 		state = waitInput
 		powerUpButtonReleased = false
 	elif Input.is_action_just_released("ui_touch"):
@@ -193,9 +192,9 @@ func powerUpPressed(powerUp: PowerUp) -> void:
 		state = treatPowerUp
 		var powerUpFunc = Callable(currentPowerUp, currentPowerUp.type)
 		powerUpFunc.call(self)
-		for powerUpParams in powerUps:
-			if powerUpParams[0] == currentPowerUp.type:
-				powerUpParams[1] -= 1
+		for powerUpParams in Global.powerUps:
+			if powerUpParams["type"] == currentPowerUp.type:
+				powerUpParams["number"] -= 1
 		state = waitInput
 
 func collected(type: String) -> void:

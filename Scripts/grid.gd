@@ -23,7 +23,7 @@ var deletedAndTriggered = []
 var deletedWithoutTrigger = []
 var matches = []
 var nbCarrots: int
-var powerUps: Array = ["firecracker", "mouton"]
+var powerUpClasses: Array = ["firecracker", "mouton"]
 
 var grid = []
 
@@ -101,9 +101,9 @@ func swapBlocks(firstPosition: Vector2, secondPosition: Vector2) -> void:
 	var firstBlock : Block = grid[firstPosition.x][firstPosition.y]
 	var secondBlock : Block = grid[secondPosition.x][secondPosition.y]
 
-	if(firstBlock.blockType in powerUps):
+	if(firstBlock.blockType in powerUpClasses):
 		uniqueAdd(toTreat,secondPosition)
-	if(secondBlock.blockType in powerUps):
+	if(secondBlock.blockType in powerUpClasses):
 		uniqueAdd(toTreat,firstPosition)
 
 	firstBlock.move(utils.getTileCoords(secondPosition, self))

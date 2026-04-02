@@ -72,6 +72,7 @@ scale = Vector2(6, 6)
 texture_normal = ExtResource("6_ylrvq")
 
 [node name="ClearPlant" type="TextureButton" parent="."]
+layout_mode = 0
 offset_left = 34.0
 offset_top = 266.0
 offset_right = 64.0

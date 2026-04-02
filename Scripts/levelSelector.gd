@@ -21,7 +21,7 @@ func saveParameters() -> void:
 	}
 	for gardeningRectangle : GardeningRectangle in gardeningRectangles:
 		parametersDictionary["gardeningRectangles"].append(gardeningRectangle.toDict())
-	parametersDictionary["powerUps"] = $"../".powerUps.duplicate()
+	parametersDictionary["powerUps"] = Global.powerUps.duplicate()
 	parametersDictionary["seeds"] = seedsParams.duplicate()
 	parametersDictionary["collectables"] = collectables.duplicate()
 	DirAccess.make_dir_recursive_absolute("res://gameSave")
@@ -49,7 +49,7 @@ func loadParameters(filePath: String) -> void:
 		gardeningRectangle.harvestingPlant = game.harvestingPlant
 		gardeningRectangles.append(gardeningRectangle)
 		add_child(gardeningRectangle)
-	$"../".powerUps = parametersDictionary["powerUps"]
+	Global.powerUps = parametersDictionary["powerUps"]
 
 func _ready() -> void:
 	loadParameters("res://gameSave/save.json")
@@ -77,9 +77,10 @@ func updateHarvesting(newHarvestingPlant: String) -> void:
 	saveParameters()
 
 func addPowerUps(type: String, number: int)-> void:
-	for powerUp in game.powerUps:
-		if powerUp[0] == type:
-			powerUp[1] += number
+	for powerUp: Dictionary in Global.powerUps:
+		if powerUp["type"] == type:
+			powerUp["number"] += number
+			break
 	saveParameters()
 
 func updateCollectables(type: String) -> void:

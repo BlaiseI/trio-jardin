@@ -64,7 +64,9 @@ func gather() -> void:
 		print("not ready yet")
 		return
 	else:
-		$"../../../".addPowerUps(seedPlanted, 1)
+		for powerUp in Global.powerUps:
+			if powerUp["type"] == seedPlanted:
+				powerUp["number"] += 1
 		$"Seed".texture_normal = null
 		seedPlanted = "null"
 		$"../../".seedPlanted = seedPlanted

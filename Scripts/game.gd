@@ -5,7 +5,6 @@ const levelSelectorTemplate = preload("res://Scenes/LevelSelector.tscn")
 const levelTemplate = preload("res://Scenes/level_scene.tscn")
 const hudLevelTemplate = preload("res://Scenes/HUDLevel.tscn")
 var classesToClear = [Ronce, Lierre]
-var powerUps: Array = []
 var harvestingPlant: String = "null"
 
 
@@ -29,7 +28,6 @@ func launchLevel(levelNumber: int) -> void:
 	level = levelTemplate.instantiate()
 	level.setLevelName(str(levelNumber))
 	level.name = "level"
-	level.powerUps = powerUps
 	level.harvestingPlant = harvestingPlant
 	var hudLevel = hudLevelTemplate.instantiate()
 	hudLevel.set_script(load("res://Scripts/hudLevel.gd"))

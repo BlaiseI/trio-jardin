@@ -66,15 +66,16 @@ func createConditions(conditions: Array) -> void:
 		add_child(condition)
 	pass
 
-func createPowerUps(powerUps: Array) -> void:
+func createPowerUps() -> void:
+	var powerUps: Array = Global.powerUps
 	conditionsNodes = []
 	for i:int in range(powerUps.size()):
 		var powerUpBackGround:Node = powerUpPreload.instantiate()
 		var powerUp: PowerUp = powerUpBackGround.find_child("PowerUpButton")
-		powerUp.texture_normal = load(powerUpTexturePaths[powerUps[i][0]])
-		powerUp.type = powerUps[i][0]
-		powerUp.numberLeft = powerUps[i][1]
-		powerUp.waitClick = powerUps[i][2]
+		powerUp.texture_normal = load(powerUpTexturePaths[powerUps[i]["type"]])
+		powerUp.type = powerUps[i]["type"]
+		powerUp.numberLeft = powerUps[i]["number"]
+		powerUp.waitClick = powerUps[i]["waitClick"]
 		updateNbPowerUp(powerUp)
 		powerUpBackGround.position = Vector2(28 + (i*104),912)
 		add_child(powerUpBackGround)
