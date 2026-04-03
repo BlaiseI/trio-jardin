@@ -15,12 +15,11 @@ var node: Node2D
 var seedPlanted:String = "null"
 var timePlanted: float
 var seeds: Array = []
-var collectables: Array = []
 var harvestingPlant: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	update(get_parent().actualLevel)
+	update(Global.actualLevel)
 
 func update(actualLevel: int) -> void:
 	var ratioLevelsDone: float = (actualLevel - firstLevel)/float(nbLevels)
@@ -79,9 +78,8 @@ func openPanel(type:String = "levelPanel") -> void:
 		return
 	get_parent().panelOpened = true
 	if (type == "levelPanel"):
-		var actualLevel = $"..".actualLevel
+		var actualLevel = Global.actualLevel
 		var levelPanel: LevelPanel = levelPanelTemplate.instantiate()
-		levelPanel.actualLevel = actualLevel
 		levelPanel.firstLevel = firstLevel
 		levelPanel.nbLevels = nbLevels
 		levelPanel.position = (Vector2(576, 1024) - levelPanel.size)/2
@@ -108,7 +106,6 @@ func openPanel(type:String = "levelPanel") -> void:
 		seedPanel.position = (Vector2(576, 1024) - seedPanel.size)/2
 		seedPanel.z_index = 1
 		seedPanel.name = "seedPanel"
-		seedPanel.plantsParams = collectables
 		seedPanel.seedsParams = seeds
 		seedPanel.harvestingPlant = harvestingPlant
 		$"CanvasLayer".add_child(seedPanel)

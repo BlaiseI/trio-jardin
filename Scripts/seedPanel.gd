@@ -6,7 +6,7 @@ static var plantPreload = preload("res://Scenes/plant.tscn")
 
 var seedsParams: Array = []
 var seeds: Array = []
-var plantsParams: Array = []
+var plantsParams: Array = Global.collectables
 var plants: Array = []
 var selectedPlant: String
 var harvestingPlant: String
@@ -25,9 +25,9 @@ func _ready() -> void:
 	for i in range(plantsParams.size()):
 		var plant = plantPreload.instantiate()
 		plant.position = Vector2(108 + (i%5)*54, 42 + (i/5)*54)
-		plant.type = plantsParams[i][0]
+		plant.type = plantsParams[i]["type"]
 		plant.name = plant.type
-		plant.number = plantsParams[i][1]
+		plant.number = plantsParams[i]["number"]
 		add_child(plant)
 		plants.append(plant)
 	if(harvestingPlant != "null"):
@@ -72,7 +72,7 @@ func _on_arrow_pressed() -> void:
 			if plant.number < 1:
 				print("not enough plant")
 				return
-			plantsParams[i][1] -= 1
+			plantsParams[i]["number"] -= 1
 			plant.setNumber(plant.number - 1)
 			seedsParams[i][1] += 1
 			seeds[i].setNumber(seeds[i].number + 1)
