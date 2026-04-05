@@ -9,7 +9,7 @@ const seedTextures = {
 var seedPlanted:String = "null"
 var timePlanted: float = 0
 var seedReady: bool = false
-var seedsParams: Array = []
+var seedsParams: Array = Global.seeds
 var seeds: Array = []
 
 func _ready() -> void:
@@ -18,9 +18,9 @@ func _ready() -> void:
 	for i in range(seedsParams.size()):
 		var seed = seedPreload.instantiate()
 		seed.position = Vector2(192 + (i%5)*54, 360 + (i/5)*54)
-		seed.type = seedsParams[i][0]
+		seed.type = seedsParams[i]["type"]
 		seed.name = seed.type
-		seed.number = seedsParams[i][1]
+		seed.number = seedsParams[i]["number"]
 		add_child(seed)
 		seeds.append(seed)
 	if(seedPlanted != "null"):
@@ -48,12 +48,12 @@ func plantSeed(type:String) -> void:
 			$"../../".seedPlanted = type
 			seed.number -= 1
 			for seedParam in seedsParams:
-				if seedParam[0] == type:
-					seedParam[1] -= 1
+				if seedParam["type"] == type:
+					seedParam["number"] -= 1
 			$"Seed".texture_normal = seedTextures[type][0]
 			timePlanted = Time.get_unix_time_from_system()
 			$"../../".timePlanted = timePlanted
-			$"../../../".updateSeeds(seedsParams)
+			$"../../../".saveParameters()
 		else:
 			print("no more seed of this type")
 	pass
@@ -73,5 +73,5 @@ func gather() -> void:
 		timePlanted = 0
 		$"../../".timePlanted = timePlanted
 		seedReady = false
-		$"../../../".updateSeeds(seedsParams)
+		$"../../../".saveParameters()
 	pass # Replace with function body.

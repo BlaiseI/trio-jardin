@@ -4,21 +4,20 @@ extends Control
 static var seedPreload = preload("res://Scenes/seed.tscn")
 static var plantPreload = preload("res://Scenes/plant.tscn")
 
-var seedsParams: Array = []
+var seedsParams: Array = Global.seeds
 var seeds: Array = []
 var plantsParams: Array = Global.collectables
 var plants: Array = []
 var selectedPlant: String
-var harvestingPlant: String
 
 func _ready() -> void:
 	$CloseButton.pressed.connect($"../../".closePanel)
 	for i in range(seedsParams.size()):
 		var seed = seedPreload.instantiate()
 		seed.position = Vector2(108 + (i%5)*54, 336 + (i/5)*54)
-		seed.type = seedsParams[i][0]
+		seed.type = seedsParams[i]["type"]
 		seed.name = seed.type
-		seed.number = seedsParams[i][1]
+		seed.number = seedsParams[i]["number"]
 		seed.pressed.disconnect(seed._onButtonPressed)
 		add_child(seed)
 		seeds.append(seed)
@@ -30,9 +29,9 @@ func _ready() -> void:
 		plant.number = plantsParams[i]["number"]
 		add_child(plant)
 		plants.append(plant)
-	if(harvestingPlant != "null"):
+	if(Global.harvestingPlant != "null"):
 		$harvestingPlant.visible = true
-		$harvestingPlant.texture = Plant.plantTextures[harvestingPlant]
+		$harvestingPlant.texture = Plant.plantTextures[Global.harvestingPlant]
 
 func spawn() -> Signal:
 	self.scale = Vector2(0.1,0.1)
@@ -74,24 +73,23 @@ func _on_arrow_pressed() -> void:
 				return
 			plantsParams[i]["number"] -= 1
 			plant.setNumber(plant.number - 1)
-			seedsParams[i][1] += 1
+			seedsParams[i]["number"] += 1
 			seeds[i].setNumber(seeds[i].number + 1)
-			$"../../../".updateSeeds(seedsParams)
-			$"../../../".updatePlants(plantsParams)
+			$"../../../".saveParameters()
 			activateTileAndArrow(plant)
 	return
 
 
 func _on_gather_pressed() -> void:
-	harvestingPlant = selectedPlant
+	Global.harvestingPlant = selectedPlant
 	$harvestingPlant.visible = true
-	$harvestingPlant.texture = Plant.plantTextures[harvestingPlant]
-	$"../../../".updateHarvesting(harvestingPlant)
+	$harvestingPlant.texture = Plant.plantTextures[Global.harvestingPlant]
+	$"../../../".saveParameters()
 	return
 
 func _on_clear_plant_pressed() -> void:
-	harvestingPlant = "null"
+	Global.harvestingPlant = "null"
 	$harvestingPlant.visible = false
 	$harvestingPlant.texture = null
-	$"../../../".updateHarvesting(harvestingPlant)
+	$"../../../".saveParameters()
 	pass

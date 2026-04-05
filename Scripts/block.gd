@@ -13,13 +13,13 @@ static var nbDifferentBlocks: int = 6
 
 static var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 static var blockId: int = 0
-static var harvestingPlant: String = "null"
 
 static func createRandomBlock() -> Block:
 	var block: Block
-	if harvestingPlant != "null" and rng.randi_range(1,50) == 42:
-		block = Collectable.createCollectable(harvestingPlant)
+	if Global.harvestingPlant != "null" and rng.randi_range(1,50) == 42:
+		block = Collectable.createCollectable(Global.harvestingPlant)
 	else:
+		block = load(blocks[rng.randi() % nbDifferentBlocks]).instantiate()
 		block = load(blocks[rng.randi() % nbDifferentBlocks]).instantiate()
 	block.name = block.name + str(blockId)
 	blockId += 1

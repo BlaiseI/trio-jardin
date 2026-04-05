@@ -20,7 +20,6 @@ var slideBeginCoords: Vector2
 var powerUpButtonReleased: bool = false
 var conditions:Array
 var numberMovesLeft: int
-var harvestingPlant: String = "null"
 
 func setLevelName(levelName: String) -> void:
 	self.levelName = levelName
@@ -31,7 +30,6 @@ func _ready() -> void:
 	loadParameters("res://levels/level" + levelName + ".json")
 	updateParametersInHUD()
 	Collectable.level = self
-	Block.harvestingPlant = harvestingPlant
 	grid.initGrid()
 	await grid.enforcePossibleMatches()
 	state = waitInput
@@ -176,6 +174,7 @@ func getPowerUpInput() -> void:
 				for powerUp in Global.powerUps:
 					if powerUp["type"] == currentPowerUp.type:
 						powerUp["number"] -= 1
+						$"../".levelSelector.saveParameters()
 		state = waitInput
 		powerUpButtonReleased = false
 	elif Input.is_action_just_released("ui_touch"):
@@ -195,11 +194,15 @@ func powerUpPressed(powerUp: PowerUp) -> void:
 		for powerUpParams in Global.powerUps:
 			if powerUpParams["type"] == currentPowerUp.type:
 				powerUpParams["number"] -= 1
+				$"../".levelSelector.saveParameters()
 		state = waitInput
 
 func collected(type: String) -> void:
 	updateConditions("sub", type)
-	$"../".levelSelector.updateCollectables(type)
+	for collectable : Dictionary in Global.collectables:
+		if collectable["type"] == type:
+			collectable["number"] += 1
+	$"../".levelSelector.saveParameters()
 
 static func saveParameters(parametersDictionary: Dictionary, levelName:String) -> void:
 	DirAccess.make_dir_recursive_absolute("res://levels")

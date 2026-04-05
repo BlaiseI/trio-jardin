@@ -9,8 +9,7 @@ static func clear() -> void:
 	collectablesInfo = []
 
 const collectablesTextures = {
-	"carrot" : preload("res://art/Finished/collectables/carrot.png"),
-	"carrotSeeds" : preload("res://art/Finished/collectables/carrotSeeds.png")
+	"carrot" : preload("res://art/Finished/collectables/carrot.png")
 }
 
 var type: String = "null"

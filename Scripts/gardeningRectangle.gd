@@ -14,8 +14,6 @@ var nbLevels: int
 var node: Node2D
 var seedPlanted:String = "null"
 var timePlanted: float
-var seeds: Array = []
-var harvestingPlant: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -96,7 +94,6 @@ func openPanel(type:String = "levelPanel") -> void:
 		cropPanel.name = "cropPanel"
 		cropPanel.seedPlanted = seedPlanted
 		cropPanel.timePlanted = timePlanted
-		cropPanel.seedsParams = seeds
 		$"CanvasLayer".add_child(cropPanel)
 		var spawned : Signal = cropPanel.spawn()
 		await spawned
@@ -106,8 +103,6 @@ func openPanel(type:String = "levelPanel") -> void:
 		seedPanel.position = (Vector2(576, 1024) - seedPanel.size)/2
 		seedPanel.z_index = 1
 		seedPanel.name = "seedPanel"
-		seedPanel.seedsParams = seeds
-		seedPanel.harvestingPlant = harvestingPlant
 		$"CanvasLayer".add_child(seedPanel)
 		var spawned : Signal = seedPanel.spawn()
 		await spawned
