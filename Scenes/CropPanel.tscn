@@ -45,4 +45,5 @@ offset_right = 96.0
 offset_bottom = 77.0
 scale = Vector2(6, 6)
 
+[connection signal="pressed" from="levelButton" to="." method="_on_level_button_pressed"]
 [connection signal="pressed" from="Seed" to="." method="gather"]

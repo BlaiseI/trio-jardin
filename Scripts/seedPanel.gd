@@ -11,7 +11,7 @@ var plants: Array = []
 var selectedPlant: String
 
 func _ready() -> void:
-	$CloseButton.pressed.connect($"../../".closePanel)
+	$CloseButton.pressed.connect($"../".closePanel)
 	for i in range(seedsParams.size()):
 		var seed = seedPreload.instantiate()
 		seed.position = Vector2(108 + (i%5)*54, 336 + (i/5)*54)
@@ -75,7 +75,7 @@ func _on_arrow_pressed() -> void:
 			plant.setNumber(plant.number - 1)
 			seedsParams[i]["number"] += 1
 			seeds[i].setNumber(seeds[i].number + 1)
-			$"../../../".saveParameters()
+			$"../".saveParameters()
 			activateTileAndArrow(plant)
 	return
 
@@ -84,12 +84,12 @@ func _on_gather_pressed() -> void:
 	Global.harvestingPlant = selectedPlant
 	$harvestingPlant.visible = true
 	$harvestingPlant.texture = Plant.plantTextures[Global.harvestingPlant]
-	$"../../../".saveParameters()
+	$"../".saveParameters()
 	return
 
 func _on_clear_plant_pressed() -> void:
 	Global.harvestingPlant = "null"
 	$harvestingPlant.visible = false
 	$harvestingPlant.texture = null
-	$"../../../".saveParameters()
+	$"../".saveParameters()
 	pass

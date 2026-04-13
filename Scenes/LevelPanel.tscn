@@ -36,3 +36,5 @@ offset_right = 230.0
 offset_bottom = 410.0
 scale = Vector2(3, 3)
 texture_normal = ExtResource("4_in4cs")
+
+[connection signal="pressed" from="CropButton" to="." method="_on_crop_button_pressed"]

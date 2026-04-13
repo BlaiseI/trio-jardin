@@ -11,10 +11,12 @@ var timePlanted: float = 0
 var seedReady: bool = false
 var seedsParams: Array = Global.seeds
 var seeds: Array = []
+var gardeningRectangle:GardeningRectangle = null
 
 func _ready() -> void:
-	$CloseButton.pressed.connect($"../../".closePanel)
-	$levelButton.pressed.connect($"../../".changePanel)
+	seedPlanted = gardeningRectangle.seedPlanted
+	timePlanted = gardeningRectangle.timePlanted
+	$CloseButton.pressed.connect($"../".closePanel)
 	for i in range(seedsParams.size()):
 		var seed = seedPreload.instantiate()
 		seed.position = Vector2(192 + (i%5)*54, 360 + (i/5)*54)
@@ -45,19 +47,18 @@ func plantSeed(type:String) -> void:
 		if(seed.number > 0):
 			print("planting " + type + " seed")
 			seedPlanted = type
-			$"../../".seedPlanted = type
+			gardeningRectangle.seedPlanted = type
 			seed.number -= 1
 			for seedParam in seedsParams:
 				if seedParam["type"] == type:
 					seedParam["number"] -= 1
 			$"Seed".texture_normal = seedTextures[type][0]
 			timePlanted = Time.get_unix_time_from_system()
-			$"../../".timePlanted = timePlanted
-			$"../../../".saveParameters()
+			gardeningRectangle.timePlanted = timePlanted
+			$"../".saveParameters()
 		else:
 			print("no more seed of this type")
 	pass
-
 
 func gather() -> void:
 	if(not seedReady):
@@ -69,9 +70,14 @@ func gather() -> void:
 				powerUp["number"] += 1
 		$"Seed".texture_normal = null
 		seedPlanted = "null"
-		$"../../".seedPlanted = seedPlanted
+		gardeningRectangle.seedPlanted = seedPlanted
 		timePlanted = 0
-		$"../../".timePlanted = timePlanted
+		gardeningRectangle.timePlanted = timePlanted
 		seedReady = false
-		$"../../../".saveParameters()
+		$"../".saveParameters()
 	pass # Replace with function body.
+
+func _on_level_button_pressed() -> void:
+	var parent:LevelSelector = get_parent()
+	parent.changePanel("levelPanel", {"gardeningRectangle":gardeningRectangle})
+	pass

@@ -30,4 +30,4 @@ scale = Vector2(4, 4)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[connection signal="pressed" from="Button" to="." method="openPanel"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

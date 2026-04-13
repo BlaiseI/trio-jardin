@@ -3,9 +3,6 @@ extends Node2D
 
 const gardeningRectangleTemplate:PackedScene = preload("res://Scenes/gardeningRectangle.tscn")
 const levelTemplate:PackedScene = preload("res://Scenes/level_scene.tscn")
-const levelPanelTemplate:PackedScene = preload("res://Scenes/LevelPanel.tscn")
-const cropPanelTemplate:PackedScene = preload("res://Scenes/CropPanel.tscn")
-const seedPanelTemplate:PackedScene = preload("res://Scenes/PlantToSeedPanel.tscn")
 
 var id: int
 var active: bool
@@ -70,58 +67,6 @@ static func fromDict(parametersDictionary: Dictionary) -> GardeningRectangle:
 	gardeningRectangle.timePlanted = parametersDictionary["timePlanted"]
 	return gardeningRectangle
 
-func openPanel(type:String = "levelPanel") -> void:
-	if(get_parent().panelOpened):
-		print("panel already opened")
-		return
-	get_parent().panelOpened = true
-	if (type == "levelPanel"):
-		var actualLevel = Global.actualLevel
-		var levelPanel: LevelPanel = levelPanelTemplate.instantiate()
-		levelPanel.firstLevel = firstLevel
-		levelPanel.nbLevels = nbLevels
-		levelPanel.position = (Vector2(576, 1024) - levelPanel.size)/2
-		levelPanel.z_index = 1
-		levelPanel.name = "levelPanel"
-		$"CanvasLayer".add_child(levelPanel)
-		var spawned : Signal = levelPanel.spawn()
-		await spawned
-		return
-	elif(type == "cropPanel"):
-		var cropPanel: CropPanel = cropPanelTemplate.instantiate()
-		cropPanel.position = (Vector2(576, 1024) - cropPanel.size)/2
-		cropPanel.z_index = 1
-		cropPanel.name = "cropPanel"
-		cropPanel.seedPlanted = seedPlanted
-		cropPanel.timePlanted = timePlanted
-		$"CanvasLayer".add_child(cropPanel)
-		var spawned : Signal = cropPanel.spawn()
-		await spawned
-		return
-	elif(type == "seedPanel"):
-		var seedPanel: SeedPanel = seedPanelTemplate.instantiate()
-		seedPanel.position = (Vector2(576, 1024) - seedPanel.size)/2
-		seedPanel.z_index = 1
-		seedPanel.name = "seedPanel"
-		$"CanvasLayer".add_child(seedPanel)
-		var spawned : Signal = seedPanel.spawn()
-		await spawned
-		return
-	else:
-		print("panel type not found : " + type)
 
-func closePanel() -> void:
-	var panel = find_child("*Panel", true, false)
-	panel.queue_free()
-	remove_child(panel)
-	get_parent().panelOpened = false
-	return
-
-func changePanel() -> void:
-	var panelType = find_child("*Panel", true, false).name
-	closePanel()
-	if panelType == ("levelPanel"):
-		openPanel("cropPanel")
-	else:
-		openPanel("levelPanel")
-	return
+func _on_button_pressed() -> void:
+	$"../".openPanel("levelPanel", {"gardeningRectangle":self})

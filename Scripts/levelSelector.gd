@@ -3,7 +3,11 @@ extends Node2D
 
 var game: Game
 var gardeningRectangles: Array = []
-var panelOpened: bool = false
+var currentPanel:Control = null
+
+const levelPanelTemplate:PackedScene = preload("res://Scenes/LevelPanel.tscn")
+const cropPanelTemplate:PackedScene = preload("res://Scenes/CropPanel.tscn")
+const seedPanelTemplate:PackedScene = preload("res://Scenes/PlantToSeedPanel.tscn")
 
 func saveParameters() -> void:
 	var parametersDictionary: Dictionary = {
@@ -55,5 +59,40 @@ func _on_play_button_pressed() -> void:
 	game.launchLevel(Global.actualLevel)
 
 func _on_plant_to_seed_button_pressed() -> void:
-	gardeningRectangles[0].openPanel("seedPanel")
+	openPanel("seedPanel", {})
 	pass
+
+func openPanel(type:String, params:Dictionary) -> void:
+	if(currentPanel != null):
+		print("panel already opened")
+		return
+	var panel : Control
+	if (type == "levelPanel"):
+		panel = levelPanelTemplate.instantiate()
+		panel.gardeningRectangle = params["gardeningRectangle"]
+	elif(type == "cropPanel"):
+		panel = cropPanelTemplate.instantiate()
+		panel.gardeningRectangle = params["gardeningRectangle"]
+	elif(type == "seedPanel"):
+		panel = seedPanelTemplate.instantiate()
+	else:
+		print("panel type not found : " + type)
+		return
+	panel.position = (Vector2(576, 1024) - panel.size)/2
+	panel.name = type
+	add_child(panel)
+	currentPanel = panel
+	await panel.spawn()
+	return
+
+func closePanel() -> void:
+	currentPanel.queue_free()
+	remove_child(currentPanel)
+	currentPanel = null
+	return
+
+func changePanel(type:String, params:Dictionary) -> void:
+	var panelType = find_child("*Panel", true, false).name
+	closePanel()
+	openPanel(type, params)
+	return

@@ -31,10 +31,7 @@ func launchLevel(levelNumber: int) -> void:
 	hudLevel.name = "hudLevel"
 	$HUD.add_child(hudLevel)
 	add_child(level)
-	var levelPanel = find_child("levelPanel", true, false)
-	if levelPanel :
-		levelPanel.queue_free()
-		levelSelector.panelOpened = false
+	levelSelector.closePanel()
 	levelSelector.visible = false
 
 func levelFinished(levelNumber: int, succeeded: bool) -> void:
