@@ -29,7 +29,6 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	loadParameters("res://levels/level" + levelName + ".json")
 	updateParametersInHUD()
-	Collectable.level = self
 	grid.initGrid()
 	await grid.enforcePossibleMatches()
 	state = waitInput
@@ -167,7 +166,7 @@ func getPowerUpInput() -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if grid.isInGrid(touchCoords):
 			var tileTouched: Vector2 = grid.getTilePositionFromCoords(touchCoords)
-			if tileTouched not in grid.emptyTiles and grid.grid[tileTouched.x][tileTouched.y] is not Collectable:
+			if tileTouched not in grid.emptyTiles and grid.grid[tileTouched.x][tileTouched.y].deleteable:
 				state = treatPowerUp
 				var powerUpFunc = Callable(currentPowerUp, currentPowerUp.type)
 				powerUpFunc.call(self, tileTouched)
