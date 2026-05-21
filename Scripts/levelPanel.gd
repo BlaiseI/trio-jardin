@@ -27,5 +27,5 @@ func spawn() -> Signal:
 
 func _on_crop_button_pressed() -> void:
 	var parent:LevelSelector = get_parent()
-	parent.changePanel("cropPanel", {"gardeningRectangle":gardeningRectangle})
+	parent.openPanel("cropPanel", {"gardeningRectangle":gardeningRectangle})
 	pass

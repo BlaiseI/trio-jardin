@@ -79,5 +79,5 @@ func gather() -> void:
 
 func _on_level_button_pressed() -> void:
 	var parent:LevelSelector = get_parent()
-	parent.changePanel("levelPanel", {"gardeningRectangle":gardeningRectangle})
+	parent.openPanel("levelPanel", {"gardeningRectangle":gardeningRectangle})
 	pass

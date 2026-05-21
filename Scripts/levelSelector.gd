@@ -63,9 +63,7 @@ func _on_plant_to_seed_button_pressed() -> void:
 	pass
 
 func openPanel(type:String, params:Dictionary) -> void:
-	if(currentPanel != null):
-		print("panel already opened")
-		return
+	closePanel()
 	var panel : Control
 	if (type == "levelPanel"):
 		panel = levelPanelTemplate.instantiate()
@@ -86,13 +84,8 @@ func openPanel(type:String, params:Dictionary) -> void:
 	return
 
 func closePanel() -> void:
-	currentPanel.queue_free()
-	remove_child(currentPanel)
-	currentPanel = null
-	return
-
-func changePanel(type:String, params:Dictionary) -> void:
-	var panelType = find_child("*Panel", true, false).name
-	closePanel()
-	openPanel(type, params)
+	if currentPanel:
+		currentPanel.queue_free()
+		remove_child(currentPanel)
+		currentPanel = null
 	return
