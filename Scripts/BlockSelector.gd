@@ -1,5 +1,5 @@
 class_name BlockSelector
-extends TextureButton
+extends Control
 
 const blockTexturePaths: Dictionary = {
 	"chardon": "res://art/Finished/weeds/chardon60.png",
@@ -19,16 +19,21 @@ const blockTexturePaths: Dictionary = {
 
 @export var blockType: String
 
-signal changeSelected(blockType: String, pos:Vector2)
+signal changeSelected(blockSelector: BlockSelector, pos:Vector2)
 
-func _on_pressed() -> void:
-	changeSelected.emit(blockType, position)
+func toggleCadre() -> void:
+	$"Cadre".visible = !$"Cadre".visible
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	texture_normal = load(blockTexturePaths[blockType])
-	changeSelected.connect($"../..".changeSelectedBlock)
+	$"BlockSelectorButton".texture_normal = load(blockTexturePaths[blockType])
+	changeSelected.connect($"../../..".changeSelectedBlock)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_pressed() -> void:
+	print("pressed")
+	changeSelected.emit(self, position)

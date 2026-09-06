@@ -1,15 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://8e8du5xmixa0"]
+[gd_scene load_steps=7 format=3 uid="uid://8e8du5xmixa0"]
 
 [ext_resource type="Script" path="res://Scripts/LevelCreator.gd" id="1_y1y6h"]
 [ext_resource type="Texture2D" uid="uid://bphhtbdf1jnin" path="res://art/Finished/level background/gridContainer.png" id="2_mn7si"]
 [ext_resource type="Texture2D" uid="uid://g8seyyd3q4xw" path="res://art/Finished/level background/topBanner.png" id="3_frbx6"]
-[ext_resource type="PackedScene" uid="uid://cmnwaw863jv23" path="res://Scenes/block_selector.tscn" id="3_ts03y"]
 [ext_resource type="PackedScene" uid="uid://d3sckk5vjpjh8" path="res://Scenes/condition.tscn" id="4_hflut"]
 [ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/legacy/backup v1_1/LevelCreator/up.png" id="4_vptl4"]
 [ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/legacy/backup v1_1/LevelCreator/down.png" id="5_kirta"]
-[ext_resource type="Texture2D" uid="uid://d10hj0g1o3lpd" path="res://art/Finished/legacy/backup v1_1/LevelCreator/null.png" id="6_5am8q"]
 
-[node name="LevelCreator" type="Node2D"]
+[node name="LevelCreator2" type="Node2D"]
 script = ExtResource("1_y1y6h")
 xStart = 23
 yStart = 264
@@ -69,112 +67,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="Chardon" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 19.0
-offset_top = 59.0
-offset_right = 79.0
-offset_bottom = 119.0
-blockType = "chardon"
-
-[node name="Ortie" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 96.0
-offset_top = 59.0
-offset_right = 156.0
-offset_bottom = 119.0
-blockType = "ortie"
-
-[node name="Chenille" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 190.0
-offset_top = 61.0
-offset_right = 250.0
-offset_bottom = 121.0
-blockType = "chenille"
-
-[node name="Egopode" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 281.0
-offset_top = 62.0
-offset_right = 341.0
-offset_bottom = 122.0
-blockType = "egopode"
-
-[node name="Morille" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 382.0
-offset_top = 62.0
-offset_right = 442.0
-offset_bottom = 122.0
-blockType = "morille"
-
-[node name="Pissenlit" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 479.0
-offset_top = 61.0
-offset_right = 539.0
-offset_bottom = 121.0
-blockType = "pissenlit"
-
-[node name="Lierre" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 20.0
-offset_top = 150.0
-offset_right = 80.0
-offset_bottom = 210.0
-blockType = "lierre"
-
-[node name="Ronce" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 110.0
-offset_top = 147.0
-offset_right = 170.0
-offset_bottom = 207.0
-blockType = "ronce"
-
-[node name="Web" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 198.0
-offset_top = 144.0
-offset_right = 258.0
-offset_bottom = 204.0
-blockType = "web"
-
-[node name="Firecracker" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 289.0
-offset_top = 147.0
-offset_right = 349.0
-offset_bottom = 207.0
-blockType = "firecracker"
-
-[node name="Mouton" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 389.0
-offset_top = 146.0
-offset_right = 449.0
-offset_bottom = 206.0
-blockType = "mouton"
-
-[node name="erase" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 0
-offset_left = 247.0
-offset_top = 5.0
-offset_right = 262.0
-offset_bottom = 15.0
-scale = Vector2(4, 4)
-texture_normal = ExtResource("6_5am8q")
-blockType = "null"
-
-[node name="Empty" parent="BlocksContainer" instance=ExtResource("3_ts03y")]
-layout_mode = 2
-offset_left = 478.0
-offset_top = 146.0
-offset_right = 538.0
-offset_bottom = 206.0
-blockType = "empty"
 
 [node name="LevelSelect" type="Control" parent="."]
 layout_mode = 3
@@ -491,6 +383,15 @@ offset_right = 62.0
 offset_bottom = 991.0
 scale = Vector2(2, 2)
 texture_normal = ExtResource("5_kirta")
+
+[node name="BlocksScrollBar" type="ScrollContainer" parent="."]
+offset_left = 5.0
+offset_top = 63.0
+offset_right = 572.0
+offset_bottom = 162.0
+
+[node name="BlocksList" type="HBoxContainer" parent="BlocksScrollBar"]
+layout_mode = 2
 
 [connection signal="pressed" from="SaveButton" to="." method="saveLevel"]
 [connection signal="pressed" from="LevelSelect/Add" to="." method="treatInput" binds= ["leveladd"]]

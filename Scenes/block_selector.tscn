@@ -1,12 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://cmnwaw863jv23"]
+[gd_scene load_steps=4 format=3 uid="uid://cmnwaw863jv23"]
 
+[ext_resource type="PackedScene" uid="uid://caou1cirgkn4m" path="res://Scenes/block_selector2.tscn" id="1_g5bqy"]
 [ext_resource type="Script" path="res://Scripts/BlockSelector.gd" id="1_wwee2"]
-[ext_resource type="Texture2D" uid="uid://cqki3yi0u5bcx" path="res://art/Finished/weeds/empty.png" id="2_7k5iw"]
+[ext_resource type="Texture2D" uid="uid://dkwnr3bbkpll2" path="res://art/Finished/LevelCreator/LevelCreatorCadre.png" id="2_vt5m0"]
 
-[node name="BlockSelector" type="TextureButton"]
-offset_right = 40.0
-offset_bottom = 40.0
-texture_normal = ExtResource("2_7k5iw")
+[node name="BlockSelector" type="Control"]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 68.0
+offset_bottom = 68.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("1_wwee2")
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[node name="Cadre" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 68.0
+offset_bottom = 68.0
+texture = ExtResource("2_vt5m0")
+
+[node name="BlockSelectorButton" parent="." instance=ExtResource("1_g5bqy")]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[connection signal="pressed" from="BlockSelectorButton" to="." method="_on_pressed"]

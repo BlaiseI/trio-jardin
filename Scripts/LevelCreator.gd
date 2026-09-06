@@ -11,7 +11,8 @@ var grid = []
 var gridCadres = []
 var webs = []
 var cadrePreload = preload("res://Scenes/cadre.tscn")
-var selectedBlock: String = "chardon"
+var blockSelectorPreload = preload("res://Scenes/block_selector.tscn")
+var selectedBlock: BlockSelector
 var conditions = []
 var nbMovesLeft = 0
 var nbDifferentBlocks: int = 4
@@ -19,7 +20,8 @@ var nbDifferentBlocks: int = 4
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	loadParameters("res://levels/level" + levelName + ".json")
+	loadBlockList("res://levelCreator/blockList.json")
+	loadLevelParameters("res://levels/level" + levelName + ".json")
 	var cadre = cadrePreload.instantiate()
 	cadre.name = "cadre"
 	cadre.position = Vector2(49,89)
@@ -27,7 +29,7 @@ func _ready() -> void:
 	cadre.z_index = -1
 	add_child(cadre)
 
-func updateCondition(selectedBlock, i: int) -> void:
+func updateCondition(selectedBlock : String, i: int) -> void:
 	conditions[i][0] = selectedBlock
 	var block
 	if(selectedBlock == "null"):
@@ -43,7 +45,18 @@ func updateCondition(selectedBlock, i: int) -> void:
 		remove_child(last_block)
 	add_child(block)
 
-func loadParameters(filePath: String) -> void:
+func loadBlockList(filePath: String) -> void:
+	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
+	var blocksJSONString = saveFile.get_line()
+	var blocksJSON = JSON.new()
+	blocksJSON.parse(blocksJSONString)
+	var blocksDictionary: Dictionary = blocksJSON.data
+	for blockType : String in blocksDictionary["blockList"] :
+		var selector : BlockSelector = blockSelectorPreload.instantiate()
+		selector.blockType = blockType
+		$"BlocksScrollBar/BlocksList".add_child(selector)
+
+func loadLevelParameters(filePath: String) -> void:
 	for block in find_children("block*", "", true, false):
 		remove_child(block)
 	var saveFile:FileAccess = FileAccess.open(filePath, FileAccess.READ)
@@ -153,9 +166,12 @@ func createEmptyGrid() -> void:
 			add_child(cadre)
 			cadre.position = getTileCoords(Vector2(i,j))
 
-func changeSelectedBlock(blockType: String, pos: Vector2):
-	selectedBlock = blockType
-	find_child("cadre", false, false).position = pos + Vector2(30,30)
+func changeSelectedBlock(blockSelector: BlockSelector, pos: Vector2):
+	if selectedBlock :
+		selectedBlock.toggleCadre()
+	selectedBlock = blockSelector
+	selectedBlock.toggleCadre()
+	#find_child("cadre", false, false).position = pos + Vector2(30,30)
 
 func isInGrid(coords: Vector2) -> bool:
 	if(coords.x < xStart or coords.x > xStart + (width*offset)
@@ -180,32 +196,32 @@ func _process(delta: float) -> void:
 		var touchCoords: Vector2 = get_global_mouse_position()
 		if isInGrid(touchCoords):
 			var tileTouched: Vector2 = getTilePositionFromCoords(touchCoords)
-			if selectedBlock == "null":
+			if selectedBlock.blockType == "null":
 				if(grid[tileTouched.x][tileTouched.y]):
 					remove_child(grid[tileTouched.x][tileTouched.y])
 					grid[tileTouched.x][tileTouched.y] = null
 				return
 			var block
-			if(selectedBlock == "lierre"):
+			if(selectedBlock.blockType == "lierre"):
 				var currentBlock = grid[tileTouched.x][tileTouched.y]
 				if (currentBlock and currentBlock.blockType == "lierre"):
 					if currentBlock.layers < 3:
-						block = Block.createBlock(selectedBlock)
+						block = Block.createBlock(selectedBlock.blockType)
 						block.layers = currentBlock.layers + 1
 					else:
 						return
 				else:
-					block = Block.createBlock(selectedBlock)
+					block = Block.createBlock(selectedBlock.blockType)
 					block.layers = 1
 			else:
-				block = Block.createBlock(selectedBlock)
+				block = Block.createBlock(selectedBlock.blockType)
 			block.position = getTileCoords(tileTouched)
 			if(grid[tileTouched.x][tileTouched.y]):
 				remove_child(grid[tileTouched.x][tileTouched.y])
 			grid[tileTouched.x][tileTouched.y] = block
 			add_child(block)
 		elif isInCondition(touchCoords) != -1:
-			updateCondition(selectedBlock, isInCondition(touchCoords))
+			updateCondition(selectedBlock.blockType, isInCondition(touchCoords))
 
 func treatInput(type: String) -> void:
 	if type.contains("height"):
@@ -228,7 +244,7 @@ func treatInput(type: String) -> void:
 		if type.contains("sub"):
 			levelName = str(int(levelName)-1)
 		$"LevelSelect/Number".text = levelName
-		loadParameters("res://levels/level" + levelName + ".json")
+		loadLevelParameters("res://levels/level" + levelName + ".json")
 	if type.contains("moves"):
 		if type.contains("add"):
 			nbMovesLeft += 1
