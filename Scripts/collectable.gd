@@ -15,6 +15,8 @@ const collectablesTextures = {
 var type: String = "null"
 
 func _ready() -> void:
+	if(!level):
+		level = get_parent().get_parent()
 	$CenterContainer/Control/Sprite2D.texture = collectablesTextures[type]
 	doesMatch = false
 	moveable = true
@@ -50,7 +52,6 @@ static func createCollectable(type: String) -> Collectable:
 	return collectable
 
 static func init(grid:Grid) -> void:
-	level = grid.get_parent()
 	for collectableInfo in collectablesInfo:
 		var collectable : Collectable = createCollectable(collectableInfo[1])
 		grid.replaceBlock(collectableInfo[0], collectable)
