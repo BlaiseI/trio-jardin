@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/collectable.gd" id="1_tyxly"]
 [ext_resource type="Texture2D" uid="uid://dlo4aqifpdrew" path="res://art/Finished/collectables/carrot.png" id="2_dxbnf"]
 
-[node name="blockLierre" type="Node2D"]
+[node name="blockCollectable" type="Node2D"]
 script = ExtResource("1_tyxly")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]

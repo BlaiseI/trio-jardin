@@ -120,6 +120,7 @@ func treatMatches(triggerEOT:bool = true) -> void:
 		await grid.deleteMatches()
 		await grid.getBlocksDown()
 		await grid.fillEmptyBlocks()
+		Collectable.checkPosInLastRow()
 	if state == gameOver:
 		hud.updateGameOverMessage("Victory !")
 		get_tree().paused = true

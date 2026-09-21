@@ -4,6 +4,7 @@ extends Block
 static var collectablePreload = preload("res://Scenes/block_collectable.tscn")
 static var collectablesInfo = []
 static var level:Level
+static var collectables: Array = []
 
 static func clear() -> void:
 	collectablesInfo = []
@@ -21,26 +22,24 @@ func _ready() -> void:
 	doesMatch = false
 	moveable = true
 	deleteable = false
-	checkPosInLastRow(position)
 	return
 
-
-func move(coords: Vector2) -> Signal:
-	var _return = super(coords)
-	checkPosInLastRow(coords)
-	return _return
-
-func checkPosInLastRow(coords: Vector2) -> void:
-	var gridPos = level.grid.getTilePositionFromCoords(coords)
-	for i in range(gridPos.x +1, level.grid.height):
-		if Vector2(i, gridPos.y) not in level.grid.emptyTiles:
-			return
-	deleteable = true
-	level.grid.toTreat.append(gridPos)
-	level.collected(type)
+static func checkPosInLastRow() -> void:
+	for collectable : Collectable in collectables:
+		var inLastRow = true
+		var gridPos = level.grid.getTilePositionFromCoords(collectable.position)
+		for i in range(gridPos.x +1, level.grid.height):
+			if Vector2(i, gridPos.y) not in level.grid.emptyTiles:
+				inLastRow = false
+				break
+		if(inLastRow):
+			collectable.deleteable = true
+			level.grid.toTreat.append(gridPos)
+			level.collected(collectable.type)
 	return
 
 func shrink() -> Signal:
+	Collectable.collectables.erase(self)
 	var tween:Tween = create_tween()
 	tween.tween_property(self, "position", position + Vector2(0, 30), .3)
 	tween.tween_property(self, "scale", Vector2(.1,.1), .1)
@@ -49,6 +48,7 @@ func shrink() -> Signal:
 static func createCollectable(type: String) -> Collectable:
 	var collectable : Collectable = collectablePreload.instantiate()
 	collectable.type = type
+	collectables.append(collectable)
 	return collectable
 
 static func init(grid:Grid) -> void:
