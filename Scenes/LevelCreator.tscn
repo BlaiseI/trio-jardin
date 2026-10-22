@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/legacy/backup v1_1/LevelCreator/up.png" id="4_vptl4"]
 [ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/legacy/backup v1_1/LevelCreator/down.png" id="5_kirta"]
 
-[node name="LevelCreator2" type="Node2D"]
+[node name="LevelCreator" type="Node2D"]
 script = ExtResource("1_y1y6h")
 xStart = 23
 yStart = 264

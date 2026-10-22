@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://caou1cirgkn4m"]
+
+[ext_resource type="Texture2D" uid="uid://cqki3yi0u5bcx" path="res://art/Finished/legacy/backup v1_1/weeds/empty.png" id="1_ci147"]
+
+[node name="BlockSelector" type="TextureButton"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_ci147")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,0 +1,428 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdf08dbxj7812"]
+
+[ext_resource type="Script" path="res://Scripts/LevelCreator.gd" id="1_qs8ym"]
+[ext_resource type="Texture2D" uid="uid://bphhtbdf1jnin" path="res://art/Finished/level background/gridContainer.png" id="2_m8vvs"]
+[ext_resource type="Texture2D" uid="uid://g8seyyd3q4xw" path="res://art/Finished/level background/topBanner.png" id="3_3848v"]
+[ext_resource type="PackedScene" uid="uid://d3sckk5vjpjh8" path="res://Scenes/condition.tscn" id="4_fvsyu"]
+[ext_resource type="PackedScene" uid="uid://cmnwaw863jv23" path="res://Scenes/block_selector.tscn" id="5_rple8"]
+[ext_resource type="Texture2D" uid="uid://sg4t6mo8n38u" path="res://art/Finished/legacy/backup v1_1/LevelCreator/up.png" id="7_b8xmw"]
+[ext_resource type="Texture2D" uid="uid://bl4gmfrymwfu0" path="res://art/Finished/legacy/backup v1_1/LevelCreator/down.png" id="8_e6h4a"]
+
+[node name="LevelCreator" type="Node2D"]
+script = ExtResource("1_qs8ym")
+xStart = 23
+yStart = 264
+offset = 67
+
+[node name="GridBackground" type="TextureRect" parent="."]
+offset_top = 192.0
+offset_right = 576.0
+offset_bottom = 832.0
+texture = ExtResource("2_m8vvs")
+
+[node name="SaveButton" type="Button" parent="."]
+offset_left = 15.0
+offset_top = 5.0
+offset_right = 83.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 25
+text = "SAVE"
+
+[node name="TopBannerBackground" type="TextureRect" parent="."]
+offset_left = -1.0
+offset_top = 828.0
+offset_right = 575.0
+offset_bottom = 1020.0
+texture = ExtResource("3_3848v")
+
+[node name="ConditionBackground1" parent="TopBannerBackground" instance=ExtResource("4_fvsyu")]
+layout_mode = 0
+offset_left = 364.0
+offset_top = 12.0
+offset_right = 424.0
+offset_bottom = 72.0
+
+[node name="ConditionBackground2" parent="TopBannerBackground" instance=ExtResource("4_fvsyu")]
+layout_mode = 0
+offset_left = 484.0
+offset_top = 12.0
+offset_right = 544.0
+offset_bottom = 72.0
+
+[node name="ConditionBackground3" parent="TopBannerBackground" instance=ExtResource("4_fvsyu")]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 88.0
+offset_right = 425.0
+offset_bottom = 148.0
+
+[node name="ConditionBackground4" parent="TopBannerBackground" instance=ExtResource("4_fvsyu")]
+layout_mode = 0
+offset_left = 484.0
+offset_top = 88.0
+offset_right = 544.0
+offset_bottom = 148.0
+
+[node name="BlocksContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Chardon" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "chardon"
+
+[node name="Ortie" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "ortie"
+
+[node name="Chenille" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "chenille"
+
+[node name="Egopode" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "egopode"
+
+[node name="Morille" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "morille"
+
+[node name="Pissenlit" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "pissenlit"
+
+[node name="Lierre" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "lierre"
+
+[node name="Ronce" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "ronce"
+
+[node name="Web" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "web"
+
+[node name="Firecracker" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "firecracker"
+
+[node name="Mouton" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "mouton"
+
+[node name="erase" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+scale = Vector2(4, 4)
+blockType = "null"
+
+[node name="Empty" parent="BlocksContainer" instance=ExtResource("5_rple8")]
+blockType = "empty"
+
+[node name="LevelSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 902.0
+offset_right = 49.0
+offset_bottom = 925.0
+scale = Vector2(2, 2)
+text = "1"
+
+[node name="Add" type="TextureButton" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 907.0
+offset_right = 58.0
+offset_bottom = 916.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="LevelSelect"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 929.0
+offset_right = 58.0
+offset_bottom = 938.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="HeightSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 70.0
+offset_right = 110.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="HeightSelect"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 904.0
+offset_right = 47.0
+offset_bottom = 927.0
+rotation = 0.00283305
+scale = Vector2(2, 2)
+text = "8"
+
+[node name="Add" type="TextureButton" parent="HeightSelect"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 910.0
+offset_right = 59.0
+offset_bottom = 919.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="HeightSelect"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 931.0
+offset_right = 60.0
+offset_bottom = 940.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="WidthSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 140.0
+offset_right = 180.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="WidthSelect"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 906.0
+offset_right = 49.0
+offset_bottom = 929.0
+scale = Vector2(2, 2)
+text = "8
+"
+
+[node name="Add" type="TextureButton" parent="WidthSelect"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 909.0
+offset_right = 58.0
+offset_bottom = 918.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="WidthSelect"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 930.0
+offset_right = 59.0
+offset_bottom = 939.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="WinningConditions" type="CanvasLayer" parent="."]
+
+[node name="Condition1" type="Sprite2D" parent="WinningConditions"]
+position = Vector2(400, 890)
+
+[node name="Condition2" type="Sprite2D" parent="WinningConditions"]
+position = Vector2(510, 890)
+
+[node name="Condition4Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition4Select"]
+layout_mode = 0
+offset_left = 527.0
+offset_top = 936.0
+offset_right = 566.0
+offset_bottom = 959.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition4Select"]
+layout_mode = 0
+offset_left = 555.0
+offset_top = 933.0
+offset_right = 570.0
+offset_bottom = 947.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="Condition4Select"]
+layout_mode = 0
+offset_left = 557.0
+offset_top = 960.0
+offset_right = 572.0
+offset_bottom = 969.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="Condition3Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition3Select"]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 936.0
+offset_right = 448.0
+offset_bottom = 959.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition3Select"]
+layout_mode = 0
+offset_left = 443.0
+offset_top = 940.0
+offset_right = 458.0
+offset_bottom = 949.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="Condition3Select"]
+layout_mode = 0
+offset_left = 443.0
+offset_top = 964.0
+offset_right = 458.0
+offset_bottom = 973.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="Condition1Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition1Select"]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 861.0
+offset_right = 452.0
+offset_bottom = 884.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition1Select"]
+layout_mode = 0
+offset_left = 446.0
+offset_top = 863.0
+offset_right = 461.0
+offset_bottom = 872.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="Condition1Select"]
+layout_mode = 0
+offset_left = 447.0
+offset_top = 885.0
+offset_right = 462.0
+offset_bottom = 894.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="Condition2Select" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="Condition2Select"]
+layout_mode = 0
+offset_left = 531.0
+offset_top = 860.0
+offset_right = 570.0
+offset_bottom = 883.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="Condition2Select"]
+layout_mode = 0
+offset_left = 564.0
+offset_top = 862.0
+offset_right = 579.0
+offset_bottom = 871.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="Condition2Select"]
+layout_mode = 0
+offset_left = 565.0
+offset_top = 884.0
+offset_right = 580.0
+offset_bottom = 893.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="NbMovesLeftSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="NbMovesLeftSelect"]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 930.0
+offset_right = 302.0
+offset_bottom = 953.0
+scale = Vector2(2, 2)
+theme_override_colors/font_color = Color(0.85098, 0.34902, 0.121569, 1)
+text = "0
+"
+
+[node name="Add" type="TextureButton" parent="NbMovesLeftSelect"]
+layout_mode = 0
+offset_left = 318.0
+offset_top = 935.0
+offset_right = 333.0
+offset_bottom = 944.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="NbMovesLeftSelect"]
+layout_mode = 0
+offset_left = 319.0
+offset_top = 957.0
+offset_right = 334.0
+offset_bottom = 966.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[node name="DifBlockSelect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Number" type="Label" parent="DifBlockSelect"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 956.0
+offset_right = 53.0
+offset_bottom = 979.0
+scale = Vector2(2, 2)
+text = "4
+"
+
+[node name="Add" type="TextureButton" parent="DifBlockSelect"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 960.0
+offset_right = 62.0
+offset_bottom = 969.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("7_b8xmw")
+
+[node name="Substract" type="TextureButton" parent="DifBlockSelect"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 982.0
+offset_right = 62.0
+offset_bottom = 991.0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("8_e6h4a")
+
+[connection signal="pressed" from="SaveButton" to="." method="saveLevel"]
