@@ -25,6 +25,9 @@ func _ready() -> void:
 	return
 
 static func checkPosInLastRow() -> void:
+	for collectable in collectables:
+		if not is_instance_valid(collectable):
+			collectables.erase(collectable)
 	for collectable : Collectable in collectables:
 		var inLastRow = true
 		var gridPos = level.grid.getTilePositionFromCoords(collectable.position)
