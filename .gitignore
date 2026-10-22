@@ -21,3 +21,5 @@ backup.txt
 art/Finished/legacy
 art/Finished/tests
 *.import
+
+level/__pycache__/
